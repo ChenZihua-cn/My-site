@@ -1,11 +1,18 @@
 ---
 export interface Props {
   class?: string;
+  hover?: boolean;
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '', hover = true } = Astro.props;
 ---
 
-<div class={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`}>
+<div class={`card-modern overflow-hidden ${hover ? 'card-hover' : ''} ${className}`}>
   <slot />
 </div>
+
+<style>
+  .card-hover {
+    cursor: pointer;
+  }
+</style>
