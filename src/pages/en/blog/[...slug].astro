@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
@@ -8,13 +8,13 @@ import translations from '../../../i18n/en.json';
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ id }) => id.startsWith('en/'));
   return posts.map((post) => ({
-    params: { slug: post.slug.replace('en/', '') },
+    params: { slug: post.id.replace('en/', '') },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 const t = translations;
 

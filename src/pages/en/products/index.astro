@@ -44,7 +44,7 @@ const t = translations;
                 image={product.data.images[0] || '/images/placeholder.jpg'}
                 title={product.data.name}
                 description={product.data.description}
-                href={`/en/products/${product.slug.replace('en/', '')}`}
+                href={`/en/products/${product.id.replace('en/', '')}`}
                 price={product.data.price}
                 category={product.data.category}
               />

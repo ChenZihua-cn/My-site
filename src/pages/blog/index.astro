@@ -53,7 +53,7 @@ const t = translations;
               <PostCard
                 title={post.data.title}
                 description={post.data.description}
-                href={`/blog/${post.slug.replace('zh/', '')}`}
+                href={`/blog/${post.id.replace('zh/', '')}`}
                 date={post.data.pubDate}
                 tags={post.data.tags}
                 coverImage={post.data.coverImage}
