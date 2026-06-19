@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import { SITE } from '../consts';
+---
+
+<Layout title={`关于 - ${SITE.name}`}>
+  <Navbar lang="zh" />
+
+  <main class="min-h-screen py-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <h1 class="mb-8 text-4xl font-bold text-foreground">关于我们</h1>
+
+        <div class="prose prose-slate max-w-none">
+          <p class="text-lg text-muted-foreground">
+            欢迎来到 {SITE.nameZh}！我们是一家专注于外贸业务的公司，致力于为客户提供优质的产品和服务。
+          </p>
+
+          <h2 class="text-2xl font-semibold mt-8 mb-4">我们的使命</h2>
+          <p class="text-muted-foreground">
+            通过提供高质量的产品和卓越的客户服务，帮助客户实现业务增长。我们相信诚信、质量和创新是成功的关键。
+          </p>
+
+          <h2 class="text-2xl font-semibold mt-8 mb-4">联系方式</h2>
+          <ul class="space-y-2 text-muted-foreground">
+            <li>邮箱: {SITE.email}</li>
+            <li>GitHub: <a href={SITE.github} class="text-primary">{SITE.github}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="zh" />
+</Layout>

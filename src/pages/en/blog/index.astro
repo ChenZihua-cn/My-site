@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/layout/Navbar.astro';
+import Footer from '../../../components/layout/Footer.astro';
+import PostCard from '../../../components/blog/PostCard.astro';
+import translations from '../../../i18n/en.json';
+
+const posts = await getCollection('posts', ({ id }) => id.startsWith('en/'));
+
+const sortedPosts = posts.sort((a, b) =>
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const allTags = [...new Set(posts.flatMap(p => p.data.tags))];
+
+const t = translations;
+---
+
+<Layout title={`${t.blog.title} - My Site`} lang="en">
+  <Navbar lang="en" />
+
+  <main class="min-h-screen">
+    <section class="bg-muted py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="mb-4 text-4xl font-bold text-foreground">{t.blog.title}</h1>
+        <p class="text-lg text-muted-foreground">{t.blog.subtitle}</p>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        {allTags.length > 0 && (
+          <div class="mb-8 flex flex-wrap gap-2 justify-center">
+            <button class="tag-btn active rounded-full px-4 py-2 text-sm font-medium bg-primary text-primary-foreground" data-tag="all">
+              {t.products.all}
+            </button>
+            {allTags.map((tag) => (
+              <button class="tag-btn rounded-full px-4 py-2 text-sm font-medium border border-input hover:bg-accent" data-tag={tag}>
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" id="posts-grid">
+          {sortedPosts.map((post) => (
+            <div class="post-item" data-tags={post.data.tags.join(',')}>
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                href={`/en/blog/${post.slug.replace('en/', '')}`}
+                date={post.data.pubDate}
+                tags={post.data.tags}
+                coverImage={post.data.coverImage}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang="en" />
+
+  <script>
+    const buttons = document.querySelectorAll('.tag-btn');
+    const items = document.querySelectorAll('.post-item');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag;
+
+        buttons.forEach(b => {
+          b.classList.remove('bg-primary', 'text-primary-foreground');
+          b.classList.add('border', 'border-input');
+        });
+        btn.classList.add('bg-primary', 'text-primary-foreground');
+        btn.classList.remove('border', 'border-input');
+
+        items.forEach(item => {
+          const tags = item.dataset.tags?.split(',') || [];
+          if (tag === 'all' || tags.includes(tag)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</Layout>

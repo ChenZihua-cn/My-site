@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/layout/Navbar.astro';
+import Footer from '../../../components/layout/Footer.astro';
+import ProductCard from '../../../components/products/ProductCard.astro';
+import translations from '../../../i18n/en.json';
+
+const products = await getCollection('products', ({ id }) => id.startsWith('en/'));
+
+const categories = [...new Set(products.map(p => p.data.category))];
+
+const t = translations;
+---
+
+<Layout title={`${t.products.title} - My Site`} lang="en">
+  <Navbar lang="en" />
+
+  <main class="min-h-screen">
+    <section class="bg-muted py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="mb-4 text-4xl font-bold text-foreground">{t.products.title}</h1>
+        <p class="text-lg text-muted-foreground">{t.products.subtitle}</p>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 flex flex-wrap gap-2 justify-center">
+          <button class="category-btn active rounded-full px-4 py-2 text-sm font-medium bg-primary text-primary-foreground" data-category="all">
+            {t.products.all}
+          </button>
+          {categories.map((category) => (
+            <button class="category-btn rounded-full px-4 py-2 text-sm font-medium border border-input hover:bg-accent" data-category={category}>
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" id="products-grid">
+          {products.map((product) => (
+            <div class="product-item" data-category={product.data.category}>
+              <ProductCard
+                image={product.data.images[0] || '/images/placeholder.jpg'}
+                title={product.data.name}
+                description={product.data.description}
+                href={`/en/products/${product.slug.replace('en/', '')}`}
+                price={product.data.price}
+                category={product.data.category}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang="en" />
+
+  <script>
+    const buttons = document.querySelectorAll('.category-btn');
+    const items = document.querySelectorAll('.product-item');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = btn.dataset.category;
+
+        buttons.forEach(b => {
+          b.classList.remove('bg-primary', 'text-primary-foreground');
+          b.classList.add('border', 'border-input');
+        });
+        btn.classList.add('bg-primary', 'text-primary-foreground');
+        btn.classList.remove('border', 'border-input');
+
+        items.forEach(item => {
+          if (category === 'all' || item.dataset.category === category) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</Layout>

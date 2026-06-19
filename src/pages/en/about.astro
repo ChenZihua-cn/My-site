@@ -1,0 +1,37 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/layout/Navbar.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { SITE } from '../../consts';
+---
+
+<Layout title={`About - ${SITE.name}`} lang="en">
+  <Navbar lang="en" />
+
+  <main class="min-h-screen py-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl">
+        <h1 class="mb-8 text-4xl font-bold text-foreground">About Us</h1>
+
+        <div class="prose prose-slate max-w-none">
+          <p class="text-lg text-muted-foreground">
+            Welcome to {SITE.name}! We are a company focused on foreign trade business, dedicated to providing customers with quality products and services.
+          </p>
+
+          <h2 class="text-2xl font-semibold mt-8 mb-4">Our Mission</h2>
+          <p class="text-muted-foreground">
+            To help customers achieve business growth by providing high-quality products and excellent customer service. We believe integrity, quality, and innovation are the keys to success.
+          </p>
+
+          <h2 class="text-2xl font-semibold mt-8 mb-4">Contact</h2>
+          <ul class="space-y-2 text-muted-foreground">
+            <li>Email: {SITE.email}</li>
+            <li>GitHub: <a href={SITE.github} class="text-primary">{SITE.github}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>

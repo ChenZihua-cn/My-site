@@ -1,0 +1,52 @@
+{
+  "nav": {
+    "home": "首页",
+    "products": "产品",
+    "blog": "博客",
+    "about": "关于",
+    "contact": "联系我们"
+  },
+  "home": {
+    "hero": {
+      "title": "欢迎来到我的网站",
+      "subtitle": "专业的外贸产品供应商，为您提供优质的产品和服务",
+      "cta": "浏览产品",
+      "secondaryCta": "了解更多"
+    },
+    "featuredProducts": {
+      "title": "精选产品",
+      "subtitle": "我们最受欢迎的产品",
+      "viewAll": "查看全部"
+    },
+    "latestPosts": {
+      "title": "最新文章",
+      "subtitle": "分享行业资讯和使用技巧",
+      "readMore": "阅读更多"
+    }
+  },
+  "products": {
+    "title": "产品展示",
+    "subtitle": "浏览我们完整的产品线",
+    "categories": "产品分类",
+    "all": "全部",
+    "inquiry": "立即询盘",
+    "specs": "产品规格",
+    "related": "相关产品"
+  },
+  "blog": {
+    "title": "博客",
+    "subtitle": "分享行业资讯、使用技巧和产品知识",
+    "tags": "标签",
+    "published": "发布于",
+    "readTime": "分钟阅读"
+  },
+  "footer": {
+    "rights": "保留所有权利",
+    "contact": "联系方式"
+  },
+  "language": {
+    "switch": "切换语言",
+    "zh": "中文",
+    "en": "English"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact Us"
+  },
+  "home": {
+    "hero": {
+      "title": "Welcome to My Website",
+      "subtitle": "Professional foreign trade product supplier, providing you with quality products and services",
+      "cta": "Browse Products",
+      "secondaryCta": "Learn More"
+    },
+    "featuredProducts": {
+      "title": "Featured Products",
+      "subtitle": "Our most popular products",
+      "viewAll": "View All"
+    },
+    "latestPosts": {
+      "title": "Latest Posts",
+      "subtitle": "Sharing industry news and usage tips",
+      "readMore": "Read More"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Browse our complete product line",
+    "categories": "Categories",
+    "all": "All",
+    "inquiry": "Inquiry Now",
+    "specs": "Specifications",
+    "related": "Related Products"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Sharing industry news, tips and product knowledge",
+    "tags": "Tags",
+    "published": "Published on",
+    "readTime": "min read"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "contact": "Contact"
+  },
+  "language": {
+    "switch": "Switch Language",
+    "zh": "中文",
+    "en": "English"
+  }
+}

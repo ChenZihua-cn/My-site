@@ -1,0 +1,39 @@
+---
+export interface Props {
+  image: string;
+  title: string;
+  description: string;
+  href: string;
+  price?: string;
+  category?: string;
+}
+
+const { image, title, description, href, price, category } = Astro.props;
+---
+
+<article class="group relative overflow-hidden rounded-lg border bg-background shadow transition-all hover:shadow-lg">
+  <a href={href} class="block">
+    <div class="aspect-video overflow-hidden bg-muted">
+      <img
+        src={image}
+        alt={title}
+        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="p-4">
+      {category && (
+        <span class="inline-block mb-2 text-xs font-medium text-primary">{category}</span>
+      )}
+
+      <h3 class="mb-2 text-lg font-semibold text-foreground">{title}</h3>
+
+      <p class="mb-3 text-sm text-muted-foreground line-clamp-2">{description}</p>
+
+      {price && (
+        <p class="text-base font-bold text-primary">{price}</p>
+      )}
+    </div>
+  </a>
+</article>

@@ -1,0 +1,55 @@
+---
+import { SITE } from '../../consts';
+
+export interface Props {
+  lang?: 'zh' | 'en';
+}
+
+const { lang = 'zh' } = Astro.props;
+const isZh = lang === 'zh';
+---
+
+<footer class="border-t bg-muted">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-lg font-semibold mb-4">{isZh ? SITE.nameZh : SITE.name}</h3>
+        <p class="text-sm text-muted-foreground">
+          {isZh ? SITE.descriptionZh : SITE.description}
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold mb-4">{isZh ? '快速链接' : 'Quick Links'}</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href={isZh ? '/' : '/en'} class="text-sm text-muted-foreground hover:text-foreground">
+              {isZh ? '首页' : 'Home'}
+            </a>
+          </li>
+          <li>
+            <a href={isZh ? '/products' : '/en/products'} class="text-sm text-muted-foreground hover:text-foreground">
+              {isZh ? '产品' : 'Products'}
+            </a>
+          </li>
+          <li>
+            <a href={isZh ? '/blog' : '/en/blog'} class="text-sm text-muted-foreground hover:text-foreground">
+              {isZh ? '博客' : 'Blog'}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-semibold mb-4">{isZh ? '联系方式' : 'Contact'}</h3>
+        <p class="text-sm text-muted-foreground">
+          {SITE.email}
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
+      © {new Date().getFullYear()} {isZh ? SITE.nameZh : SITE.name}. {isZh ? '保留所有权利' : 'All rights reserved'}.
+    </div>
+  </div>
+</footer>

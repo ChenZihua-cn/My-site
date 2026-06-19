@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import ProductCard from '../components/products/ProductCard.astro';
+import PostCard from '../components/blog/PostCard.astro';
+import translations from '../i18n/zh.json';
+
+const featuredProducts = await getCollection('products', ({ id, data }) => {
+  return id.startsWith('zh/') && data.featured;
+}).then(products => products.slice(0, 3));
+
+const latestPosts = await getCollection('posts', ({ id }) => {
+  return id.startsWith('zh/');
+}).then(posts => posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3)
+);
+
+const t = translations;
+---
+
+<Layout title="首页 - My Site" description={t.home.hero.subtitle}>
+  <Navbar lang="zh" />
+
+  <main>
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-muted to-background py-20 lg:py-32">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-3xl text-center">
+          <h1 class="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            {t.home.hero.title}
+          </h1>
+          <p class="mb-8 text-lg text-muted-foreground sm:text-xl">
+            {t.home.hero.subtitle}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button href="/products" variant="default" size="lg">
+              {t.home.hero.cta}
+            </Button>
+            <Button href="/about" variant="outline" size="lg">
+              {t.home.hero.secondaryCta}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-16 lg:py-24">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 text-center">
+          <h2 class="mb-4 text-3xl font-bold text-foreground">{t.home.featuredProducts.title}</h2>
+          <p class="text-muted-foreground">{t.home.featuredProducts.subtitle}</p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {featuredProducts.map((product) => (
+            <ProductCard
+              image={product.data.images[0] || '/images/placeholder.jpg'}
+              title={product.data.name}
+              description={product.data.description}
+              href={`/products/${product.slug.replace('zh/', '')}`}
+              price={product.data.price}
+              category={product.data.category}
+            />
+          ))}
+        </div>
+
+        <div class="mt-10 text-center">
+          <Button href="/products" variant="outline">{t.home.featuredProducts.viewAll}</Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Posts -->
+    <section class="py-16 lg:py-24 bg-muted">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 text-center">
+          <h2 class="mb-4 text-3xl font-bold text-foreground">{t.home.latestPosts.title}</h2>
+          <p class="text-muted-foreground">{t.home.latestPosts.subtitle}</p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {latestPosts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.slug.replace('zh/', '')}`}
+              date={post.data.pubDate}
+              tags={post.data.tags}
+              coverImage={post.data.coverImage}
+            />
+          ))}
+        </div>
+
+        <div class="mt-10 text-center">
+          <Button href="/blog" variant="outline">{t.home.latestPosts.readMore}</Button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang="zh" />
+</Layout>

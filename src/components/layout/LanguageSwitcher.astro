@@ -1,0 +1,18 @@
+---
+export interface Props {
+  currentLang: 'zh' | 'en';
+}
+
+const { currentLang } = Astro.props;
+const otherLang = currentLang === 'zh' ? 'en' : 'zh';
+const otherPath = currentLang === 'zh'
+  ? `/en${Astro.url.pathname}`
+  : Astro.url.pathname.replace('/en', '') || '/';
+---
+
+<a
+  href={otherPath}
+  class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-foreground h-9 px-3 border border-input"
+>
+  {currentLang === 'zh' ? 'EN' : '中文'}
+</a>

@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<Layout title="404 - 页面未找到">
+  <Navbar lang="zh" />
+
+  <main class="flex min-h-[60vh] items-center justify-center">
+    <div class="text-center">
+      <h1 class="mb-4 text-6xl font-bold text-primary">404</h1>
+      <h2 class="mb-4 text-2xl font-semibold text-foreground">页面未找到</h2>
+      <p class="mb-8 text-muted-foreground">抱歉，您访问的页面不存在。</p>
+      <Button href="/" variant="default">返回首页</Button>
+    </div>
+  </main>
+
+  <Footer lang="zh" />
+</Layout>

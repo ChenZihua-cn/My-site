@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/layout/Navbar.astro';
+import Footer from '../../components/layout/Footer.astro';
+import translations from '../../i18n/zh.json';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ id }) => id.startsWith('zh/'));
+  return posts.map((post) => ({
+    params: { slug: post.slug.replace('zh/', '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const t = translations;
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+};
+---
+
+<Layout title={`${post.data.title} - My Site`} description={post.data.description}>
+  <Navbar lang="zh" />
+
+  <main class="min-h-screen py-16">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <article class="mx-auto max-w-3xl">
+        <!-- Breadcrumb -->
+        <nav class="mb-8 text-sm text-muted-foreground">
+          <a href="/" class="hover:text-foreground">首页</a>
+          <span class="mx-2">/</span>
+          <a href="/blog" class="hover:text-foreground">博客</a>
+          <span class="mx-2">/</span>
+          <span class="text-foreground">{post.data.title}</span>
+        </nav>
+
+        <!-- Header -->
+        <header class="mb-8">
+          <div class="mb-4 flex items-center gap-4 text-sm text-muted-foreground">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {t.blog.published} {formatDate(post.data.pubDate)}
+            </time>
+          </div>
+
+          <h1 class="mb-4 text-3xl font-bold text-foreground sm:text-4xl">{post.data.title}</h1>
+
+          <p class="text-lg text-muted-foreground">{post.data.description}</p>
+
+          {post.data.tags.length > 0 && (
+            <div class="mt-4 flex flex-wrap gap-2">
+              {post.data.tags.map((tag) => (
+                <span class="inline-flex items-center rounded-full border px-3 py-1 text-sm">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <!-- Cover Image -->
+        {post.data.coverImage && (
+          <div class="mb-8 aspect-video overflow-hidden rounded-lg">
+            <img
+              src={post.data.coverImage}
+              alt={post.data.title}
+              class="h-full w-full object-cover"
+            />
+          </div>
+        )}
+
+        <!-- Content -->
+        <div class="prose prose-slate max-w-none">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <Footer lang="zh" />
+</Layout>
