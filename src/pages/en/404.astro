@@ -1,0 +1,21 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/layout/Navbar.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Button from '../../components/ui/Button.astro';
+---
+
+<Layout title="404 - Page Not Found" lang="en">
+  <Navbar lang="en" />
+
+  <main class="flex min-h-[60vh] items-center justify-center">
+    <div class="text-center">
+      <h1 class="mb-4 text-6xl font-bold text-primary">404</h1>
+      <h2 class="mb-4 text-2xl font-semibold text-foreground">Page Not Found</h2>
+      <p class="mb-8 text-muted-foreground">Sorry, the page you are looking for does not exist.</p>
+      <Button href="/en" variant="default">Back to Home</Button>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>

@@ -11,10 +11,10 @@ export const SITE = {
 
 export const NAV_LINKS = {
   zh: [
-    { href: '/', label: '首页' },
-    { href: '/products', label: '产品' },
-    { href: '/blog', label: '博客' },
-    { href: '/about', label: '关于' },
+    { href: '/zh', label: '首页' },
+    { href: '/zh/products', label: '产品' },
+    { href: '/zh/blog', label: '博客' },
+    { href: '/zh/about', label: '关于' },
   ],
   en: [
     { href: '/en', label: 'Home' },

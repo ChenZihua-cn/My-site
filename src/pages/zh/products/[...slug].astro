@@ -1,10 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/layout/Navbar.astro';
-import Footer from '../../components/layout/Footer.astro';
-import Button from '../../components/ui/Button.astro';
-import translations from '../../i18n/zh.json';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/layout/Navbar.astro';
+import Footer from '../../../components/layout/Footer.astro';
+import Button from '../../../components/ui/Button.astro';
+import translations from '../../../i18n/zh.json';
 
 export async function getStaticPaths() {
   const products = await getCollection('products', ({ id }) => id.startsWith('zh/'));
@@ -27,9 +27,9 @@ const t = translations;
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
       <nav class="mb-8 text-sm text-muted-foreground">
-        <a href="/" class="hover:text-foreground">首页</a>
+        <a href="/zh" class="hover:text-foreground">首页</a>
         <span class="mx-2">/</span>
-        <a href="/products" class="hover:text-foreground">产品</a>
+        <a href="/zh/products" class="hover:text-foreground">产品</a>
         <span class="mx-2">/</span>
         <span class="text-foreground">{product.data.name}</span>
       </nav>

@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/layout/Navbar.astro';
-import Footer from '../../components/layout/Footer.astro';
-import PostCard from '../../components/blog/PostCard.astro';
-import translations from '../../i18n/zh.json';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/layout/Navbar.astro';
+import Footer from '../../../components/layout/Footer.astro';
+import PostCard from '../../../components/blog/PostCard.astro';
+import translations from '../../../i18n/zh.json';
 
 const posts = await getCollection('posts', ({ id }) => id.startsWith('zh/'));
 
@@ -53,7 +53,7 @@ const t = translations;
               <PostCard
                 title={post.data.title}
                 description={post.data.description}
-                href={`/blog/${post.id.replace('zh/', '')}`}
+                href={`/zh/blog/${post.id.replace('zh/', '')}`}
                 date={post.data.pubDate}
                 tags={post.data.tags}
                 coverImage={post.data.coverImage}

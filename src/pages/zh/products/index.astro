@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/layout/Navbar.astro';
-import Footer from '../../components/layout/Footer.astro';
-import ProductCard from '../../components/products/ProductCard.astro';
-import translations from '../../i18n/zh.json';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/layout/Navbar.astro';
+import Footer from '../../../components/layout/Footer.astro';
+import ProductCard from '../../../components/products/ProductCard.astro';
+import translations from '../../../i18n/zh.json';
 
 const products = await getCollection('products', ({ id }) => id.startsWith('zh/'));
 
@@ -48,7 +48,7 @@ const t = translations;
                 image={product.data.images[0] || '/images/placeholder.jpg'}
                 title={product.data.name}
                 description={product.data.description}
-                href={`/products/${product.id.replace('zh/', '')}`}
+                href={`/zh/products/${product.id.replace('zh/', '')}`}
                 price={product.data.price}
                 category={product.data.category}
               />

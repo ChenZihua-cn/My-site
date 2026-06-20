@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/layout/Navbar.astro';
-import Footer from '../components/layout/Footer.astro';
-import Button from '../components/ui/Button.astro';
-import ProductCard from '../components/products/ProductCard.astro';
-import PostCard from '../components/blog/PostCard.astro';
-import translations from '../i18n/zh.json';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/layout/Navbar.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Button from '../../components/ui/Button.astro';
+import ProductCard from '../../components/products/ProductCard.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import translations from '../../i18n/zh.json';
 
 const featuredProducts = await getCollection('products', ({ id, data }) => {
   return id.startsWith('zh/') && data.featured;
@@ -93,7 +93,7 @@ const t = translations;
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.3s;">
             <a
-              href="/products"
+              href="/zh/products"
               class="inline-flex items-center justify-center gap-2 rounded-full btn-primary-gradient px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25"
             >
               {t.home.hero.cta}
@@ -103,7 +103,7 @@ const t = translations;
               </svg>
             </a>
             <a
-              href="/about"
+              href="/zh/about"
               class="inline-flex items-center justify-center gap-2 rounded-full border bg-background/50 backdrop-blur px-8 py-4 text-base font-semibold text-foreground transition-colors hover:bg-muted"
             >
               {t.home.hero.secondaryCta}
@@ -153,7 +153,7 @@ const t = translations;
             </p>
           </div>
           <a
-            href="/products"
+            href="/zh/products"
             class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all"
           >
             {t.home.featuredProducts.viewAll}
@@ -170,7 +170,7 @@ const t = translations;
               image={product.data.images[0] || '/images/placeholder.jpg'}
               title={product.data.name}
               description={product.data.description}
-              href={`/products/${product.id.replace('zh/', '')}`}
+              href={`/zh/products/${product.id.replace('zh/', '')}`}
               price={product.data.price}
               category={product.data.category}
             />
@@ -244,7 +244,7 @@ const t = translations;
             </p>
           </div>
           <a
-            href="/blog"
+            href="/zh/blog"
             class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all"
           >
             {t.home.latestPosts.readMore}
@@ -260,7 +260,7 @@ const t = translations;
             <PostCard
               title={post.data.title}
               description={post.data.description}
-              href={`/blog/${post.id.replace('zh/', '')}`}
+              href={`/zh/blog/${post.id.replace('zh/', '')}`}
               date={post.data.pubDate}
               tags={post.data.tags}
               coverImage={post.data.coverImage}
@@ -285,7 +285,7 @@ const t = translations;
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="/about"
+            href="/zh/about"
             class="inline-flex items-center justify-center gap-2 rounded-full btn-primary-gradient px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25"
           >
             联系我们

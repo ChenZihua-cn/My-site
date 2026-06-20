@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://your-domain.com',
+  site: 'https://luv2u.cn',
   vite: {
     plugins: [tailwindcss()]
   },
@@ -12,7 +12,7 @@ export default defineConfig({
     defaultLocale: 'zh',
     locales: ['zh', 'en'],
     routing: {
-      prefixDefaultLocale: false
+      prefixDefaultLocale: true
     }
   }
 });

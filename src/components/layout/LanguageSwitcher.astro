@@ -6,13 +6,24 @@ export interface Props {
 const { currentLang } = Astro.props;
 const otherLang = currentLang === 'zh' ? 'en' : 'zh';
 const otherPath = currentLang === 'zh'
-  ? `/en${Astro.url.pathname}`
-  : Astro.url.pathname.replace('/en', '') || '/';
+  ? Astro.url.pathname.replace(/^\/zh/, '/en')
+  : Astro.url.pathname.replace(/^\/en/, '/zh');
 ---
 
 <a
   href={otherPath}
+  data-lang-switcher
+  data-target-lang={otherLang}
   class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-foreground h-9 px-3 border border-input"
 >
   {currentLang === 'zh' ? 'EN' : '中文'}
 </a>
+
+<script>
+  document.querySelector('a[data-lang-switcher]')?.addEventListener('click', () => {
+    const targetLang = document.querySelector('a[data-lang-switcher]')?.getAttribute('data-target-lang');
+    if (targetLang) {
+      document.cookie = `preferred-language=${targetLang};path=/;max-age=31536000;SameSite=Lax`;
+    }
+  });
+</script>

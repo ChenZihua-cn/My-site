@@ -14,7 +14,7 @@ const isZh = lang === 'zh';
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       <!-- Brand -->
       <div>
-        <a href={isZh ? '/' : '/en'} class="inline-block text-xl font-bold text-foreground hover:text-primary transition-colors mb-4">
+        <a href={isZh ? '/zh' : '/en'} class="inline-block text-xl font-bold text-foreground hover:text-primary transition-colors mb-4">
           {isZh ? SITE.nameZh : SITE.name}
         </a>
         <p class="text-sm text-muted-foreground leading-relaxed">
@@ -52,22 +52,22 @@ const isZh = lang === 'zh';
         </h3>
         <ul class="space-y-3">
           <li>
-            <a href={isZh ? '/' : '/en'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <a href={isZh ? '/zh' : '/en'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
               {isZh ? '首页' : 'Home'}
             </a>
           </li>
           <li>
-            <a href={isZh ? '/products' : '/en/products'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <a href={isZh ? '/zh/products' : '/en/products'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
               {isZh ? '产品' : 'Products'}
             </a>
           </li>
           <li>
-            <a href={isZh ? '/blog' : '/en/blog'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <a href={isZh ? '/zh/blog' : '/en/blog'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
               {isZh ? '博客' : 'Blog'}
             </a>
           </li>
           <li>
-            <a href={isZh ? '/about' : '/en/about'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <a href={isZh ? '/zh/about' : '/en/about'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
               {isZh ? '关于我们' : 'About'}
             </a>
           </li>
