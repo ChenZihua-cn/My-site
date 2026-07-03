@@ -1,0 +1,53 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to server
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/azureuser/My-site
+            git pull origin main
+            npm ci
+            npm run build
+
+            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+            RELEASE_DIR="/var/www/releases/luv2u/build_${TIMESTAMP}"
+            sudo mkdir -p /var/www/releases/luv2u
+            sudo cp -r dist "$RELEASE_DIR"
+            sudo ln -snf "$RELEASE_DIR" /var/www/luv2u
+            sudo systemctl reload nginx
+
+            cd /var/www/releases/luv2u
+            ls -d build_* 2>/dev/null | sort -r | tail -n +6 | while read old; do
+              sudo rm -rf "$old"
+            done

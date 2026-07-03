@@ -1,6 +1,6 @@
-# 个人博客 / 外贸独立站
+# 个人博客 / 独立站
 
-基于 Astro + Tailwind CSS v4 构建的双语个人博客和外贸产品展示站点。
+基于 Astro + Tailwind CSS v4 构建的双语个人博客和产品展示站点。
 
 ## 特性
 
@@ -152,18 +152,25 @@ featured: false
 
 ## 部署
 
-### Vercel
+Push 到 `main` 分支后，GitHub Actions 自动通过 SSH 部署到服务器：
+
+1. 拉取代码 → 安装依赖 → 构建
+2. 将 `dist/` 放入 `/var/www/releases/luv2u/build_{timestamp}`
+3. 原子更新软链接 `/var/www/luv2u` → 新版本目录
+4. Reload Nginx，保留最近 5 个版本用于回滚
+
+详见 [.github/workflows/ci.yml](.github/workflows/ci.yml) 和 [deploy.sh](deploy.sh)。
+
+### 其他平台
+
+也可部署到 Vercel / Netlify：
 
 ```bash
-npm i -g vercel
-vercel --prod
-```
+# Vercel
+npm i -g vercel && vercel --prod
 
-### Netlify
-
-```bash
-npm i -g netlify-cli
-netlify deploy --prod --dir=dist
+# Netlify
+npm i -g netlify-cli && netlify deploy --prod --dir=dist
 ```
 
 ## License

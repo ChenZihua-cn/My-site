@@ -3,10 +3,10 @@ export const SITE = {
   nameZh: '我的网站',
   description: 'A personal blog and product showcase',
   descriptionZh: '个人博客和产品展示',
-  url: 'https://your-domain.com',
-  email: 'contact@example.com',
-  github: 'https://github.com/yourusername',
-  twitter: 'https://twitter.com/yourusername',
+  url: 'https://luv2u.cn',
+  email: 'cyan_0916@qq.com',
+  github: 'https://github.com/ChenZihua-cn',
+  twitter: 'https://twitter.com/404.html',
 } as const;
 
 export const NAV_LINKS = {
