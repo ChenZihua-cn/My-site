@@ -1,3 +1,14 @@
-<meta http-equiv="refresh" content="0;url=/zh/">
-<script>location.href='/zh/'</script>
-<a href="/zh/">前往中文首页</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>luv2u</title>
+<script>
+  const lang = (navigator.language || (navigator.languages && navigator.languages[0]) || 'en').toLowerCase();
+  window.location.replace('/' + (lang.startsWith('zh') ? 'zh' : 'en') + '/');
+</script>
+</head>
+<body>
+  <a href="/zh/">中文</a> &nbsp; <a href="/en/">English</a>
+</body>
+</html>
