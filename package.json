@@ -11,7 +11,7 @@
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
     "astro": "^6.4.8",
-    "lucide-react": "^0.460.0"
+    "lucide-react": "^1.23.0"
   },
   "overrides": {
     "esbuild": "0.27.2"
