@@ -1,0 +1,116 @@
+/* ========================================
+   Components — Gradients, Glass, Cards, Buttons
+   ======================================== */
+
+/* Gradient Backgrounds */
+.bg-gradient-hero {
+  background: linear-gradient(
+    135deg,
+    oklch(95% 0.05 var(--hue)) 0%,
+    oklch(90% 0.1 var(--hue)) 50%,
+    oklch(85% 0.08 calc(var(--hue) + 30)) 100%
+  );
+}
+
+.bg-gradient-mesh {
+  background:
+    radial-gradient(ellipse at 20% 20%, oklch(70% 0.15 var(--hue) / 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, oklch(60% 0.12 calc(var(--hue) + 40) / 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, oklch(80% 0.08 calc(var(--hue) - 20) / 0.08) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .bg-gradient-hero {
+  background: linear-gradient(
+    135deg,
+    oklch(20% 0.08 var(--hue)) 0%,
+    oklch(18% 0.06 calc(var(--hue) + 20)) 50%,
+    oklch(15% 0.04 var(--hue)) 100%
+  );
+}
+
+[data-theme="dark"] .bg-gradient-mesh {
+  background:
+    radial-gradient(ellipse at 20% 20%, oklch(50% 0.15 var(--hue) / 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, oklch(45% 0.12 calc(var(--hue) + 40) / 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, oklch(40% 0.1 calc(var(--hue) - 20) / 0.1) 0%, transparent 70%);
+}
+
+/* Glass Effect */
+.glass {
+  background: oklch(100% 0.005 var(--hue) / 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="dark"] .glass {
+  background: oklch(20% 0.02 var(--hue) / 0.7);
+}
+
+.glass-border {
+  border: 1px solid oklch(100% 0.01 var(--hue) / 0.2);
+}
+
+[data-theme="dark"] .glass-border {
+  border: 1px solid oklch(100% 0.01 var(--hue) / 0.1);
+}
+
+/* Card */
+.card-modern {
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 1px 3px oklch(0% 0 var(--hue) / 0.05),
+    0 1px 2px oklch(0% 0 var(--hue) / 0.03);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s ease;
+}
+
+.card-modern:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 25px -5px oklch(0% 0 var(--hue) / 0.08),
+    0 10px 10px -5px oklch(0% 0 var(--hue) / 0.04);
+  border-color: oklch(60% 0.15 var(--hue) / 0.3);
+}
+
+[data-theme="dark"] .card-modern:hover {
+  border-color: oklch(70% 0.15 var(--hue) / 0.4);
+}
+
+/* Button */
+.btn-primary-gradient {
+  background: linear-gradient(
+    135deg,
+    oklch(55% 0.22 var(--hue)) 0%,
+    oklch(60% 0.2 calc(var(--hue) + 20)) 100%
+  );
+  transition: all 0.3s ease;
+}
+
+.btn-primary-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px oklch(55% 0.22 var(--hue) / 0.4);
+}
+
+/* Text Gradient */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    oklch(50% 0.2 var(--hue)) 0%,
+    oklch(60% 0.18 calc(var(--hue) + 30)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Focus Ring */
+.ring-focus:focus-visible {
+  outline: none;
+  ring: 2px;
+  ring-offset: 2px;
+  ring-color: var(--ring);
+}

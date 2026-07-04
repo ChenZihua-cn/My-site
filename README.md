@@ -59,11 +59,17 @@ my-site/
 │   │   └── products/
 │   │       ├── zh/        # 中文产品
 │   │       └── en/        # 英文产品
-│   ├── i18n/
+│   │   └── i18n/
 │   │   ├── zh.json
 │   │   └── en.json
-│   ├── styles/
-│   │   └── global.css
+│   ├── src/styles/
+│   │   └──  global.css        (42行)  入口：Tailwind + Plugin + @theme + 各模块导入
+│   │   └──  tokens.css        (111行) 设计令牌：颜色、间距、字体 — 明/暗双模式
+│   │   └──  base.css          (42行)  基础：body、滚动条、文本选中
+│   │   └──  animations.css    (52行)  动画：keyframes + 工具类 + stagger
+│   │   └── components.css    (121行) 组件：渐变背景、玻璃态、卡片、按钮、文字渐变
+│   │   └──  typography.css    (195行) 排版：prose 增强 + 目录高亮
+
 │   └── consts.ts
 ├── astro.config.mjs
 └── package.json
