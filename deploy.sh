@@ -28,8 +28,8 @@ if [ ! -d "$BUILD_OUTPUT" ] || [ -z "$(ls -A "$BUILD_OUTPUT" 2>/dev/null)" ]; th
     exit 1
 fi
 
-# 验证 nginx 配置引用了 DEPLOY_ROOT（检查所有 nginx 配置）
-if ! grep -qr "$DEPLOY_ROOT" /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null; then
+# 验证 nginx 配置引用了 DEPLOY_ROOT
+if ! sudo grep -qr "$DEPLOY_ROOT" /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null; then
     echo "⚠️  nginx 配置中未找到 $DEPLOY_ROOT，请检查 root 指令是否正确！"
     echo "    当前 nginx 完整配置中的 root 指令："
     sudo nginx -T 2>/dev/null | grep -i "root" || true
