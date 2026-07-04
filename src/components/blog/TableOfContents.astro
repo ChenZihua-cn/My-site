@@ -1,0 +1,77 @@
+---
+export interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+  lang?: 'zh' | 'en';
+}
+
+const { headings, lang = 'zh' } = Astro.props;
+
+const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length >= 2;
+---
+
+{hasToc && (
+  <nav
+    class="toc-sidebar sticky top-24 w-56 flex-shrink-0 hidden lg:block self-start"
+    aria-label={lang === 'zh' ? '目录' : 'Table of Contents'}
+  >
+    <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+      {lang === 'zh' ? '目录' : 'On this page'}
+    </h2>
+    <ul class="space-y-1.5 text-sm leading-relaxed">
+      {tocHeadings.map((heading) => (
+        <li>
+          <a
+            href={`#${heading.slug}`}
+            class={`toc-link block border-l-2 py-1 transition-colors duration-150
+              ${heading.depth === 3 ? 'pl-6' : 'pl-3'}
+              border-transparent text-muted-foreground
+              hover:border-muted-foreground/30 hover:text-foreground`}
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<script>
+  (function() {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if (tocLinks.length === 0) return;
+
+    const headingElements = [...tocLinks]
+      .map(link => {
+        const id = link.getAttribute('href')?.slice(1);
+        return id ? document.getElementById(id) : null;
+      })
+      .filter(Boolean);
+
+    if (headingElements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (intersecting.length > 0) {
+          const activeId = intersecting[0].target.id;
+          tocLinks.forEach(link => {
+            link.classList.remove('toc-active');
+            if (link.getAttribute('href') === `#${activeId}`) {
+              link.classList.add('toc-active');
+            }
+          });
+        }
+      },
+      {
+        rootMargin: '-80px 0px -70% 0px',
+        threshold: 0,
+      }
+    );
+
+    headingElements.forEach(h => h && observer.observe(h));
+  })();
+</script>

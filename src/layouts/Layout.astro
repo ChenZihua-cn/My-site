@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { SITE } from '../consts';
 
 export interface Props {
   title: string;
@@ -7,7 +8,7 @@ export interface Props {
   lang?: string;
 }
 
-const { title, description = 'A personal blog and product showcase', lang = 'zh' } = Astro.props;
+const { title, description = SITE.description, lang = 'zh' } = Astro.props;
 ---
 
 <!doctype html>

@@ -5,22 +5,23 @@ import Footer from '../../components/layout/Footer.astro';
 import { SITE } from '../../consts';
 ---
 
-<Layout title={`关于 - ${SITE.name}`}>
+<Layout title={`关于 - ${SITE.nameZh}`}>
   <Navbar lang="zh" />
 
   <main class="min-h-screen py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-3xl">
-        <h1 class="mb-8 text-4xl font-bold text-foreground">关于我们</h1>
+        <h1 class="mb-8 text-4xl font-bold text-foreground">关于我</h1>
 
         <div class="prose prose-slate max-w-none">
           <p class="text-lg text-muted-foreground">
-            欢迎来到 {SITE.nameZh}！我们是一家专注于外贸业务的公司，致力于为客户提供优质的产品和服务。
+            欢迎来到 {SITE.nameZh}！这是我的个人博客，记录技术学习、项目实践与生活中的思考。
           </p>
 
-          <h2 class="text-2xl font-semibold mt-8 mb-4">我们的使命</h2>
+          <h2 class="text-2xl font-semibold mt-8 mb-4">关于本站</h2>
           <p class="text-muted-foreground">
-            通过提供高质量的产品和卓越的客户服务，帮助客户实现业务增长。我们相信诚信、质量和创新是成功的关键。
+            这个博客使用 Astro 6 + Tailwind CSS 构建，支持中英文双语切换和亮暗主题。
+            在这里我会分享技术文章、项目总结和生活随笔。
           </p>
 
           <h2 class="text-2xl font-semibold mt-8 mb-4">联系方式</h2>

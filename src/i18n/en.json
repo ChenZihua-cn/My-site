@@ -8,25 +8,25 @@
   },
   "home": {
     "hero": {
-      "title": "Welcome to My Website",
-      "subtitle": "Professional foreign trade product supplier, providing you with quality products and services",
-      "cta": "Browse Products",
-      "secondaryCta": "Learn More"
+      "title": "Welcome to My Blog",
+      "subtitle": "A place for thoughts, tech, and exploration",
+      "cta": "Read Blog",
+      "secondaryCta": "About Me"
     },
     "featuredProducts": {
       "title": "Featured Products",
-      "subtitle": "Our most popular products",
+      "subtitle": "Hand-picked recommendations",
       "viewAll": "View All"
     },
     "latestPosts": {
       "title": "Latest Posts",
-      "subtitle": "Sharing industry news and usage tips",
+      "subtitle": "Read the latest thoughts and tech shares",
       "readMore": "Read More"
     }
   },
   "products": {
     "title": "Products",
-    "subtitle": "Browse our complete product line",
+    "subtitle": "Browse the complete product line",
     "categories": "Categories",
     "all": "All",
     "inquiry": "Inquiry Now",
@@ -35,7 +35,7 @@
   },
   "blog": {
     "title": "Blog",
-    "subtitle": "Sharing industry news, tips and product knowledge",
+    "subtitle": "Tech articles, project logs, and life notes",
     "tags": "Tags",
     "published": "Published on",
     "readTime": "min read"
@@ -48,5 +48,11 @@
     "switch": "Switch Language",
     "zh": "中文",
     "en": "English"
+  },
+  "catNiang": {
+    "greeting": "Welcome to my blog meow~ 🐱",
+    "cta": "Check out my posts meow~",
+    "secondaryCta": "About me meow~",
+    "footer": "Come play again meow~"
   }
 }

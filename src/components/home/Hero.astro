@@ -1,0 +1,62 @@
+---
+export interface Props {
+  lang: 'zh' | 'en';
+  title: string;
+  subtitle: string;
+  catNiang: {
+    cta: string;
+    secondaryCta: string;
+  };
+}
+
+const { lang, title, subtitle, catNiang } = Astro.props;
+---
+
+<section class="relative min-h-[80vh] flex items-center overflow-hidden">
+  <!-- Background Effects -->
+  <div class="absolute inset-0 bg-gradient-hero">
+    <div class="absolute inset-0 bg-gradient-mesh"></div>
+  </div>
+
+  <!-- Decorative Blobs -->
+  <div class="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse-glow"></div>
+  <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-pulse-glow" style="animation-delay: 2s;"></div>
+
+  <!-- Hero Content -->
+  <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <!-- Cat Emoji -->
+      <div class="mb-6 text-5xl animate-float" aria-hidden="true">🐱</div>
+
+      <h1 class="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl animate-fade-in-up">
+        {title}
+      </h1>
+
+      <p class="mb-10 text-lg text-muted-foreground sm:text-xl max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+        {subtitle}
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.3s;">
+        <a
+          href={lang === 'zh' ? '/zh/blog' : '/en/blog'}
+          class="inline-flex items-center justify-center gap-2 rounded-full btn-primary-gradient px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25"
+        >
+          <span aria-hidden="true">🐱</span>
+          {catNiang.cta}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/>
+            <path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+        <a
+          href={lang === 'zh' ? '/zh/about' : '/en/about'}
+          class="inline-flex items-center justify-center gap-2 rounded-full border bg-background/50 backdrop-blur px-8 py-4 text-base font-semibold text-foreground transition-colors hover:bg-muted"
+        >
+          <span aria-hidden="true">🐱</span>
+          {catNiang.secondaryCta}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

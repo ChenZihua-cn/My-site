@@ -8,25 +8,25 @@
   },
   "home": {
     "hero": {
-      "title": "欢迎来到我的网站",
-      "subtitle": "专业的外贸产品供应商，为您提供优质的产品和服务",
-      "cta": "浏览产品",
-      "secondaryCta": "了解更多"
+      "title": "欢迎来到我的博客",
+      "subtitle": "记录思考，分享技术，探索生活的可能性",
+      "cta": "阅读博客",
+      "secondaryCta": "关于我"
     },
     "featuredProducts": {
       "title": "精选产品",
-      "subtitle": "我们最受欢迎的产品",
+      "subtitle": "精选推荐",
       "viewAll": "查看全部"
     },
     "latestPosts": {
       "title": "最新文章",
-      "subtitle": "分享行业资讯和使用技巧",
+      "subtitle": "阅读最新思考与技术分享",
       "readMore": "阅读更多"
     }
   },
   "products": {
     "title": "产品展示",
-    "subtitle": "浏览我们完整的产品线",
+    "subtitle": "浏览完整产品线",
     "categories": "产品分类",
     "all": "全部",
     "inquiry": "立即询盘",
@@ -35,7 +35,7 @@
   },
   "blog": {
     "title": "博客",
-    "subtitle": "分享行业资讯、使用技巧和产品知识",
+    "subtitle": "技术文章、项目总结与生活随笔",
     "tags": "标签",
     "published": "发布于",
     "readTime": "分钟阅读"
@@ -48,5 +48,11 @@
     "switch": "切换语言",
     "zh": "中文",
     "en": "English"
+  },
+  "catNiang": {
+    "greeting": "欢迎来到人家的博客喵~ 🐱",
+    "cta": "来看看文章喵~",
+    "secondaryCta": "了解人家喵~",
+    "footer": "要常来玩哦喵~"
   }
 }

@@ -393,3 +393,19 @@
   background: oklch(70% 0.15 var(--hue) / 0.3);
   color: var(--foreground);
 }
+
+/* ========================================
+   Table of Contents Styles
+   ======================================== */
+
+.toc-active {
+  border-left-color: var(--primary) !important;
+  color: var(--foreground) !important;
+  font-weight: 500;
+}
+
+/* Scroll margin for anchor links (accounts for fixed navbar) */
+.prose h2,
+.prose h3 {
+  scroll-margin-top: 5rem;
+}
