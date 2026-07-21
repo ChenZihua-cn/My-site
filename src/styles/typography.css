@@ -77,6 +77,11 @@
   margin: 1.5em 0;
 }
 
+[data-theme="dark"] .prose blockquote {
+  background: oklch(24% 0.03 var(--hue) / 0.8);
+  border-left-color: oklch(70% 0.18 var(--hue) / 0.6);
+}
+
 .prose blockquote p:first-of-type::before,
 .prose blockquote p:last-of-type::after {
   content: none;
@@ -90,6 +95,16 @@
   margin-top: 0.8em;
 }
 
+[data-theme="dark"] .prose blockquote p {
+  color: oklch(94% 0.015 var(--hue));
+}
+
+/* ---------- Strong / Bold ---------- */
+[data-theme="dark"] .prose strong,
+[data-theme="dark"] .prose b {
+  color: oklch(98% 0.01 var(--hue));
+}
+
 /* ---------- Inline Code ---------- */
 .prose code {
   font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', ui-monospace, monospace;
@@ -98,6 +113,12 @@
   padding: 0.15em 0.4em;
   border-radius: 0.35em;
   background: var(--muted);
+  color: var(--foreground);
+}
+
+[data-theme="dark"] .prose code {
+  background: oklch(32% 0.04 var(--hue));
+  color: oklch(95% 0.01 var(--hue));
 }
 
 .prose code::before,
@@ -177,7 +198,15 @@
 }
 
 [data-theme="dark"] .prose tbody tr:nth-child(even) {
-  background: oklch(26% 0.03 var(--hue) / 0.6);
+  background: oklch(28% 0.04 var(--hue) / 0.5);
+}
+
+[data-theme="dark"] .prose th {
+  color: oklch(98% 0.01 var(--hue));
+}
+
+[data-theme="dark"] .prose td {
+  color: oklch(94% 0.01 var(--hue));
 }
 
 /* ---------- Images ---------- */

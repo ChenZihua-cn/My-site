@@ -75,8 +75,8 @@
   --secondary-foreground: oklch(92% 0.02 var(--hue));
 
   /* Feedback */
-  --muted: oklch(25% 0.04 var(--hue));
-  --muted-foreground: oklch(78% 0.06 var(--hue));
+  --muted: oklch(30% 0.04 var(--hue));
+  --muted-foreground: oklch(84% 0.05 var(--hue));
   --accent: oklch(32% 0.1 var(--hue));
   --accent-foreground: oklch(95% 0.01 var(--hue));
   --destructive: oklch(60% 0.18 25);
@@ -88,11 +88,11 @@
   --ring: oklch(70% 0.18 var(--hue));
 
   /* Typography — Dark */
-  --tw-prose-body: oklch(94% 0.01 var(--hue));
-  --tw-prose-headings: oklch(99% 0.005 var(--hue));
-  --tw-prose-lead: oklch(88% 0.02 var(--hue));
-  --tw-prose-links: oklch(82% 0.18 var(--hue));
-  --tw-prose-bold: oklch(99% 0.005 var(--hue));
+  --tw-prose-body: oklch(96% 0.01 var(--hue));
+  --tw-prose-headings: oklch(100% 0 var(--hue));
+  --tw-prose-lead: oklch(92% 0.02 var(--hue));
+  --tw-prose-links: oklch(85% 0.18 var(--hue));
+  --tw-prose-bold: oklch(100% 0 var(--hue));
   --tw-prose-counters: oklch(85% 0.06 var(--hue));
   --tw-prose-bullets: oklch(85% 0.08 var(--hue));
   --tw-prose-hr: oklch(28% 0.05 var(--hue));
