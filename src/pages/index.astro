@@ -1,14 +1,499 @@
-<!DOCTYPE html>
+---
+import '../styles/global.css';
+---
+
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>luv2u</title>
-<script>
-  const lang = (navigator.language || (navigator.languages && navigator.languages[0]) || 'en').toLowerCase();
-  window.location.replace('/' + (lang.startsWith('zh') ? 'zh' : 'en') + '/');
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cyan's Blog — a personal space for tech, thoughts, and exploration" />
+  <meta name="robots" content="noindex" />
+  <title>Cyan's Blog — Enter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --hue: 250;
+      --bg: oklch(6% 0.02 var(--hue));
+      --fg: oklch(96% 0.01 var(--hue));
+      --primary: oklch(70% 0.18 var(--hue));
+      --accent: oklch(60% 0.2 calc(var(--hue) + 30));
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Starfield ===== */
+    .starfield {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .stars {
+      position: absolute;
+      inset: -50%;
+      background: transparent;
+      animation: rotate-stars 240s linear infinite;
+    }
+
+    /* ===== Black Hole Container ===== */
+    .scene {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    /* ===== Black Hole Visual ===== */
+    .black-hole-wrapper {
+      position: relative;
+      width: min(320px, 70vw);
+      height: min(320px, 70vw);
+    }
+
+    .black-hole {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Event horizon */
+    .event-horizon {
+      position: absolute;
+      inset: 18%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, oklch(8% 0.02 var(--hue)), oklch(2% 0.01 var(--hue)));
+      box-shadow:
+        0 0 60px oklch(60% 0.22 var(--hue) / 0.5),
+        0 0 120px oklch(55% 0.2 var(--hue) / 0.25),
+        0 0 200px oklch(50% 0.18 var(--hue) / 0.12),
+        inset 0 0 30px oklch(70% 0.15 var(--hue) / 0.15);
+      z-index: 3;
+    }
+
+    /* Photon ring */
+    .photon-ring {
+      position: absolute;
+      inset: 15%;
+      border-radius: 50%;
+      border: 2px solid oklch(80% 0.12 var(--hue) / 0.6);
+      box-shadow:
+        0 0 15px oklch(75% 0.15 var(--hue) / 0.5),
+        0 0 40px oklch(65% 0.2 var(--hue) / 0.3),
+        inset 0 0 10px oklch(80% 0.12 var(--hue) / 0.2);
+      z-index: 4;
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+
+    /* Accretion disk */
+    .accretion-disk {
+      position: absolute;
+      inset: -5%;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        oklch(85% 0.15 calc(var(--hue) + 60) / 0.9) 30deg,
+        oklch(90% 0.18 calc(var(--hue) + 40) / 0.8) 50deg,
+        oklch(80% 0.2 calc(var(--hue) + 20) / 0.7) 70deg,
+        oklch(95% 0.12 calc(var(--hue) + 50) / 0.6) 90deg,
+        transparent 120deg,
+        transparent 180deg,
+        oklch(85% 0.15 calc(var(--hue) + 60) / 0.8) 210deg,
+        oklch(90% 0.18 calc(var(--hue) + 40) / 0.7) 230deg,
+        oklch(80% 0.2 calc(var(--hue) + 20) / 0.6) 250deg,
+        oklch(95% 0.12 calc(var(--hue) + 50) / 0.5) 270deg,
+        transparent 300deg,
+        transparent 360deg
+      );
+      transform: rotateX(72deg) scale(1.15);
+      filter: blur(6px);
+      opacity: 0.85;
+      z-index: 2;
+      animation: spin-disk 12s linear infinite;
+    }
+
+    /* Accretion disk glow layer */
+    .accretion-glow {
+      position: absolute;
+      inset: -8%;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 90deg,
+        transparent,
+        oklch(80% 0.2 calc(var(--hue) + 50) / 0.4),
+        transparent,
+        oklch(85% 0.18 calc(var(--hue) + 30) / 0.35),
+        transparent
+      );
+      transform: rotateX(72deg) scale(1.2);
+      filter: blur(18px);
+      opacity: 0.5;
+      z-index: 1;
+      animation: spin-disk 12s linear infinite;
+    }
+
+    /* Outer glow */
+    .outer-glow {
+      position: absolute;
+      inset: -15%;
+      border-radius: 50%;
+      background: radial-gradient(circle, oklch(65% 0.2 var(--hue) / 0.15) 0%, transparent 70%);
+      filter: blur(20px);
+      z-index: 0;
+      animation: pulse-glow-bh 4s ease-in-out infinite;
+    }
+
+    /* Orbiting particles container */
+    .orbit-container {
+      position: absolute;
+      inset: -20%;
+      z-index: 5;
+      animation: spin-disk 12s linear infinite;
+    }
+    .orbit-particle {
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      margin-left: -3px;
+      border-radius: 50%;
+      background: oklch(95% 0.08 calc(var(--hue) + 50));
+      box-shadow: 0 0 8px oklch(90% 0.15 calc(var(--hue) + 40) / 0.8);
+    }
+    .orbit-container:nth-child(2) {
+      inset: -25%;
+      animation-duration: 8s;
+      animation-direction: reverse;
+    }
+    .orbit-container:nth-child(3) {
+      inset: -15%;
+      animation-duration: 18s;
+      transform: rotate(60deg);
+    }
+
+    /* ===== Space Cat ===== */
+    .space-cat {
+      position: absolute;
+      z-index: 6;
+      font-size: 2rem;
+      animation: float-cat 5s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px oklch(70% 0.18 var(--hue) / 0.5));
+      pointer-events: none;
+      top: -15px;
+      right: -10px;
+    }
+
+    /* ===== Language Cards ===== */
+    .lang-cards {
+      display: flex;
+      gap: 1.5rem;
+      z-index: 10;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .lang-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1.5rem 2.5rem;
+      border-radius: 1.25rem;
+      text-decoration: none;
+      color: var(--fg);
+      background: oklch(100% 0.005 var(--hue) / 0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid oklch(100% 0.01 var(--hue) / 0.12);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lang-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at 50% 0%, oklch(70% 0.18 var(--hue) / 0.15), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .lang-card:hover,
+    .lang-card:focus-visible {
+      transform: translateY(-6px);
+      border-color: oklch(70% 0.18 var(--hue) / 0.5);
+      box-shadow:
+        0 0 30px oklch(65% 0.2 var(--hue) / 0.2),
+        0 12px 40px oklch(50% 0.15 var(--hue) / 0.15);
+      color: #fff;
+    }
+    .lang-card:hover::before,
+    .lang-card:focus-visible::before {
+      opacity: 1;
+    }
+
+    .lang-card .flag {
+      font-size: 2.5rem;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+    .lang-card .label {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 1;
+    }
+    .lang-card .hint {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Active/highlight card for detected language */
+    .lang-card.active {
+      border-color: oklch(70% 0.18 var(--hue) / 0.6);
+      box-shadow: 0 0 25px oklch(65% 0.2 var(--hue) / 0.25);
+    }
+    .lang-card.active::after {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: oklch(75% 0.15 var(--hue));
+      box-shadow: 0 0 8px oklch(70% 0.18 var(--hue) / 0.8);
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    /* ===== Title ===== */
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-align: center;
+      background: linear-gradient(135deg, oklch(85% 0.1 var(--hue)), oklch(95% 0.05 calc(var(--hue) + 30)));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0;
+      animation: fade-in-up 0.8s 0.3s ease-out forwards;
+    }
+
+    .redirect-hint {
+      font-size: 0.8rem;
+      opacity: 0;
+      color: oklch(80% 0.04 var(--hue) / 0.7);
+      animation: fade-in 0.6s 1s ease-out forwards;
+    }
+
+    #countdown {
+      font-weight: 600;
+      color: oklch(80% 0.1 var(--hue));
+    }
+
+    /* ===== Animations ===== */
+    @keyframes rotate-stars {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-disk {
+      from { transform: rotateX(72deg) scale(1.15) rotate(0deg); }
+      to { transform: rotateX(72deg) scale(1.15) rotate(360deg); }
+    }
+
+    .orbit-container { animation-name: spin-orbit; }
+    @keyframes spin-orbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes pulse-glow-bh {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.04); }
+    }
+
+    @keyframes float-cat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(3deg); }
+      75% { transform: translateY(4px) rotate(-3deg); }
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.6); }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 480px) {
+      .lang-cards { flex-direction: column; gap: 1rem; }
+      .lang-card { padding: 1.2rem 2rem; }
+      .site-title { font-size: 1.25rem; }
+    }
+  </style>
 </head>
 <body>
-  <a href="/zh/">中文</a> &nbsp; <a href="/en/">English</a>
+
+  <!-- Starfield -->
+  <div class="starfield">
+    <div class="stars" id="stars-layer"></div>
+  </div>
+
+  <!-- Main Scene -->
+  <div class="scene">
+    <!-- Black Hole -->
+    <div class="black-hole-wrapper">
+      <div class="outer-glow"></div>
+      <div class="accretion-glow"></div>
+      <div class="accretion-disk"></div>
+      <div class="photon-ring"></div>
+      <div class="event-horizon"></div>
+
+      <!-- Orbiting particles -->
+      <div class="orbit-container"><div class="orbit-particle"></div></div>
+      <div class="orbit-container"><div class="orbit-particle" style="width:4px;height:4px;background:oklch(90% 0.12 calc(var(--hue) + 60))"></div></div>
+      <div class="orbit-container"><div class="orbit-particle" style="width:3px;height:3px;"></div></div>
+
+      <!-- Space Cat -->
+      <div class="space-cat" aria-hidden="true">🐱</div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="site-title">Cyan's Blog</h1>
+
+    <!-- Language Cards -->
+    <div class="lang-cards" id="lang-cards">
+      <a href="/zh/" class="lang-card" data-lang="zh" id="card-zh">
+        <span class="flag">🌏</span>
+        <span class="label">中文</span>
+        <span class="hint">进入中文站</span>
+      </a>
+      <a href="/en/" class="lang-card" data-lang="en" id="card-en">
+        <span class="flag">🌎</span>
+        <span class="label">English</span>
+        <span class="hint">Enter English site</span>
+      </a>
+    </div>
+
+    <!-- Redirect hint -->
+    <p class="redirect-hint" id="redirect-hint">
+      将在 <span id="countdown">4</span> 秒后自动跳转 · Auto-redirect in <span id="countdown-en">4</span>s
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      // Generate stars
+      const starsLayer = document.getElementById('stars-layer');
+      if (starsLayer) {
+        const count = 180;
+        let boxShadows = '';
+        for (let i = 0; i < count; i++) {
+          const x = Math.random() * 200 - 50;
+          const y = Math.random() * 200 - 50;
+          const size = Math.random() * 2 + 1;
+          const brightness = Math.random() * 0.6 + 0.4;
+          boxShadows += `${x}vw ${y}vh ${size}px ${size}px oklch(95% 0.03 var(--hue) / ${brightness})`;
+          if (i < count - 1) boxShadows += ', ';
+        }
+        starsLayer.style.width = '1px';
+        starsLayer.style.height = '1px';
+        starsLayer.style.borderRadius = '50%';
+        starsLayer.style.boxShadow = boxShadows;
+      }
+
+      // Detect language
+      const lang = (navigator.language || (navigator.languages && navigator.languages[0]) || 'en').toLowerCase();
+      const detected = lang.startsWith('zh') ? 'zh' : 'en';
+      const detectedCard = document.getElementById('card-' + detected);
+      if (detectedCard) detectedCard.classList.add('active');
+
+      // Countdown
+      let countdown = 4;
+      const countdownEl = document.getElementById('countdown');
+      const countdownEnEl = document.getElementById('countdown-en');
+      const redirectHint = document.getElementById('redirect-hint');
+      let paused = false;
+      let timerId: ReturnType<typeof setInterval> | null = null;
+
+      const updateCountdown = () => {
+        if (countdownEl) countdownEl.textContent = String(countdown);
+        if (countdownEnEl) countdownEnEl.textContent = String(countdown);
+      };
+
+      const startCountdown = () => {
+        timerId = setInterval(() => {
+          if (paused) return;
+          countdown--;
+          updateCountdown();
+          if (countdown <= 0) {
+            if (timerId) clearInterval(timerId);
+            window.location.href = '/' + detected + '/';
+          }
+        }, 1000);
+      };
+
+      // Pause on hover
+      const cards = document.querySelectorAll('.lang-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => { paused = true; });
+        card.addEventListener('mouseleave', () => { paused = false; });
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetLang = (card as HTMLElement).dataset.lang;
+          window.location.href = '/' + targetLang + '/';
+        });
+      });
+
+      startCountdown();
+    })();
+  </script>
+
 </body>
 </html>

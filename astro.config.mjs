@@ -7,12 +7,5 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  integrations: [mdx()],
-  i18n: {
-    defaultLocale: 'zh',
-    locales: ['zh', 'en'],
-    routing: {
-      prefixDefaultLocale: true
-    }
-  }
+  integrations: [mdx()]
 });
