@@ -42,13 +42,13 @@ export const onRequest = defineMiddleware((context, next) => {
     return next();
   }
 
-  // Root path: detect language; other paths: redirect to zh version
-  const prefix =
-    pathname === '/'
-      ? `/${getPreferredLocale(context)}/`
-      : `/zh${pathname}`;
+  // Root path: let the splash page handle it (don't redirect)
+  if (pathname === '/') {
+    return next();
+  }
 
-  const destination = prefix + (search ?? '');
+  // Other paths without locale prefix: redirect to zh version
+  const destination = `/zh${pathname}${search ?? ''}`;
 
   return context.redirect(destination, 302);
 });
