@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import BlackHole from '../components/home/BlackHole.astro';
 ---
 
 <!doctype html>
@@ -27,363 +28,41 @@ import '../styles/global.css';
       color: #e8e0f0;
       font-family: 'Inter', system-ui, sans-serif;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
       cursor: default;
-      perspective: 900px;
-      perspective-origin: 50% 50%;
     }
 
-    /* ===== Cosmos ===== */
-    .cosmos {
+    /* Subtle color grade + vignette over the raytraced canvas */
+    body::before {
+      content: '';
       position: fixed;
       inset: 0;
-      z-index: 0;
-      background: radial-gradient(ellipse at 50% 50%, oklch(18% 0.04 var(--hue)) 0%, #030108 55%, #010005 100%);
-    }
-    .stars-slow, .stars-fast {
-      position: absolute;
-      inset: -30%;
-      background: transparent;
-      border-radius: 50%;
-    }
-    .stars-slow { animation: rotate-slow 300s linear infinite; }
-    .stars-fast { animation: rotate-fast 180s linear infinite; }
-    @keyframes rotate-slow { to { transform: rotate(360deg); } }
-    @keyframes rotate-fast { to { transform: rotate(-360deg); } }
-
-    .nebula {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.12;
+      background: radial-gradient(ellipse at 20% 20%, oklch(28% 0.09 calc(var(--hue) + 40) / 0.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 80%, oklch(22% 0.07 calc(var(--hue) - 20) / 0.12) 0%, transparent 50%);
       pointer-events: none;
-    }
-    .nebula-1 {
-      width: 65vw; height: 45vw;
-      top: -15%; left: -8%;
-      background: radial-gradient(ellipse, oklch(40% 0.16 calc(var(--hue) + 60)) 0%, transparent 70%);
-    }
-    .nebula-2 {
-      width: 55vw; height: 38vw;
-      bottom: -18%; right: -8%;
-      background: radial-gradient(ellipse, oklch(30% 0.13 calc(var(--hue) - 30)) 0%, transparent 70%);
-    }
-    .nebula-3 {
-      width: 35vw; height: 25vw;
-      top: 35%; left: 28%;
-      background: radial-gradient(ellipse, oklch(35% 0.11 var(--hue)) 0%, transparent 70%);
-      animation: nebula-drift 25s ease-in-out infinite;
-    }
-    @keyframes nebula-drift {
-      0%, 100% { transform: translate(0, 0); }
-      33% { transform: translate(4vw, -3vw); }
-      66% { transform: translate(-3vw, 4vw); }
-    }
-
-    /* ===== Main Scene with 3D perspective ===== */
-    .scene {
-      position: relative;
-      z-index: 1;
-      width: min(460px, 85vw);
-      height: min(460px, 85vw);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform-style: preserve-3d;
-      animation: scene-float 12s ease-in-out infinite;
-    }
-    @keyframes scene-float {
-      0%, 100% { transform: rotateX(8deg) rotateY(0deg); }
-      25% { transform: rotateX(6deg) rotateY(3deg); }
-      50% { transform: rotateX(10deg) rotateY(0deg); }
-      75% { transform: rotateX(6deg) rotateY(-3deg); }
-    }
-
-    .bh-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-    }
-
-    /* ===== Outer aura (volumetric glow) ===== */
-    .aura {
-      position: absolute;
-      inset: -25%;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 50%,
-          oklch(55% 0.22 var(--hue) / 0.10) 0%,
-          oklch(50% 0.18 var(--hue) / 0.05) 30%,
-          transparent 60%
-        );
-      filter: blur(35px);
-      z-index: 0;
-      animation: aura-breathe 8s ease-in-out infinite;
-    }
-    @keyframes aura-breathe {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 0.85; transform: scale(1.07); }
-    }
-
-    /* ===== Far-side accretion disk (gravitationally lensed ABOVE) ===== */
-    .disk-far-group {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      transform-style: preserve-3d;
-    }
-
-    .disk-far {
-      position: absolute;
-      top: 4%; left: 6%; right: 6%; bottom: 32%;
-      border-radius: 50% 50% 0 0;
-      background: conic-gradient(
-        from -10deg,
-        oklch(78% 0.15 calc(var(--hue) + 55) / 0.2) 0deg,
-        oklch(84% 0.17 calc(var(--hue) + 50) / 0.55) 20deg,
-        oklch(94% 0.16 calc(var(--hue) + 45) / 0.92) 45deg,
-        oklch(90% 0.17 calc(var(--hue) + 48) / 0.8) 60deg,
-        oklch(82% 0.15 calc(var(--hue) + 52) / 0.4) 80deg,
-        transparent 110deg,
-        transparent 250deg,
-        oklch(76% 0.14 calc(var(--hue) + 55) / 0.25) 270deg,
-        oklch(88% 0.16 calc(var(--hue) + 48) / 0.65) 295deg,
-        oklch(95% 0.16 calc(var(--hue) + 42) / 0.95) 315deg,
-        oklch(86% 0.17 calc(var(--hue) + 48) / 0.75) 345deg,
-        oklch(78% 0.15 calc(var(--hue) + 55) / 0.2) 360deg
-      );
-      filter: blur(2.5px);
-      opacity: 0.7;
-      clip-path: ellipse(46% 54% at 50% 102%);
-    }
-
-    .disk-far-glow {
-      position: absolute;
-      top: 6%; left: 10%; right: 10%; bottom: 35%;
-      border-radius: 50% 50% 0 0;
-      background: radial-gradient(ellipse at 50% 92%,
-        oklch(75% 0.22 calc(var(--hue) + 50) / 0.35) 0%,
-        oklch(65% 0.18 calc(var(--hue) + 55) / 0.12) 40%,
-        transparent 70%
-      );
-      filter: blur(18px);
       z-index: 1;
     }
-
-    /* ===== Einstein ring (gravitational lensing) ===== */
-    .einstein-ring-outer {
-      position: absolute;
-      inset: 8%;
-      border-radius: 50%;
-      border: 1.2px solid oklch(72% 0.13 calc(var(--hue) + 50) / 0.3);
-      box-shadow: 0 0 10px oklch(68% 0.18 calc(var(--hue) + 45) / 0.2), inset 0 0 8px oklch(72% 0.14 calc(var(--hue) + 50) / 0.15);
-      z-index: 3;
-      animation: pulse-ring 5s ease-in-out infinite;
-    }
-    @keyframes pulse-ring {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.65; }
-    }
-
-    /* ===== Near-side accretion disk (IN FRONT, below) ===== */
-    .disk-near-group {
-      position: absolute;
+    body::after {
+      content: '';
+      position: fixed;
       inset: 0;
-      z-index: 6;
-      transform-style: preserve-3d;
-    }
-
-    .disk-near {
-      position: absolute;
-      top: 40%; left: -1%; right: -1%; bottom: -10%;
-      border-radius: 0 0 50% 50%;
-      background: conic-gradient(
-        from 165deg,
-        transparent 0deg,
-        oklch(74% 0.13 calc(var(--hue) + 55) / 0.18) 12deg,
-        oklch(86% 0.16 calc(var(--hue) + 48) / 0.65) 35deg,
-        oklch(96% 0.16 calc(var(--hue) + 40) / 0.95) 52deg,
-        oklch(93% 0.17 calc(var(--hue) + 45) / 0.88) 62deg,
-        oklch(83% 0.15 calc(var(--hue) + 50) / 0.45) 85deg,
-        transparent 105deg,
-        transparent 255deg,
-        oklch(72% 0.12 calc(var(--hue) + 55) / 0.18) 268deg,
-        oklch(85% 0.15 calc(var(--hue) + 48) / 0.6) 288deg,
-        oklch(94% 0.16 calc(var(--hue) + 42) / 0.9) 308deg,
-        oklch(91% 0.17 calc(var(--hue) + 46) / 0.83) 335deg,
-        oklch(80% 0.14 calc(var(--hue) + 52) / 0.35) 355deg,
-        transparent 360deg
-      );
-      filter: blur(1px);
-      opacity: 0.88;
-      clip-path: ellipse(54% 46% at 50% 0%);
-    }
-
-    /* Disk inner rim (bright, hot inner edge) */
-    .disk-inner-rim {
-      position: absolute;
-      top: 38%; left: 2%; right: 2%; bottom: -6%;
-      border-radius: 0 0 50% 50%;
-      border-bottom: 2.5px solid oklch(94% 0.18 calc(var(--hue) + 42) / 0.75);
-      filter: blur(0.8px);
-      z-index: 7;
-      clip-path: ellipse(54% 46% at 50% 0%);
-    }
-
-    /* Disk body glow (volumetric light from the disk plane) */
-    .disk-body-glow {
-      position: absolute;
-      top: 38%; left: -3%; right: -3%; bottom: -15%;
-      border-radius: 0 0 50% 50%;
-      background: radial-gradient(ellipse at 50% 0%,
-        oklch(80% 0.18 calc(var(--hue) + 45) / 0.2) 0%,
-        oklch(70% 0.15 calc(var(--hue) + 50) / 0.08) 40%,
-        transparent 70%
-      );
-      filter: blur(20px);
-      z-index: 5;
-    }
-
-    /* ===== Event Horizon (3D sphere) ===== */
-    .event-horizon {
-      position: absolute;
-      inset: 22%;
-      border-radius: 50%;
-      background: radial-gradient(circle at 38% 35%,
-        oklch(10% 0.03 var(--hue)),
-        oklch(4% 0.015 var(--hue)) 35%,
-        oklch(1.5% 0.005 var(--hue)) 65%,
-        #000 100%
-      );
-      box-shadow:
-        /* subtle rim light from disk below */
-        inset 0 12px 30px oklch(70% 0.15 calc(var(--hue) + 50) / 0.12),
-        /* outer glow */
-        0 0 25px oklch(55% 0.2 var(--hue) / 0.25),
-        0 0 70px oklch(50% 0.18 var(--hue) / 0.15),
-        0 0 140px oklch(45% 0.15 var(--hue) / 0.08);
-      z-index: 12;
-    }
-
-    /* Specular highlight on the sphere */
-    .specular {
-      position: absolute;
-      top: 24%; left: 26%; right: 50%; bottom: 55%;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at 60% 60%,
-        oklch(90% 0.05 var(--hue) / 0.2) 0%,
-        transparent 100%
-      );
-      filter: blur(8px);
-      z-index: 13;
+      background: radial-gradient(ellipse at 50% 60%, transparent 35%, oklch(8% 0.02 var(--hue) / 0.55) 80%, oklch(4% 0.01 var(--hue) / 0.8) 100%);
       pointer-events: none;
-    }
-
-    /* ===== Photon ring ===== */
-    .photon-ring {
-      position: absolute;
-      inset: 20.5%;
-      border-radius: 50%;
-      border: 1px solid oklch(86% 0.1 calc(var(--hue) + 40) / 0.45);
-      box-shadow:
-        0 0 5px oklch(82% 0.13 calc(var(--hue) + 42) / 0.45),
-        0 0 18px oklch(76% 0.16 calc(var(--hue) + 45) / 0.2);
-      z-index: 14;
-      animation: pulse-photon 2.5s ease-in-out infinite;
-    }
-    @keyframes pulse-photon {
-      0%, 100% { border-color: oklch(86% 0.1 calc(var(--hue) + 40) / 0.4); }
-      50% { border-color: oklch(92% 0.12 calc(var(--hue) + 35) / 0.7); }
-    }
-
-    /* ===== Secondary photon ring (outer, fainter) ===== */
-    .photon-ring-outer {
-      position: absolute;
-      inset: 18%;
-      border-radius: 50%;
-      border: 0.6px solid oklch(78% 0.08 calc(var(--hue) + 45) / 0.2);
-      z-index: 2;
-      animation: pulse-ring 6s ease-in-out infinite reverse;
-    }
-
-    /* ===== Orbiting hot spots ===== */
-    .orbit-track {
-      position: absolute;
-      inset: 14%;
-      border-radius: 50%;
-      z-index: 15;
-      animation: spin-orbit 6s linear infinite;
-    }
-    .orbit-track:nth-child(3) { animation-duration: 8.5s; animation-direction: reverse; }
-    .orbit-track:nth-child(4) { animation-duration: 13s; inset: 11%; }
-
-    .hotspot {
-      position: absolute;
-      top: -3px;
-      left: 50%;
-      width: 5px;
-      height: 5px;
-      margin-left: -2.5px;
-      border-radius: 50%;
-      background: oklch(92% 0.13 calc(var(--hue) + 48));
-      box-shadow:
-        0 0 8px oklch(86% 0.16 calc(var(--hue) + 42) / 0.9),
-        0 0 22px oklch(82% 0.18 calc(var(--hue) + 40) / 0.5),
-        0 0 45px oklch(78% 0.16 calc(var(--hue) + 45) / 0.25);
-    }
-    .hotspot.bright {
-      width: 7px; height: 7px; top: -3.5px; margin-left: -3.5px;
-      background: oklch(96% 0.1 calc(var(--hue) + 38));
-      box-shadow:
-        0 0 12px oklch(92% 0.14 calc(var(--hue) + 35) / 0.9),
-        0 0 30px oklch(86% 0.17 calc(var(--hue) + 38) / 0.6),
-        0 0 55px oklch(82% 0.15 calc(var(--hue) + 42) / 0.3);
-    }
-
-    @keyframes spin-orbit { to { transform: rotate(360deg); } }
-
-    /* ===== Light rays emanating from disk ===== */
-    .light-rays {
-      position: absolute;
-      inset: -5%;
-      border-radius: 50%;
-      background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        oklch(85% 0.14 calc(var(--hue) + 50) / 0.06) 40deg,
-        transparent 50deg,
-        transparent 130deg,
-        oklch(80% 0.12 calc(var(--hue) + 55) / 0.04) 160deg,
-        transparent 180deg,
-        transparent 220deg,
-        oklch(85% 0.14 calc(var(--hue) + 50) / 0.06) 250deg,
-        transparent 270deg,
-        transparent 310deg,
-        oklch(80% 0.12 calc(var(--hue) + 55) / 0.04) 340deg,
-        transparent 360deg
-      );
-      filter: blur(12px);
       z-index: 1;
-      animation: rays-spin 25s linear infinite;
     }
-    @keyframes rays-spin { to { transform: rotate(360deg); } }
 
     /* ===== Space Cat ===== */
     .space-cat {
-      position: absolute;
+      position: fixed;
       z-index: 20;
       font-size: 2.2rem;
       animation: float-cat 7s ease-in-out infinite;
       filter: drop-shadow(0 0 14px oklch(65% 0.18 var(--hue) / 0.55));
       pointer-events: none;
-      top: -10%;
-      right: -8%;
-      opacity: 0.8;
+      top: 12%;
+      right: 9%;
+      opacity: 0.85;
     }
     @keyframes float-cat {
       0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -448,8 +127,7 @@ import '../styles/global.css';
     }
 
     @media (max-width: 480px) {
-      .scene { width: 92vw; height: 92vw; }
-      .space-cat { font-size: 1.5rem; top: -6%; right: -4%; }
+      .space-cat { font-size: 1.5rem; top: 9%; right: 6%; }
       .site-name { font-size: 1.3rem; }
       .redirect-line { font-size: 0.75rem; }
     }
@@ -457,79 +135,19 @@ import '../styles/global.css';
 </head>
 <body>
 
-  <div class="cosmos">
-    <div class="stars-slow" id="stars-slow"></div>
-    <div class="stars-fast" id="stars-fast"></div>
-    <div class="nebula nebula-1"></div>
-    <div class="nebula nebula-2"></div>
-    <div class="nebula nebula-3"></div>
-  </div>
+  <!-- Schwarzschild raytraced black hole (WebGL2 fullscreen shader) -->
+  <BlackHole />
 
-  <div class="scene">
-    <div class="bh-container">
-      <!-- Volumetric layers (back to front) -->
-      <div class="aura"></div>
-      <div class="light-rays"></div>
-
-      <!-- Far side disk (lensed above the hole) -->
-      <div class="disk-far-group">
-        <div class="disk-far-glow"></div>
-        <div class="disk-far"></div>
-      </div>
-
-      <!-- Outer Einstein ring -->
-      <div class="photon-ring-outer"></div>
-      <div class="einstein-ring-outer"></div>
-
-      <!-- Near side disk (in front, below) -->
-      <div class="disk-body-glow"></div>
-      <div class="disk-near-group">
-        <div class="disk-near"></div>
-        <div class="disk-inner-rim"></div>
-      </div>
-
-      <!-- Event horizon sphere -->
-      <div class="event-horizon"></div>
-      <div class="specular"></div>
-      <div class="photon-ring"></div>
-
-      <!-- Orbiting hot spots -->
-      <div class="orbit-track"><div class="hotspot bright"></div></div>
-      <div class="orbit-track"><div class="hotspot"></div></div>
-      <div class="orbit-track"><div class="hotspot" style="width:3px;height:3px;top:-1.5px;margin-left:-1.5px;"></div></div>
-
-      <div class="space-cat" aria-hidden="true">🐱</div>
-    </div>
-  </div>
+  <div class="space-cat" aria-hidden="true">🐱</div>
 
   <div class="overlay">
     <div class="site-name">Cyan's Blog</div>
-    <p class="redirect-line" id="redirect-zh">正在进入站点… <span class="countdown-num" id="cd-zh">13</span> 秒</p>
-    <p class="redirect-line" id="redirect-en" style="display:none;">Entering in <span class="countdown-num" id="cd-en">13</span>s…</p>
+    <p class="redirect-line" id="redirect-zh">正在进入站点… <span class="countdown-num" id="cd-zh">25</span> 秒</p>
+    <p class="redirect-line" id="redirect-en" style="display:none;">Entering in <span class="countdown-num" id="cd-en">25</span>s…</p>
   </div>
 
   <script>
     (function () {
-      // ── Stars ──
-      function makeStars(id: string, count: number, sizeRange: [number, number]) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        let shadows: string[] = [];
-        for (let i = 0; i < count; i++) {
-          const x = (Math.random() * 200 - 50).toFixed(1);
-          const y = (Math.random() * 200 - 50).toFixed(1);
-          const s = (Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0]).toFixed(1);
-          const b = (Math.random() * 0.5 + 0.5).toFixed(2);
-          shadows.push(`${x}vw ${y}vh ${s}px ${s}px oklch(95% 0.02 var(--hue) / ${b})`);
-        }
-        el.style.width = '1px';
-        el.style.height = '1px';
-        el.style.borderRadius = '50%';
-        el.style.boxShadow = shadows.join(', ');
-      }
-      makeStars('stars-slow', 220, [0.7, 2.3]);
-      makeStars('stars-fast', 120, [0.4, 1.4]);
-
       // ── Language ──
       const lang = (navigator.language || (navigator.languages && navigator.languages[0]) || 'en').toLowerCase();
       const isZh = lang.startsWith('zh');
@@ -539,8 +157,8 @@ import '../styles/global.css';
       else { if (enEl) enEl.style.display = ''; }
       const targetPath = '/' + (isZh ? 'zh' : 'en') + '/';
 
-      // ── Countdown (13s ≈ half music loop at 76 BPM) ──
-      let sec = 13;
+      // ── Countdown: 25s ≈ one full 8-bit music loop (32 beats @ 76 BPM = 25.26s) ──
+      let sec = 25;
       const cdZh = document.getElementById('cd-zh');
       const cdEn = document.getElementById('cd-en');
       const cdEl = isZh ? cdZh : cdEn;

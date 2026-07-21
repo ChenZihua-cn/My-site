@@ -1,0 +1,393 @@
+---
+/**
+ * GARGANTUA — Schwarzschild Black Hole Raytracer (splash page edition)
+ * Raw WebGL2 fullscreen shader. Zero dependencies.
+ *
+ * Physics: exact planar null-geodesic orbit equation integrated in
+ * Cartesian form:  d²x/dλ² = -(3/2)·h²·x/r⁵   (h = |x × v|, rs = 1)
+ * → true event-horizon shadow, photon sphere @ 1.5 rs, multiple disk
+ *   crossings, gravitational lensing, Doppler beaming, redshift.
+ *
+ * Performance: quality tiers + dynamic resolution + early-exit +
+ * visibility pause + reduced-motion static frame + context-loss recovery.
+ */
+---
+
+<canvas id="gargantua-canvas" aria-hidden="true"></canvas>
+
+<style>
+  #gargantua-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+    background: #030108;
+  }
+</style>
+
+<script is:inline>
+(function () {
+  'use strict';
+
+  var canvas = document.getElementById('gargantua-canvas');
+  if (!canvas) return;
+
+  /* One full 8-bit music loop: 32 beats @ 76 BPM ≈ 25.26 s — camera
+     animation period matches it exactly, so every loop is seamless. */
+  var LOOP = 32 * 60 / 76;
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- quality tier ---------- */
+  var mobile = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)
+    || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  var cores = navigator.hardwareConcurrency || 4;
+  var mem = navigator.deviceMemory || 8;
+  var tier = 'med';
+  if (mobile || cores <= 4 || mem <= 4) tier = 'low';
+  else if (cores >= 8) tier = 'high';
+  var TIERS = {
+    low:  { steps: 120, scale: 0.55 },
+    med:  { steps: 160, scale: 0.70 },
+    high: { steps: 240, scale: 0.85 }
+  };
+  var cfg = TIERS[tier];
+
+  /* ---------- WebGL context ---------- */
+  var gl = canvas.getContext('webgl2', {
+    alpha: false, depth: false, stencil: false, antialias: false,
+    powerPreference: 'high-performance', preserveDrawingBuffer: false
+  });
+  if (!gl) { canvas.remove(); return; }
+
+  /* ---------- shaders ---------- */
+  var VERT = '#version 300 es\n' +
+    'out vec2 vUv;\n' +
+    'void main(){\n' +
+    '  vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));\n' +
+    '  vUv = p;\n' +
+    '  gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);\n' +
+    '}\n';
+
+  var FRAG = '#version 300 es\n' +
+'precision highp float;\n' +
+'in vec2 vUv;\n' +
+'out vec4 fragColor;\n' +
+'uniform vec2 uRes;\n' +
+'uniform float uTime;\n' +
+'uniform vec3 uCamPos;\n' +
+'uniform vec3 uCamRight;\n' +
+'uniform vec3 uCamUp;\n' +
+'uniform vec3 uCamFwd;\n' +
+'#define STEPS ' + cfg.steps + '\n' +
+'#define HORIZON_R 1.0\n' +
+'#define PHOTON_R 1.5\n' +
+'#define DISK_IN 3.0\n' +
+'#define DISK_OUT 8.0\n' +
+'#define ESCAPE_R 26.0\n' +
+
+'float hash12(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }\n' +
+'float hash13(vec3 p3){ p3 = fract(p3 * 0.1031); p3 += dot(p3, p3.zyx + 31.32); return fract((p3.x + p3.y) * p3.z); }\n' +
+
+'float vnoise(vec3 p){\n' +
+'  vec3 i = floor(p); vec3 f = fract(p);\n' +
+'  f = f * f * (3.0 - 2.0 * f);\n' +
+'  float n000 = hash13(i);\n' +
+'  float n100 = hash13(i + vec3(1.0, 0.0, 0.0));\n' +
+'  float n010 = hash13(i + vec3(0.0, 1.0, 0.0));\n' +
+'  float n110 = hash13(i + vec3(1.0, 1.0, 0.0));\n' +
+'  float n001 = hash13(i + vec3(0.0, 0.0, 1.0));\n' +
+'  float n101 = hash13(i + vec3(1.0, 0.0, 1.0));\n' +
+'  float n011 = hash13(i + vec3(0.0, 1.0, 1.0));\n' +
+'  float n111 = hash13(i + vec3(1.0, 1.0, 1.0));\n' +
+'  return mix(mix(mix(n000, n100, f.x), mix(n010, n110, f.x), f.y),\n' +
+'             mix(mix(n001, n101, f.x), mix(n011, n111, f.x), f.y), f.z);\n' +
+'}\n' +
+
+'float fbm(vec3 p){ float s = 0.0; float a = 0.5; for(int i = 0; i < 3; i++){ s += a * vnoise(p); p = p * 2.13 + vec3(7.7); a *= 0.5; } return s; }\n' +
+
+/* blackbody palette: deep red → orange → warm white → blue-white */
+'vec3 blackbody(float t){\n' +
+'  t = clamp(t, 0.0, 1.0);\n' +
+'  vec3 c = mix(vec3(0.55, 0.06, 0.01), vec3(1.0, 0.42, 0.08), smoothstep(0.0, 0.35, t));\n' +
+'  c = mix(c, vec3(1.0, 0.78, 0.42), smoothstep(0.35, 0.65, t));\n' +
+'  c = mix(c, vec3(1.0, 0.96, 0.88), smoothstep(0.65, 0.85, t));\n' +
+'  c = mix(c, vec3(0.82, 0.90, 1.00), smoothstep(0.85, 1.0, t));\n' +
+'  return c;\n' +
+'}\n' +
+
+/* procedural sky: milky-way band + two hashed star layers */
+'vec3 starfield(vec3 d){\n' +
+'  vec3 col = vec3(0.0);\n' +
+'  vec3 gn = normalize(vec3(0.5, 1.0, 0.35));\n' +
+'  float band = exp(-pow(abs(dot(d, gn)) * 4.2, 1.6));\n' +
+'  float cl = fbm(d * 2.6 + vec3(11.0));\n' +
+'  col += vec3(0.42, 0.50, 0.72) * band * (0.10 + 0.50 * cl);\n' +
+'  col += vec3(0.90, 0.75, 0.60) * band * pow(cl, 2.5) * 0.25;\n' +
+'  vec2 suv = vec2(atan(d.z, d.x) / 6.2831853 + 0.5, acos(clamp(d.y, -1.0, 1.0)) / 3.14159265);\n' +
+'  for (int L = 0; L < 2; L++){\n' +
+'    float sc = (L == 0) ? 90.0 : 170.0;\n' +
+'    vec2 g = suv * vec2(sc * 2.0, sc);\n' +
+'    vec2 id = floor(g);\n' +
+'    vec2 f = fract(g);\n' +
+'    float h = hash12(id + float(L) * 17.7);\n' +
+'    if (h > ((L == 0) ? 0.90 : 0.93)){\n' +
+'      vec2 sp = vec2(hash12(id + 3.1), hash12(id + 7.7));\n' +
+'      float dd = length((f - sp) * vec2(2.0, 1.0));\n' +
+'      float m = smoothstep(0.10, 0.0, dd);\n' +
+'      float br = pow(hash12(id + 13.3), 14.0) * 3.0;\n' +
+'      float tw = 0.75 + 0.25 * sin(uTime * 2.5 + h * 37.0);\n' +
+'      vec3 tint = mix(vec3(0.75, 0.85, 1.10), vec3(1.10, 0.95, 0.80), hash12(id + 5.9));\n' +
+'      col += tint * m * br * tw;\n' +
+'    }\n' +
+'  }\n' +
+'  return col;\n' +
+'}\n' +
+
+'vec3 aces(vec3 x){\n' +
+'  return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);\n' +
+'}\n' +
+
+'void main(){\n' +
+'  vec2 ndc = vUv * 2.0 - 1.0;\n' +
+'  float aspect = uRes.x / uRes.y;\n' +
+'  float tanFov = 0.52;\n' +
+'  vec3 rd = normalize(uCamFwd + (ndc.x * aspect * uCamRight + ndc.y * uCamUp) * tanFov);\n' +
+'  vec3 pos = uCamPos;\n' +
+'  vec3 vel = rd;\n' +
+'  vec3 hv = cross(pos, vel);\n' +
+'  float h2 = max(dot(hv, hv), 1e-7);\n' +
+'  vec3 col = vec3(0.0);\n' +
+'  float trans = 1.0;\n' +
+'  float minR = 1e9;\n' +
+'  bool captured = false;\n' +
+'  bool escaped = false;\n' +
+'  vec3 prev = pos;\n' +
+'  float r = length(pos);\n' +
+
+'  for (int i = 0; i < STEPS; i++){\n' +
+'    float r2 = dot(pos, pos);\n' +
+'    r = sqrt(r2);\n' +
+'    if (r < HORIZON_R) { captured = true; trans = 0.0; break; }\n' +
+'    if (r > ESCAPE_R && dot(pos, vel) > 0.0) { escaped = true; break; }\n' +
+'    if (r < minR) minR = r;\n' +
+
+     /* accretion-disk plane crossing (y = 0) */
+'    if (prev.y * pos.y < 0.0 && trans > 0.02){\n' +
+'      float ft = prev.y / (prev.y - pos.y);\n' +
+'      vec3 pc = mix(prev, pos, ft);\n' +
+'      float rr = length(pc.xz);\n' +
+'      if (rr > DISK_IN && rr < DISK_OUT){\n' +
+'        float temp = pow(DISK_IN / rr, 0.78);\n' +
+'        float ang = atan(pc.z, pc.x);\n' +
+'        float om = 2.6 / (rr * sqrt(rr));\n' +               /* differential rotation */
+'        float a2 = ang + uTime * om;\n' +
+'        float streak = fbm(vec3(cos(a2) * 2.2, rr * 1.35, sin(a2) * 2.2));\n' +
+'        float dens = smoothstep(DISK_IN, DISK_IN + 1.1, rr) * (1.0 - smoothstep(DISK_OUT * 0.5, DISK_OUT, rr));\n' +
+'        dens *= 0.45 + 0.85 * streak;\n' +
+'        vec3 emit = blackbody(temp * 1.12 - 0.06);\n' +
+'        float lum = 0.25 + 3.2 * temp * temp;\n' +
+'        lum += smoothstep(DISK_IN + 0.9, DISK_IN, rr) * 2.2;\n' + /* hot ISCO rim */
+'        vec3 tang = vec3(-pc.z, 0.0, pc.x) / rr;\n' +
+'        float vk = 0.62 / sqrt(rr);\n' +
+'        float dop = clamp(1.0 / (1.0 + dot(tang, vel) * vk * 2.4), 0.5, 2.1);\n' +
+'        float gred = sqrt(1.0 - 1.0 / rr);\n' +
+'        float shift = dop * gred;\n' +
+'        vec3 dcol = emit * lum * pow(shift, 3.0);\n' +
+'        dcol *= mix(vec3(1.0), vec3(0.85, 0.95, 1.25), clamp(dop - 1.0, 0.0, 1.0) * 0.6);\n' +
+'        dcol *= mix(vec3(1.0), vec3(1.15, 0.85, 0.70), clamp(1.0 - dop, 0.0, 1.0) * 0.35);\n' +
+'        float aa = clamp(dens, 0.0, 1.0) * 0.62;\n' +
+'        col += dcol * aa * trans;\n' +
+'        trans *= 1.0 - aa;\n' +
+'        if (trans < 0.008) { trans = 0.0; captured = true; break; }\n' +
+'      }\n' +
+'    }\n' +
+
+     /* geodesic step: a = -(3/2) h² x / r⁵  (semi-implicit Euler);
+        dt refined near the photon sphere — numerically verified capture
+        boundary b ≈ 2.56 vs theory 3√3/2 ≈ 2.598 (2% under) */
+'    float dt = clamp((r - 0.85) * 0.06, 0.006, 0.30);\n' +
+'    prev = pos;\n' +
+'    vel += pos * (-1.5 * h2 / (r2 * r2 * r)) * dt;\n' +
+'    pos += vel * dt;\n' +
+'  }\n' +
+
+'  if (!captured && !escaped && r < 2.0 && dot(pos, vel) < 0.0) captured = true;\n' +
+
+'  vec3 bg = captured ? vec3(0.0) : starfield(normalize(vel));\n' +
+'  col += bg * trans;\n' +
+
+   /* photon-ring halo from closest approach */
+'  float ring = exp(-pow((minR - PHOTON_R) * 5.5, 2.0));\n' +
+'  col += vec3(1.0, 0.93, 0.80) * ring * (0.15 + 0.35 * trans);\n' +
+
+   /* grade: ACES + vignette + grain */
+'  col = aces(col * 1.35);\n' +
+'  vec2 q = vUv - 0.5;\n' +
+'  col *= 1.0 - dot(q, q) * 0.45;\n' +
+'  col += (hash12(gl_FragCoord.xy + vec2(fract(uTime * 0.731) * 289.0)) - 0.5) * 0.03;\n' +
+'  fragColor = vec4(max(col, 0.0), 1.0);\n' +
+'}\n';
+
+  /* ---------- GL setup ---------- */
+  var prog = null, uRes, uTime, uCamPos, uCamRight, uCamUp, uCamFwd;
+
+  function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.error('Gargantua shader: ' + gl.getShaderInfoLog(s));
+      gl.deleteShader(s);
+      return null;
+    }
+    return s;
+  }
+
+  function buildGL() {
+    var vs = compile(gl.VERTEX_SHADER, VERT);
+    var fs = compile(gl.FRAGMENT_SHADER, FRAG);
+    if (!vs || !fs) return false;
+    prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      console.error('Gargantua link: ' + gl.getProgramInfoLog(prog));
+      return false;
+    }
+    gl.useProgram(prog);
+    uRes = gl.getUniformLocation(prog, 'uRes');
+    uTime = gl.getUniformLocation(prog, 'uTime');
+    uCamPos = gl.getUniformLocation(prog, 'uCamPos');
+    uCamRight = gl.getUniformLocation(prog, 'uCamRight');
+    uCamUp = gl.getUniformLocation(prog, 'uCamUp');
+    uCamFwd = gl.getUniformLocation(prog, 'uCamFwd');
+    return true;
+  }
+
+  if (!buildGL()) { canvas.remove(); return; }
+
+  /* ---------- sizing / dynamic resolution ---------- */
+  var scale = cfg.scale;
+  var baseScale = cfg.scale;
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(2, Math.round(window.innerWidth * dpr * scale));
+    var h = Math.max(2, Math.round(window.innerHeight * dpr * scale));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w;
+      canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  window.addEventListener('orientationchange', resize);
+
+  /* ---------- camera (period = one music loop → seamless) ---------- */
+  var camPos = new Float32Array(3);
+  var camFwd = new Float32Array(3);
+  var camRight = new Float32Array(3);
+  var camUp = new Float32Array(3);
+
+  function updateCamera(tSec) {
+    var lt = (tSec % LOOP) / LOOP * Math.PI * 2;
+    var az = 0.38 * Math.sin(lt);
+    var el = 0.26 + 0.05 * Math.sin(lt * 2 + 1.2);
+    var dist = 9.7 - 0.7 * (0.5 - 0.5 * Math.cos(lt));
+    var ce = Math.cos(el), se = Math.sin(el);
+    camPos[0] = dist * ce * Math.sin(az);
+    camPos[1] = dist * se;
+    camPos[2] = -dist * ce * Math.cos(az);
+    var l = dist;
+    camFwd[0] = -camPos[0] / l; camFwd[1] = -camPos[1] / l; camFwd[2] = -camPos[2] / l;
+    var rx = -camFwd[2], rz = camFwd[0];
+    var rl = Math.hypot(rx, rz) || 1;
+    camRight[0] = rx / rl; camRight[1] = 0; camRight[2] = rz / rl;
+    camUp[0] = camRight[1] * camFwd[2] - camRight[2] * camFwd[1];
+    camUp[1] = camRight[2] * camFwd[0] - camRight[0] * camFwd[2];
+    camUp[2] = camRight[0] * camFwd[1] - camRight[1] * camFwd[0];
+  }
+
+  /* ---------- render loop with FPS auto-tune ---------- */
+  var running = false;
+  var rafId = 0;
+  var start = 0;
+  var shown = false;
+  var ema = 16, lastAdj = 0, frames = 0, prevT = 0;
+
+  function draw(tSec) {
+    updateCamera(tSec);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uTime, tSec);
+    gl.uniform3fv(uCamPos, camPos);
+    gl.uniform3fv(uCamRight, camRight);
+    gl.uniform3fv(uCamUp, camUp);
+    gl.uniform3fv(uCamFwd, camFwd);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!shown) { shown = true; canvas.style.opacity = '1'; }
+  }
+
+  function frame(now) {
+    if (!running) return;
+    if (!start) { start = now; prevT = now; }
+    var tSec = (now - start) / 1000;
+    draw(tSec);
+
+    /* dynamic resolution: adjust every 2 s from frame-time EMA */
+    var dt = now - prevT;
+    prevT = now;
+    if (dt > 0 && dt < 250) ema = ema * 0.94 + dt * 0.06;
+    frames++;
+    if (now - lastAdj > 2000 && frames > 40) {
+      if (ema > 34 && scale > 0.42) {
+        scale = Math.max(0.42, scale * 0.85); resize(); lastAdj = now; ema = 16;
+      } else if (ema < 17 && scale < baseScale) {
+        scale = Math.min(baseScale, scale * 1.15); resize(); lastAdj = now; ema = 16;
+      }
+    }
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function startLoop() {
+    if (running || reduced) return;
+    running = true;
+    rafId = requestAnimationFrame(frame);
+  }
+  function stopLoop() {
+    running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = 0;
+  }
+
+  /* reduced motion → one static, nicely-angled frame */
+  if (reduced) { draw(3.0); } else { startLoop(); }
+
+  /* ---------- lifecycle ---------- */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stopLoop();
+    else { prevT = 0; startLoop(); }
+  });
+
+  canvas.addEventListener('webglcontextlost', function (e) {
+    e.preventDefault();
+    stopLoop();
+  });
+  canvas.addEventListener('webglcontextrestored', function () {
+    if (buildGL()) { resize(); if (reduced) draw(3.0); else startLoop(); }
+  });
+
+  window.addEventListener('pagehide', stopLoop);
+  window.addEventListener('pageshow', function () {
+    if (!running && !reduced && gl && !gl.isContextLost()) startLoop();
+  });
+})();
+</script>
