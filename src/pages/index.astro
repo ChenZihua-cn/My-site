@@ -35,7 +35,6 @@ import '../styles/global.css';
       cursor: default;
     }
 
-    /* ===== Full-viewport canvas-like background ===== */
     .cosmos {
       position: fixed;
       inset: 0;
@@ -44,7 +43,6 @@ import '../styles/global.css';
         radial-gradient(ellipse at 50% 50%, oklch(18% 0.04 var(--hue)) 0%, #030108 55%, #010005 100%);
     }
 
-    /* Star layer - two layers for parallax feel */
     .stars-slow, .stars-fast {
       position: absolute;
       inset: -30%;
@@ -57,7 +55,6 @@ import '../styles/global.css';
     @keyframes rotate-slow { to { transform: rotate(360deg); } }
     @keyframes rotate-fast { to { transform: rotate(-360deg); } }
 
-    /* Nebula wisps */
     .nebula {
       position: absolute;
       border-radius: 50%;
@@ -87,7 +84,6 @@ import '../styles/global.css';
       66% { transform: translate(-2vw, 3vw); }
     }
 
-    /* ===== Black Hole Scene ===== */
     .scene {
       position: relative;
       z-index: 1;
@@ -98,21 +94,13 @@ import '../styles/global.css';
       justify-content: center;
     }
 
-    /* ===== The Black Hole ===== */
     .bh-container {
       position: relative;
       width: 100%;
       height: 100%;
     }
 
-    /*
-      Gravitational Lensing:
-      - The far side of the accretion disk is bent OVER the top
-      - The near side is visible in front, below
-      - This creates the iconic "halo" effect
-    */
-
-    /* --- Far side accretion disk (lensed above the hole) --- */
+    /* --- Far side accretion disk (lensed above) --- */
     .disk-far {
       position: absolute;
       top: 5%; left: 5%; right: 5%; bottom: 28%;
@@ -139,7 +127,6 @@ import '../styles/global.css';
       clip-path: ellipse(48% 52% at 50% 100%);
     }
 
-    /* Far disk glow */
     .disk-far-glow {
       position: absolute;
       top: 8%; left: 8%; right: 8%; bottom: 32%;
@@ -177,7 +164,6 @@ import '../styles/global.css';
       clip-path: ellipse(52% 48% at 50% 0%);
     }
 
-    /* Near disk bright rim */
     .disk-near-rim {
       position: absolute;
       top: 41%; left: 0%; right: 0%; bottom: -4%;
@@ -188,7 +174,7 @@ import '../styles/global.css';
       clip-path: ellipse(52% 48% at 50% 0%);
     }
 
-    /* --- Einstein ring (gravitational lensing ring) --- */
+    /* --- Einstein ring --- */
     .einstein-ring {
       position: absolute;
       inset: 10%;
@@ -201,7 +187,7 @@ import '../styles/global.css';
       animation: pulse-ring 4s ease-in-out infinite;
     }
 
-    /* --- Event Horizon (the dark center) --- */
+    /* --- Event Horizon --- */
     .event-horizon {
       position: absolute;
       inset: 24%;
@@ -218,7 +204,7 @@ import '../styles/global.css';
       z-index: 10;
     }
 
-    /* --- Photon ring (thin bright ring just outside event horizon) --- */
+    /* --- Photon ring --- */
     .photon-ring {
       position: absolute;
       inset: 22%;
@@ -231,7 +217,6 @@ import '../styles/global.css';
       animation: pulse-photon 2.5s ease-in-out infinite;
     }
 
-    /* Inner shadow ring */
     .shadow-ring {
       position: absolute;
       inset: 20%;
@@ -286,7 +271,7 @@ import '../styles/global.css';
       66% { transform: rotate(-1deg); }
     }
 
-    /* ===== Outer glow aura ===== */
+    /* --- Outer glow aura --- */
     .aura {
       position: absolute;
       inset: -20%;
@@ -305,7 +290,7 @@ import '../styles/global.css';
       50% { opacity: 0.8; transform: scale(1.06); }
     }
 
-    /* ===== Cat floating near hole ===== */
+    /* --- Space Cat --- */
     .space-cat {
       position: absolute;
       z-index: 20;
@@ -323,7 +308,7 @@ import '../styles/global.css';
       66% { transform: translateY(6px) rotate(-3deg); }
     }
 
-    /* ===== Text overlay ===== */
+    /* --- Text overlay --- */
     .overlay {
       position: fixed;
       bottom: 0;
@@ -369,6 +354,33 @@ import '../styles/global.css';
       animation: pulse-urgent 0.6s ease-in-out;
     }
 
+    /* music toggle */
+    .music-toggle {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      z-index: 40;
+      background: oklch(100% 0.005 var(--hue) / 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid oklch(100% 0.01 var(--hue) / 0.1);
+      border-radius: 2rem;
+      color: oklch(85% 0.04 var(--hue) / 0.7);
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s;
+      letter-spacing: 0.03em;
+    }
+    .music-toggle:hover {
+      border-color: oklch(100% 0.01 var(--hue) / 0.3);
+      color: oklch(95% 0.04 var(--hue) / 0.9);
+    }
+    .music-toggle.muted {
+      opacity: 0.45;
+    }
+
     @keyframes fade-in-up {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -382,7 +394,6 @@ import '../styles/global.css';
       50% { transform: scale(1.25); }
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 480px) {
       .scene { width: 90vw; height: 90vw; }
       .space-cat { font-size: 1.6rem; top: -5%; right: -2%; }
@@ -393,7 +404,6 @@ import '../styles/global.css';
 </head>
 <body>
 
-  <!-- Cosmos background -->
   <div class="cosmos">
     <div class="stars-slow" id="stars-slow"></div>
     <div class="stars-fast" id="stars-fast"></div>
@@ -402,52 +412,35 @@ import '../styles/global.css';
     <div class="nebula nebula-3"></div>
   </div>
 
-  <!-- Black Hole -->
+  <button class="music-toggle" id="music-btn" title="Toggle music">♪ Music</button>
+
   <div class="scene">
     <div class="bh-container">
-      <!-- Outer aura -->
       <div class="aura"></div>
-
-      <!-- Far side disk (lensed above) -->
       <div class="disk-far-glow"></div>
       <div class="disk-far"></div>
-
-      <!-- Einstein ring -->
       <div class="einstein-ring"></div>
-
-      <!-- Shadow ring -->
       <div class="shadow-ring"></div>
-
-      <!-- Near side disk (in front, below) -->
       <div class="disk-near"></div>
       <div class="disk-near-rim"></div>
-
-      <!-- Event horizon -->
       <div class="event-horizon"></div>
-
-      <!-- Photon ring -->
       <div class="photon-ring"></div>
-
-      <!-- Orbiting hot spots -->
       <div class="orbit-track"><div class="hotspot bright"></div></div>
       <div class="orbit-track"><div class="hotspot"></div></div>
       <div class="orbit-track"><div class="hotspot" style="width:4px;height:4px;top:-2px;margin-left:-2px;"></div></div>
-
-      <!-- Space Cat -->
       <div class="space-cat" aria-hidden="true">🐱</div>
     </div>
   </div>
 
-  <!-- Text overlay -->
   <div class="overlay">
     <div class="site-name">Cyan's Blog</div>
-    <p class="redirect-line" id="redirect-zh">正在进入站点… <span class="countdown-num" id="cd-zh">3</span> 秒</p>
-    <p class="redirect-line" id="redirect-en" style="display:none;">Entering in <span class="countdown-num" id="cd-en">3</span>s…</p>
+    <p class="redirect-line" id="redirect-zh">正在进入站点… <span class="countdown-num" id="cd-zh">15</span> 秒</p>
+    <p class="redirect-line" id="redirect-en" style="display:none;">Entering in <span class="countdown-num" id="cd-en">15</span>s…</p>
   </div>
 
   <script>
     (function () {
-      // ── Generate stars ──
+      // ── Stars ──
       function makeStars(id, count, sizeRange) {
         const el = document.getElementById(id);
         if (!el) return;
@@ -467,42 +460,237 @@ import '../styles/global.css';
       makeStars('stars-slow', 200, [0.8, 2.2]);
       makeStars('stars-fast', 100, [0.5, 1.3]);
 
-      // ── Language detection ──
+      // ── Language ──
       const lang = (navigator.language || (navigator.languages && navigator.languages[0]) || 'en').toLowerCase();
       const isZh = lang.startsWith('zh');
-
-      // Show appropriate redirect text
       const zhEl = document.getElementById('redirect-zh');
       const enEl = document.getElementById('redirect-en');
       if (isZh) { if (zhEl) zhEl.style.display = ''; }
       else { if (enEl) enEl.style.display = ''; }
-
       const targetPath = '/' + (isZh ? 'zh' : 'en') + '/';
 
-      // ── Countdown ──
-      let sec = 3;
+      // ── Countdown (15s) ──
+      let sec = 15;
       const cdZh = document.getElementById('cd-zh');
       const cdEn = document.getElementById('cd-en');
       const cdEl = isZh ? cdZh : cdEn;
-
       const tick = () => {
         sec--;
         if (cdZh) cdZh.textContent = String(sec);
         if (cdEn) cdEn.textContent = String(sec);
-
         if (cdEl) {
           cdEl.classList.add('urgent');
           setTimeout(() => cdEl.classList.remove('urgent'), 500);
         }
-
-        if (sec <= 0) {
-          window.location.href = targetPath;
-        } else {
-          setTimeout(tick, 1000);
-        }
+        if (sec <= 0) { window.location.href = targetPath; }
+        else { setTimeout(tick, 1000); }
       };
-
       setTimeout(tick, 1000);
+
+      // ═══════════════════════════════════════════
+      //  8-BIT INTERSTELLAR MUSIC — Web Audio API
+      // ═══════════════════════════════════════════
+      (function () {
+        // wait for user interaction (autoplay policy)
+        let ctx: AudioContext | null = null;
+        let masterGain: GainNode | null = null;
+        let playing = true;
+
+        function initAudio() {
+          if (ctx) return;
+          ctx = new AudioContext();
+          masterGain = ctx.createGain();
+          masterGain.gain.value = 0.15;
+          masterGain.connect(ctx.destination);
+          playInterstellar();
+        }
+
+        // Frequency lookup
+        const note = (n: string): number => {
+          const map: Record<string, number> = {
+            'C2':65.41,'D2':73.42,'E2':82.41,'F2':87.31,'G2':98.00,'A2':110.00,'B2':123.47,
+            'C3':130.81,'D3':146.83,'E3':164.81,'F3':174.61,'G3':196.00,'A3':220.00,'B3':246.94,
+            'C4':261.63,'D4':293.66,'E4':329.63,'F4':349.23,'G4':392.00,'A4':440.00,'B4':493.88,
+            'C5':523.25,'D5':587.33,'E5':659.25,'F5':698.46,'G5':783.99,'A5':880.00,'B5':987.77,
+            'C6':1046.50
+          };
+          return map[n] || 440;
+        };
+
+        // 8-bit square wave
+        function square(ctx: AudioContext, freq: number, start: number, dur: number, vol: number, dest: AudioNode) {
+          const osc = ctx.createOscillator();
+          osc.type = 'square';
+          osc.frequency.value = freq;
+          const g = ctx.createGain();
+          g.gain.setValueAtTime(0, start);
+          g.gain.linearRampToValueAtTime(vol, start + 0.01);
+          g.gain.setValueAtTime(vol, start + dur * 0.7);
+          g.gain.linearRampToValueAtTime(0, start + dur);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(start);
+          osc.stop(start + dur + 0.01);
+        }
+
+        // Triangle wave (softer bass/pad)
+        function tri(ctx: AudioContext, freq: number, start: number, dur: number, vol: number, dest: AudioNode) {
+          const osc = ctx.createOscillator();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          const g = ctx.createGain();
+          g.gain.setValueAtTime(0, start);
+          g.gain.linearRampToValueAtTime(vol, start + 0.02);
+          g.gain.linearRampToValueAtTime(0, start + dur);
+          osc.connect(g);
+          g.connect(dest);
+          osc.start(start);
+          osc.stop(start + dur + 0.01);
+        }
+
+        // Noise burst (8-bit drum / tick)
+        function noiseTick(ctx: AudioContext, start: number, vol: number, dest: AudioNode) {
+          const bufferSize = ctx.sampleRate * 0.015;
+          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+          }
+          const src = ctx.createBufferSource();
+          src.buffer = buffer;
+          const bp = ctx.createBiquadFilter();
+          bp.type = 'highpass';
+          bp.frequency.value = 2000;
+          const g = ctx.createGain();
+          g.gain.setValueAtTime(vol, start);
+          g.gain.exponentialRampToValueAtTime(0.0001, start + 0.015);
+          src.connect(bp);
+          bp.connect(g);
+          g.connect(dest);
+          src.start(start);
+        }
+
+        function playInterstellar() {
+          if (!ctx || !masterGain) return;
+
+          // Create a gain node for the melody group (for per-note shaping)
+          const melodyBus = ctx.createGain();
+          melodyBus.gain.value = 1.0;
+          melodyBus.connect(masterGain);
+
+          const padBus = ctx.createGain();
+          padBus.gain.value = 0.7;
+          padBus.connect(masterGain);
+
+          // ── Interstellar Main Theme (A minor) ──
+          // The iconic organ motif adapted to 8-bit:
+          // "Cornfield Chase" style rising pattern + "STAY" resolution
+
+          // Notes for the melody sequence (inspired by Hans Zimmer)
+          // Pattern: A3 E4 A4 E4 | F4 C5 F4 C5 | A3 E4 A4 B4 | C5 B4 A4 E4
+          // Each note = [noteName, duration in beats, velocity]
+          const bpm = 76;
+          const beat = 60 / bpm; // seconds per beat
+          const bar = beat * 4;
+
+          const melody: [string, number, number][] = [
+            // Bar 1 — rising tension (Cornfield Chase)
+            ['A3', 2, 0.35], ['E4', 1, 0.4], ['A4', 1, 0.45],
+            ['E4', 1, 0.35], ['A4', 1, 0.4], ['B4', 1, 0.5], ['C5', 1, 0.6],
+            // Bar 2
+            ['B4', 2, 0.45], ['A4', 1, 0.35], ['E4', 1, 0.3],
+            ['G4', 2, 0.4], ['A4', 2, 0.5],
+            // Bar 3 — the "STAY" theme
+            ['A4', 2, 0.55], ['G4', 1, 0.4], ['E4', 1, 0.35],
+            ['C4', 2, 0.4], ['E4', 1, 0.3], ['G4', 1, 0.35],
+            // Bar 4 — resolution
+            ['A4', 3, 0.5], ['E4', 1, 0.3],
+            ['D4', 2, 0.35], ['E4', 2, 0.3],
+            // Bar 5 — repeat rising with variation
+            ['A3', 1.5, 0.35], ['E4', 0.5, 0.35], ['A4', 1, 0.45],
+            ['E4', 1, 0.35], ['F4', 0.5, 0.4], ['G4', 0.5, 0.4],
+            ['A4', 1, 0.5], ['B4', 0.5, 0.55], ['C5', 0.5, 0.55],
+            // Bar 6
+            ['B4', 1, 0.45], ['A4', 1, 0.4], ['G4', 1, 0.35],
+            ['E4', 2, 0.3], ['D4', 1, 0.3], ['C4', 1, 0.25],
+            // Bar 7 — final ascent
+            ['A3', 1, 0.3], ['C4', 1, 0.3], ['E4', 1, 0.35],
+            ['A4', 2, 0.5], ['G4', 1, 0.4],
+            ['E4', 1.5, 0.3], ['D4', 0.5, 0.25],
+            // Bar 8 — close
+            ['E4', 3, 0.45], ['A4', 1, 0.5],
+            ['C5', 2, 0.6], ['B4', 2, 0.4],
+          ];
+
+          // ── Bass/Pad — slow organ-like chords ──
+          const pad: [string, number, number][] = [
+            ['A2', bar * 4, 0.15],
+            ['F2', bar * 4, 0.13],
+            ['C3', bar * 4, 0.14],
+            ['E2', bar * 2, 0.12], ['D2', bar * 2, 0.12],
+            ['A2', bar * 4, 0.15],
+            ['F2', bar * 4, 0.13],
+            ['A2', bar * 4, 0.16],
+            ['E2', bar * 2, 0.14], ['A2', bar * 2, 0.15],
+          ];
+
+          const loopDur = bar * 8; // 8 bars total
+
+          function scheduleLoop(time: number) {
+            if (!ctx || !masterGain || !playing) return;
+
+            // Schedule melody
+            let mTime = time;
+            for (const [n, dur, vol] of melody) {
+              const noteLen = dur * beat;
+              square(ctx, note(n), mTime, noteLen * 0.85, vol * 0.7, melodyBus);
+              mTime += noteLen;
+            }
+
+            // Schedule pad
+            let pTime = time;
+            for (const [n, dur, vol] of pad) {
+              const noteLen = dur;
+              tri(ctx, note(n), pTime, noteLen * 0.95, vol * 0.6, padBus);
+              pTime += noteLen;
+            }
+
+            // Tick sound (the Interstellar clock motif) — every quarter note
+            for (let t = 0; t < loopDur; t += beat) {
+              // Louder ticks every bar
+              const isBar = Math.abs(t % bar) < 0.001;
+              noiseTick(ctx, time + t, isBar ? 0.09 : 0.04, masterGain);
+            }
+
+            // Schedule next loop
+            const nextLoop = time + loopDur;
+            const scheduleAt = nextLoop - 0.5;
+            const now = ctx.currentTime;
+            const delay = Math.max(0.1, (scheduleAt - now) * 1000);
+            setTimeout(() => scheduleLoop(nextLoop), delay);
+          }
+
+          // Start at next beat boundary
+          const now = ctx.currentTime;
+          const startTime = now + 0.1;
+          scheduleLoop(startTime);
+        }
+
+        // ── Music toggle button ──
+        const btn = document.getElementById('music-btn');
+        btn?.addEventListener('click', () => {
+          if (!ctx) { initAudio(); btn.classList.remove('muted'); return; }
+          playing = !playing;
+          if (masterGain) {
+            masterGain.gain.linearRampToValueAtTime(playing ? 0.15 : 0, ctx.currentTime + 0.1);
+          }
+          btn.classList.toggle('muted', !playing);
+        });
+
+        // Auto-start on first interaction
+        document.addEventListener('click', initAudio, { once: true });
+        document.addEventListener('keydown', initAudio, { once: true });
+      })();
     })();
   </script>
 
