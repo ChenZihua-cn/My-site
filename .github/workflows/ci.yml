@@ -36,18 +36,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/azureuser/My-site
-            git pull origin main
-            npm ci
-            npm run build
-
-            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-            RELEASE_DIR="/var/www/releases/luv2u/build_${TIMESTAMP}"
-            sudo mkdir -p /var/www/releases/luv2u
-            sudo cp -r dist "$RELEASE_DIR"
-            sudo ln -snf "$RELEASE_DIR" /var/www/luv2u
-            sudo systemctl reload nginx
-
-            cd /var/www/releases/luv2u
-            ls -d build_* 2>/dev/null | sort -r | tail -n +6 | while read old; do
-              sudo rm -rf "$old"
-            done
+            bash deploy.sh
