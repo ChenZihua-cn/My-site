@@ -6,12 +6,13 @@ export interface Props {
   date: Date;
   tags?: string[];
   coverImage?: string;
+  lang?: 'zh' | 'en';
 }
 
-const { title, description, href, date, tags = [], coverImage } = Astro.props;
+const { title, description, href, date, tags = [], coverImage, lang = 'zh' } = Astro.props;
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat(lang === 'en' ? 'en-US' : 'zh-CN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

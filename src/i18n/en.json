@@ -14,11 +14,13 @@
       "secondaryCta": "About Me"
     },
     "featuredProducts": {
+      "label": "Featured",
       "title": "Featured Products",
       "subtitle": "Hand-picked recommendations",
       "viewAll": "View All"
     },
     "latestPosts": {
+      "label": "Latest",
       "title": "Latest Posts",
       "subtitle": "Read the latest thoughts and tech shares",
       "readMore": "Read More"
@@ -38,7 +40,13 @@
     "subtitle": "Tech articles, project logs, and life notes",
     "tags": "Tags",
     "published": "Published on",
-    "readTime": "min read"
+    "readTime": "min read",
+    "backToBlog": "Back to Blog"
+  },
+  "about": {
+    "title": "About Me",
+    "aboutSite": "About This Site",
+    "contact": "Contact"
   },
   "footer": {
     "rights": "All rights reserved",

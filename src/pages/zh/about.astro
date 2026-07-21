@@ -3,28 +3,31 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/layout/Navbar.astro';
 import Footer from '../../components/layout/Footer.astro';
 import { SITE } from '../../consts';
+import translations from '../../i18n/zh.json';
+
+const t = translations;
 ---
 
-<Layout title={`关于 - ${SITE.nameZh}`}>
+<Layout title={`${t.about.title} - ${SITE.nameZh}`}>
   <Navbar lang="zh" />
 
   <main class="min-h-screen py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-3xl">
-        <h1 class="mb-8 text-4xl font-bold text-foreground">关于我</h1>
+        <h1 class="mb-8 text-4xl font-bold text-foreground">{t.about.title}</h1>
 
         <div class="prose prose-slate max-w-none">
           <p class="text-lg text-muted-foreground">
             欢迎来到 {SITE.nameZh}！这是我的个人博客，记录技术学习、项目实践与生活中的思考。
           </p>
 
-          <h2 class="text-2xl font-semibold mt-8 mb-4">关于本站</h2>
+          <h2 class="text-2xl font-semibold mt-8 mb-4">{t.about.aboutSite}</h2>
           <p class="text-muted-foreground">
             这个博客使用 Astro 6 + Tailwind CSS 构建，支持中英文双语切换和亮暗主题。
             在这里我会分享技术文章、项目总结和生活随笔。
           </p>
 
-          <h2 class="text-2xl font-semibold mt-8 mb-4">联系方式</h2>
+          <h2 class="text-2xl font-semibold mt-8 mb-4">{t.about.contact}</h2>
           <ul class="space-y-2 text-muted-foreground">
             <li>邮箱: {SITE.email}</li>
             <li>GitHub: <a href={SITE.github} class="text-primary">{SITE.github}</a></li>

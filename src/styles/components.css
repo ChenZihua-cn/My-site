@@ -110,7 +110,5 @@
 /* Focus Ring */
 .ring-focus:focus-visible {
   outline: none;
-  ring: 2px;
-  ring-offset: 2px;
-  ring-color: var(--ring);
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
 }

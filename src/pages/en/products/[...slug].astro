@@ -4,6 +4,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import Button from '../../../components/ui/Button.astro';
+import { SITE } from '../../../consts';
 import translations from '../../../i18n/en.json';
 
 export async function getStaticPaths() {
@@ -26,9 +27,9 @@ const t = translations;
   <main class="min-h-screen py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <nav class="mb-8 text-sm text-muted-foreground">
-        <a href="/en" class="hover:text-foreground">Home</a>
+        <a href="/en" class="hover:text-foreground">{t.nav.home}</a>
         <span class="mx-2">/</span>
-        <a href="/en/products" class="hover:text-foreground">Products</a>
+        <a href="/en/products" class="hover:text-foreground">{t.nav.products}</a>
         <span class="mx-2">/</span>
         <span class="text-foreground">{product.data.name}</span>
       </nav>
@@ -64,7 +65,7 @@ const t = translations;
             </div>
           )}
 
-          <Button href={`mailto:contact@example.com?subject=Inquiry: ${product.data.name}`} size="lg">
+          <Button href={`mailto:${SITE.email}?subject=Inquiry: ${product.data.name}`} size="lg">
             {t.products.inquiry}
           </Button>
 

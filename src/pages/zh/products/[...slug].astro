@@ -4,6 +4,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import Button from '../../../components/ui/Button.astro';
+import { SITE } from '../../../consts';
 import translations from '../../../i18n/zh.json';
 
 export async function getStaticPaths() {
@@ -27,9 +28,9 @@ const t = translations;
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
       <nav class="mb-8 text-sm text-muted-foreground">
-        <a href="/zh" class="hover:text-foreground">首页</a>
+        <a href="/zh" class="hover:text-foreground">{t.nav.home}</a>
         <span class="mx-2">/</span>
-        <a href="/zh/products" class="hover:text-foreground">产品</a>
+        <a href="/zh/products" class="hover:text-foreground">{t.nav.products}</a>
         <span class="mx-2">/</span>
         <span class="text-foreground">{product.data.name}</span>
       </nav>
@@ -67,7 +68,7 @@ const t = translations;
             </div>
           )}
 
-          <Button href={`mailto:contact@example.com?subject=询盘: ${product.data.name}`} size="lg">
+          <Button href={`mailto:${SITE.email}?subject=询盘: ${product.data.name}`} size="lg">
             {t.products.inquiry}
           </Button>
 

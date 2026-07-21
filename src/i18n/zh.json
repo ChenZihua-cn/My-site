@@ -14,11 +14,13 @@
       "secondaryCta": "关于我"
     },
     "featuredProducts": {
+      "label": "精选产品",
       "title": "精选产品",
       "subtitle": "精选推荐",
       "viewAll": "查看全部"
     },
     "latestPosts": {
+      "label": "最新动态",
       "title": "最新文章",
       "subtitle": "阅读最新思考与技术分享",
       "readMore": "阅读更多"
@@ -38,7 +40,13 @@
     "subtitle": "技术文章、项目总结与生活随笔",
     "tags": "标签",
     "published": "发布于",
-    "readTime": "分钟阅读"
+    "readTime": "分钟阅读",
+    "backToBlog": "返回博客列表"
+  },
+  "about": {
+    "title": "关于我",
+    "aboutSite": "关于本站",
+    "contact": "联系方式"
   },
   "footer": {
     "rights": "保留所有权利",

@@ -50,9 +50,9 @@ const readTime = calculateReadTime(post.body || '');
         <article class="min-w-0 flex-1 max-w-3xl">
           <!-- Breadcrumb -->
           <nav class="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-            <a href="/zh" class="hover:text-foreground transition-colors">首页</a>
+            <a href="/zh" class="hover:text-foreground transition-colors">{t.nav.home}</a>
             <span class="text-border">/</span>
-            <a href="/zh/blog" class="hover:text-foreground transition-colors">博客</a>
+            <a href="/zh/blog" class="hover:text-foreground transition-colors">{t.nav.blog}</a>
             <span class="text-border">/</span>
             <span class="text-foreground truncate max-w-[200px]">{post.data.title}</span>
           </nav>
@@ -109,7 +109,7 @@ const readTime = calculateReadTime(post.body || '');
               class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-              返回博客列表
+              {t.blog.backToBlog}
             </a>
           </div>
         </article>

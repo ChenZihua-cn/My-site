@@ -40,7 +40,7 @@ const t = translations;
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <span class="inline-block mb-3 text-sm font-semibold uppercase tracking-wider text-primary">
-              Featured
+              {t.home.featuredProducts.label}
             </span>
             <h2 class="text-3xl font-bold text-foreground sm:text-4xl">
               {t.home.featuredProducts.title}
@@ -82,7 +82,7 @@ const t = translations;
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <span class="inline-block mb-3 text-sm font-semibold uppercase tracking-wider text-primary">
-              Latest
+              {t.home.latestPosts.label}
             </span>
             <h2 class="text-3xl font-bold text-foreground sm:text-4xl">
               {t.home.latestPosts.title}
@@ -106,6 +106,7 @@ const t = translations;
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {latestPosts.map((post) => (
             <PostCard
+              lang="en"
               title={post.data.title}
               description={post.data.description}
               href={`/en/blog/${post.id.replace('en/', '')}`}

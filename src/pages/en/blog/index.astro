@@ -47,6 +47,7 @@ const t = translations;
           {sortedPosts.map((post) => (
             <div class="post-item" data-tags={post.data.tags.join(',')}>
               <PostCard
+                lang="en"
                 title={post.data.title}
                 description={post.data.description}
                 href={`/en/blog/${post.id.replace('en/', '')}`}

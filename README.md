@@ -1,13 +1,15 @@
 # 个人博客 / 独立站
 
-基于 Astro + Tailwind CSS v4 构建的双语个人博客和产品展示站点。
+基于 Astro 6 + Tailwind CSS v4 构建的双语个人博客和产品展示站点。
 
 ## 特性
 
-- 中英文双语支持（Astro 内置 i18n 路由）
-- 博客文章系统（MDX）
-- 产品展示系统
+- 中英文双语支持（文件路由 + 中间件自动跳转）
+- 启动页动画（黑洞视界效果 + 8-bit 音乐 + 自动跳转）
+- 博客文章系统（MDX，标签筛选）
+- 产品展示系统（分类筛选、规格表）
 - 亮色 / 暗色主题切换
+- 文章目录（Table of Contents）
 - 响应式设计
 - SEO 优化
 - 静态生成，快速加载
@@ -16,62 +18,74 @@
 
 | 类别 | 技术 |
 |------|------|
-| 框架 | Astro 5.x |
+| 框架 | Astro 6.x |
 | 样式 | Tailwind CSS v4 |
 | 图标 | 内联 SVG |
-| 国际化 | Astro i18n（内置） |
-| 内容 | MDX + Content Collections |
+| 国际化 | 文件路由 + 中间件 |
+| 内容 | MDX + Content Collections（glob loader） |
 
 ## 项目结构
 
 ```
 my-site/
 ├── public/
+│   ├── favicon.svg
 │   └── images/
-│       ├── products/      # 产品图片
-│       └── posts/         # 博客图片
+│       ├── products/           # 产品图片
+│       └── posts/              # 博客配图
 ├── src/
 │   ├── components/
-│   │   ├── ui/            # Button, Card, ThemeToggle
-│   │   ├── layout/        # Navbar, Footer, LanguageSwitcher
-│   │   ├── products/      # ProductCard
-│   │   └── blog/          # PostCard
+│   │   ├── ui/                 # Button, Card, ThemeToggle
+│   │   ├── layout/             # Navbar, Footer, LanguageSwitcher
+│   │   ├── home/               # Hero
+│   │   ├── products/           # ProductCard
+│   │   └── blog/               # PostCard, TableOfContents
 │   ├── layouts/
-│   │   └── Layout.astro
+│   │   └── Layout.astro        # 全局布局（HTML 壳）
 │   ├── pages/
-│   │   ├── index.astro    # 中文首页
-│   │   ├── about.astro    # 中文关于
-│   │   ├── blog/
+│   │   ├── index.astro         # 根路径启动页（黑洞动画 + 倒计时跳转）
+│   │   ├── zh/                 # 中文路由
 │   │   │   ├── index.astro
-│   │   │   └── [...slug].astro
-│   │   ├── products/
-│   │   │   ├── index.astro
-│   │   │   └── [...slug].astro
-│   │   └── en/            # 英文路由
+│   │   │   ├── about.astro
+│   │   │   ├── 404.astro
+│   │   │   ├── blog/
+│   │   │   │   ├── index.astro
+│   │   │   │   └── [...slug].astro
+│   │   │   └── products/
+│   │   │       ├── index.astro
+│   │   │       └── [...slug].astro
+│   │   └── en/                 # 英文路由
 │   │       ├── index.astro
 │   │       ├── about.astro
+│   │       ├── 404.astro
 │   │       ├── blog/
+│   │       │   ├── index.astro
+│   │       │   └── [...slug].astro
 │   │       └── products/
+│   │           ├── index.astro
+│   │           └── [...slug].astro
 │   ├── content/
 │   │   ├── posts/
-│   │   │   ├── zh/        # 中文博客
-│   │   │   └── en/        # 英文博客
+│   │   │   ├── zh/             # 中文博客文章
+│   │   │   └── en/             # 英文博客文章
 │   │   └── products/
-│   │       ├── zh/        # 中文产品
-│   │       └── en/        # 英文产品
-│   │   └── i18n/
-│   │   ├── zh.json
-│   │   └── en.json
-│   ├── src/styles/
-│   │   └──  global.css        (42行)  入口：Tailwind + Plugin + @theme + 各模块导入
-│   │   └──  tokens.css        (111行) 设计令牌：颜色、间距、字体 — 明/暗双模式
-│   │   └──  base.css          (42行)  基础：body、滚动条、文本选中
-│   │   └──  animations.css    (52行)  动画：keyframes + 工具类 + stagger
-│   │   └── components.css    (121行) 组件：渐变背景、玻璃态、卡片、按钮、文字渐变
-│   │   └──  typography.css    (195行) 排版：prose 增强 + 目录高亮
-
-│   └── consts.ts
+│   │       ├── zh/             # 中文产品
+│   │       └── en/             # 英文产品
+│   ├── i18n/
+│   │   ├── zh.json             # 中文翻译
+│   │   └── en.json             # 英文翻译
+│   ├── styles/
+│   │   ├── global.css          # 入口：Tailwind + Plugin + @theme + 各模块导入
+│   │   ├── tokens.css          # 设计令牌：颜色、间距 — 明/暗双模式（OKLCH）
+│   │   ├── base.css            # 基础样式：body、滚动条、文本选中
+│   │   ├── animations.css      # 动画：keyframes + 工具类 + stagger
+│   │   ├── components.css      # 组件样式：渐变背景、玻璃态、卡片、按钮
+│   │   └── typography.css      # 排版：prose 增强 + 目录高亮
+│   ├── content.config.ts       # Content Collections 定义
+│   ├── consts.ts               # 站点常量（名称、链接等）
+│   └── middleware.ts           # 语言检测 + 自动跳转
 ├── astro.config.mjs
+├── tsconfig.json
 └── package.json
 ```
 
@@ -152,9 +166,13 @@ featured: false
 
 在 [src/consts.ts](src/consts.ts) 中修改 `NAV_LINKS`。
 
+### 页面翻译
+
+在 [src/i18n/zh.json](src/i18n/zh.json) 和 [src/i18n/en.json](src/i18n/en.json) 中修改界面文案。
+
 ### 主题
 
-亮色 / 暗色主题的 CSS 变量定义在 [src/styles/global.css](src/styles/global.css) 的 `:root` 和 `[data-theme="dark"]` 中，可修改 `--hue` 变量更换主题色系。
+亮色 / 暗色主题的 CSS 变量定义在 [src/styles/tokens.css](src/styles/tokens.css) 的 `:root` 和 `[data-theme="dark"]` 中，可修改 `--hue` 变量更换主题色系。
 
 ## 部署
 
