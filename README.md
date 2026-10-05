@@ -30,6 +30,7 @@
 my-site/
 ├── public/
 │   ├── favicon.svg
+│   ├── CNAME                     # GitHub Pages 自定义域名
 │   └── images/
 │       ├── products/           # 产品图片
 │       └── posts/              # 博客配图
@@ -176,14 +177,17 @@ featured: false
 
 ## 部署
 
-Push 到 `main` 分支后，GitHub Actions 自动通过 SSH 部署到服务器：
+站点托管在 GitHub Pages。Push 到 `main` 分支后，GitHub Actions 自动构建并部署：
 
-1. 拉取代码 → 安装依赖 → 构建
-2. 将 `dist/` 放入 `/var/www/releases/luv2u/build_{timestamp}`
-3. 原子更新软链接 `/var/www/luv2u` → 新版本目录
-4. Reload Nginx，保留最近 5 个版本用于回滚
+1. Checkout → 安装依赖（`npm ci`）→ `npm run build`
+2. 上传 `dist/` 构建产物（`actions/upload-pages-artifact`）
+3. `actions/deploy-pages` 发布到 GitHub Pages
 
-详见 [.github/workflows/ci.yml](.github/workflows/ci.yml) 和 [deploy.sh](deploy.sh)。
+PR 到 `main` 也会触发构建检查，但不会部署。
+
+自定义域名通过 `public/CNAME` 绑定（`luv2u.cn`），域名 DNS 需配置 CNAME 记录指向 `<username>.github.io`。
+
+详见 [.github/workflows/ci.yml](.github/workflows/ci.yml)。
 
 ### 其他平台
 
@@ -199,4 +203,5 @@ npm i -g netlify-cli && netlify deploy --prod --dir=dist
 
 ## License
 
-MIT
+GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
