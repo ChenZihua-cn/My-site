@@ -1,0 +1,12 @@
+# 统一使用 LF 换行符，避免 Windows/Linux 协作时混入 CRLF
+* text=auto eol=lf
+
+# 明确声明二进制文件，防止 Git 误判为文本
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.webp  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
