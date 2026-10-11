@@ -28,8 +28,6 @@
   --radius-xl: var(--radius-lg);
   --radius-2xl: var(--radius-xl);
   --animate-fade-in-up: fade-in-up 0.6s ease-out forwards;
-  --animate-fade-in: fade-in 0.4s ease-out forwards;
-  --animate-scale-in: scale-in 0.4s ease-out forwards;
   --animate-slide-down: slide-down 0.3s ease-out forwards;
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;

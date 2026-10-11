@@ -36,7 +36,7 @@ my-site/
 │       └── posts/              # 博客配图
 ├── src/
 │   ├── components/
-│   │   ├── ui/                 # Button, Card, ThemeToggle, ImagePlaceholder
+│   │   ├── ui/                 # Button, ThemeToggle, ImagePlaceholder
 │   │   ├── layout/             # Navbar, Footer, LanguageSwitcher
 │   │   ├── home/               # Hero, BlackHole
 │   │   ├── products/           # ProductCard
