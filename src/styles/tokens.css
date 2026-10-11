@@ -37,25 +37,25 @@
   --radius-lg: 1rem;
   --radius-xl: 1.25rem;
 
-  /* Typography — Light */
-  --tw-prose-body: oklch(23% 0.05 var(--hue));
-  --tw-prose-headings: oklch(15% 0.05 var(--hue));
-  --tw-prose-lead: oklch(40% 0.06 var(--hue));
-  --tw-prose-links: oklch(50% 0.22 var(--hue));
-  --tw-prose-bold: oklch(15% 0.05 var(--hue));
-  --tw-prose-counters: oklch(45% 0.08 var(--hue));
-  --tw-prose-bullets: oklch(45% 0.12 var(--hue));
-  --tw-prose-hr: oklch(88% 0.02 var(--hue));
-  --tw-prose-quotes: oklch(23% 0.05 var(--hue));
-  --tw-prose-quote-borders: oklch(50% 0.22 var(--hue));
-  --tw-prose-captions: oklch(42% 0.06 var(--hue));
-  --tw-prose-code: oklch(18% 0.08 var(--hue));
-  --tw-prose-pre-code: oklch(88% 0.02 var(--hue));
-  --tw-prose-pre-bg: oklch(20% 0.03 var(--hue));
-  --tw-prose-th-borders: oklch(80% 0.03 var(--hue));
-  --tw-prose-td-borders: oklch(88% 0.02 var(--hue));
-  --tw-prose-kbd: oklch(18% 0.05 var(--hue));
-  --tw-prose-kbd-shadows: oklch(80% 0.02 var(--hue));
+  /* Typography — Light（值由 typography.css 的 .prose 映射到 --tw-prose-*） */
+  --prose-body: oklch(23% 0.05 var(--hue));
+  --prose-headings: oklch(15% 0.05 var(--hue));
+  --prose-lead: oklch(40% 0.06 var(--hue));
+  --prose-links: oklch(50% 0.22 var(--hue));
+  --prose-bold: oklch(15% 0.05 var(--hue));
+  --prose-counters: oklch(45% 0.08 var(--hue));
+  --prose-bullets: oklch(45% 0.12 var(--hue));
+  --prose-hr: oklch(88% 0.02 var(--hue));
+  --prose-quotes: oklch(23% 0.05 var(--hue));
+  --prose-quote-borders: oklch(50% 0.22 var(--hue));
+  --prose-captions: oklch(42% 0.06 var(--hue));
+  --prose-code: oklch(18% 0.08 var(--hue));
+  --prose-pre-code: oklch(88% 0.02 var(--hue));
+  --prose-pre-bg: oklch(20% 0.03 var(--hue));
+  --prose-th-borders: oklch(80% 0.03 var(--hue));
+  --prose-td-borders: oklch(88% 0.02 var(--hue));
+  --prose-kbd: oklch(18% 0.05 var(--hue));
+  --prose-kbd-shadows: oklch(80% 0.02 var(--hue));
 }
 
 /* Dark Mode */
@@ -88,22 +88,22 @@
   --ring: oklch(70% 0.18 var(--hue));
 
   /* Typography — Dark */
-  --tw-prose-body: oklch(96% 0.01 var(--hue));
-  --tw-prose-headings: oklch(100% 0 var(--hue));
-  --tw-prose-lead: oklch(92% 0.02 var(--hue));
-  --tw-prose-links: oklch(85% 0.18 var(--hue));
-  --tw-prose-bold: oklch(100% 0 var(--hue));
-  --tw-prose-counters: oklch(85% 0.06 var(--hue));
-  --tw-prose-bullets: oklch(85% 0.08 var(--hue));
-  --tw-prose-hr: oklch(28% 0.05 var(--hue));
-  --tw-prose-quotes: oklch(94% 0.01 var(--hue));
-  --tw-prose-quote-borders: oklch(82% 0.18 var(--hue));
-  --tw-prose-captions: oklch(85% 0.04 var(--hue));
-  --tw-prose-code: oklch(97% 0.01 var(--hue));
-  --tw-prose-pre-code: oklch(94% 0.01 var(--hue));
-  --tw-prose-pre-bg: oklch(10% 0.03 var(--hue));
-  --tw-prose-th-borders: oklch(32% 0.05 var(--hue));
-  --tw-prose-td-borders: oklch(28% 0.05 var(--hue));
-  --tw-prose-kbd: oklch(97% 0.01 var(--hue));
-  --tw-prose-kbd-shadows: oklch(22% 0.03 var(--hue));
+  --prose-body: oklch(96% 0.01 var(--hue));
+  --prose-headings: oklch(100% 0 var(--hue));
+  --prose-lead: oklch(92% 0.02 var(--hue));
+  --prose-links: oklch(85% 0.18 var(--hue));
+  --prose-bold: oklch(100% 0 var(--hue));
+  --prose-counters: oklch(85% 0.06 var(--hue));
+  --prose-bullets: oklch(85% 0.08 var(--hue));
+  --prose-hr: oklch(28% 0.05 var(--hue));
+  --prose-quotes: oklch(94% 0.01 var(--hue));
+  --prose-quote-borders: oklch(82% 0.18 var(--hue));
+  --prose-captions: oklch(85% 0.04 var(--hue));
+  --prose-code: oklch(97% 0.01 var(--hue));
+  --prose-pre-code: oklch(94% 0.01 var(--hue));
+  --prose-pre-bg: oklch(10% 0.03 var(--hue));
+  --prose-th-borders: oklch(32% 0.05 var(--hue));
+  --prose-td-borders: oklch(28% 0.05 var(--hue));
+  --prose-kbd: oklch(97% 0.01 var(--hue));
+  --prose-kbd-shadows: oklch(22% 0.03 var(--hue));
 }
