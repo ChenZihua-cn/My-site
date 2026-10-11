@@ -62,6 +62,7 @@ Astro 7 + Tailwind CSS v4 构建的**纯静态**双语（zh / en）个人博客 
 - Tailwind v4 **CSS-first，没有 `tailwind.config.js`**。入口 `src/styles/global.css`：`@import "tailwindcss"` + `@plugin "@tailwindcss/typography"` + `@theme{}` + 依次导入 `tokens / base / animations / components / typography`。新模块要加进这个导入链。
 - 颜色只用**语义 token**：变量定义在 `src/styles/tokens.css` 的 `:root` / `[data-theme="dark"]`（全 OKLCH），`@theme` 把它们映射成 Tailwind 工具类（`bg-background`、`text-muted-foreground`、`border-border`、`bg-primary/10`…）。不要写死的 hex / `bg-[#xxx]`；换主色系改 `--hue: 250`。
 - 复用视觉类在 `components.css`（如 `card-modern`、玻璃态、渐变），prose 增强在 `typography.css`，keyframes + stagger 工具类在 `animations.css`。
+- ⚠️ 文章正文颜色**不能只在 `tokens.css` 里改 `--tw-prose-*`**：`@tailwindcss/typography` 把这些变量定义在 `.prose` 元素自己身上，同元素声明压过从 `html` 继承的值，改了也不生效（曾导致暗色正文只有 1.9:1、标题 1.1:1）。正确写法是在 `tokens.css` 用 `--prose-*` 存值，再由 `typography.css` 的 `.prose` 规则映射回 `--tw-prose-*`。新增可继承主题的颜色类（如 `.text-gradient`）要配 `[data-theme="dark"]` 变体，否则暗色下对比度不足。
 - 暗色模式：`<html data-theme="dark">` + `localStorage.theme`；`Layout.astro` 里有一段 `is:inline` 脚本在首屏渲染前打标防 FOUC——不要挪动它的位置或改成 module script。
 - 图标全部**内联 SVG**，没有引入图标库；字体走 Google Fonts CDN（`Inter`）。
 
