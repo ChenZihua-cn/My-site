@@ -4,7 +4,8 @@
     "products": "Products",
     "blog": "Blog",
     "about": "About",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "toggleMenu": "Toggle menu"
   },
   "home": {
     "hero": {
@@ -43,6 +44,10 @@
     "readTime": "min read",
     "backToBlog": "Back to Blog"
   },
+  "toc": {
+    "label": "Table of Contents",
+    "heading": "On this page"
+  },
   "about": {
     "title": "About Me",
     "aboutSite": "About This Site",
@@ -50,12 +55,17 @@
   },
   "footer": {
     "rights": "All rights reserved",
-    "contact": "Contact"
+    "contact": "Contact",
+    "quickLinks": "Quick Links",
+    "status": "All systems operational"
   },
   "language": {
     "switch": "Switch Language",
     "zh": "中文",
     "en": "English"
+  },
+  "theme": {
+    "toggle": "Toggle theme"
   },
   "catNiang": {
     "greeting": "Welcome to my blog meow~ 🐱",

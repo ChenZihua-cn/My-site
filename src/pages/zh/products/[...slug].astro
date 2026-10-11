@@ -4,6 +4,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import Button from '../../../components/ui/Button.astro';
+import ImagePlaceholder from '../../../components/ui/ImagePlaceholder.astro';
 import { SITE } from '../../../consts';
 import translations from '../../../i18n/zh.json';
 
@@ -21,7 +22,7 @@ const { Content } = await render(product);
 const t = translations;
 ---
 
-<Layout title={`${product.data.name} - My Site`} description={product.data.description}>
+<Layout title={`${product.data.name} - ${SITE.nameZh}`} description={product.data.description} image={product.data.images[0]}>
   <Navbar lang="zh" />
 
   <main class="min-h-screen py-16">
@@ -39,11 +40,15 @@ const t = translations;
         <!-- Images -->
         <div class="space-y-4">
           <div class="aspect-square overflow-hidden rounded-lg bg-muted">
-            <img
-              src={product.data.images[0] || '/images/placeholder.jpg'}
-              alt={product.data.name}
-              class="h-full w-full object-cover"
-            />
+            {product.data.images[0] ? (
+              <img
+                src={product.data.images[0]}
+                alt={product.data.name}
+                class="h-full w-full object-cover"
+              />
+            ) : (
+              <ImagePlaceholder class="h-full" />
+            )}
           </div>
           {product.data.images.length > 1 && (
             <div class="grid grid-cols-4 gap-2">

@@ -1,5 +1,7 @@
 ---
 import { SITE } from '../../consts';
+import zhTranslations from '../../i18n/zh.json';
+import enTranslations from '../../i18n/en.json';
 
 export interface Props {
   lang?: 'zh' | 'en';
@@ -7,6 +9,7 @@ export interface Props {
 
 const { lang = 'zh' } = Astro.props;
 const isZh = lang === 'zh';
+const t = isZh ? zhTranslations : enTranslations;
 ---
 
 <footer class="border-t bg-muted/50">
@@ -52,27 +55,27 @@ const isZh = lang === 'zh';
       <!-- Quick Links -->
       <div>
         <h3 class="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">
-          {isZh ? '快速链接' : 'Quick Links'}
+          {t.footer.quickLinks}
         </h3>
         <ul class="space-y-3">
           <li>
             <a href={isZh ? '/zh' : '/en'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {isZh ? '首页' : 'Home'}
+              {t.nav.home}
             </a>
           </li>
           <li>
             <a href={isZh ? '/zh/products' : '/en/products'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {isZh ? '产品' : 'Products'}
+              {t.nav.products}
             </a>
           </li>
           <li>
             <a href={isZh ? '/zh/blog' : '/en/blog'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {isZh ? '博客' : 'Blog'}
+              {t.nav.blog}
             </a>
           </li>
           <li>
             <a href={isZh ? '/zh/about' : '/en/about'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {isZh ? '关于我们' : 'About'}
+              {t.nav.about}
             </a>
           </li>
         </ul>
@@ -81,7 +84,7 @@ const isZh = lang === 'zh';
       <!-- Contact -->
       <div>
         <h3 class="text-sm font-semibold uppercase tracking-wider text-foreground mb-4">
-          {isZh ? '联系方式' : 'Contact'}
+          {t.footer.contact}
         </h3>
         <div class="space-y-3">
           <a
@@ -100,11 +103,11 @@ const isZh = lang === 'zh';
 
     <div class="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4">
       <p class="text-sm text-muted-foreground">
-        © {new Date().getFullYear()} {isZh ? SITE.nameZh : SITE.name}. {isZh ? '保留所有权利' : 'All rights reserved'}.
+        © {new Date().getFullYear()} {isZh ? SITE.nameZh : SITE.name}. {t.footer.rights}.
       </p>
       <div class="flex items-center gap-2">
         <span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-        <span class="text-xs text-muted-foreground">{isZh ? '系统运行正常' : 'All systems operational'}</span>
+        <span class="text-xs text-muted-foreground">{t.footer.status}</span>
       </div>
     </div>
   </div>

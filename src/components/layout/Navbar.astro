@@ -1,5 +1,7 @@
 ---
 import { NAV_LINKS, SITE } from '../../consts';
+import zhTranslations from '../../i18n/zh.json';
+import enTranslations from '../../i18n/en.json';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import ThemeToggle from '../ui/ThemeToggle.astro';
 
@@ -10,6 +12,7 @@ export interface Props {
 const { lang = 'zh' } = Astro.props;
 const navLinks = NAV_LINKS[lang];
 const isZh = lang === 'zh';
+const t = isZh ? zhTranslations : enTranslations;
 ---
 
 <header
@@ -42,14 +45,14 @@ const isZh = lang === 'zh';
 
       <!-- Right Actions -->
       <div class="flex items-center gap-2">
-        <ThemeToggle />
+        <ThemeToggle lang={lang} />
         <LanguageSwitcher currentLang={lang} />
 
         <!-- Mobile Menu Button -->
         <button
           type="button"
           class="md:hidden inline-flex items-center justify-center rounded-full h-9 w-9 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          aria-label="Toggle menu"
+          aria-label={t.nav.toggleMenu}
           id="mobile-menu-button"
         >
           <svg

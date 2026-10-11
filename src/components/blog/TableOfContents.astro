@@ -1,10 +1,14 @@
 ---
+import zhTranslations from '../../i18n/zh.json';
+import enTranslations from '../../i18n/en.json';
+
 export interface Props {
   headings: { depth: number; slug: string; text: string }[];
   lang?: 'zh' | 'en';
 }
 
 const { headings, lang = 'zh' } = Astro.props;
+const t = lang === 'zh' ? zhTranslations : enTranslations;
 
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length >= 2;
@@ -13,10 +17,10 @@ const hasToc = tocHeadings.length >= 2;
 {hasToc && (
   <nav
     class="toc-sidebar sticky top-24 w-56 flex-shrink-0 hidden lg:block self-start"
-    aria-label={lang === 'zh' ? '目录' : 'Table of Contents'}
+    aria-label={t.toc.label}
   >
     <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-      {lang === 'zh' ? '目录' : 'On this page'}
+      {t.toc.heading}
     </h2>
     <ul class="space-y-1.5 text-sm leading-relaxed">
       {tocHeadings.map((heading) => (

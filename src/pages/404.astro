@@ -1,0 +1,55 @@
+---
+// 构建产物是 dist/404.html：GitHub Pages 用它兜底所有未命中的路径（含 /zh、/en 下的错拼路径）。
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<Layout title="404 - 页面未找到 · Page Not Found" noindex>
+  <Navbar />
+
+  <main class="flex min-h-[60vh] items-center justify-center py-16">
+    <div class="max-w-md text-center">
+      <h1 class="mb-4 text-6xl font-bold text-primary">404</h1>
+      <h2 class="mb-4 text-2xl font-semibold text-foreground">页面未找到 · Page not found</h2>
+      <p class="mb-8 text-muted-foreground">
+        正在跳转到对应语言版本…
+        <br />
+        <span class="text-sm">Redirecting you to the matching language version…</span>
+      </p>
+      <div class="flex items-center justify-center gap-3">
+        <Button href="/zh">中文站点</Button>
+        <Button href="/en" variant="outline">English site</Button>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  (function () {
+    var path = location.pathname;
+    // 已带语言前缀则不再跳转，避免 404.html 自我循环；静态资源也不参与
+    if (/^\/(zh|en)(\/|$)/.test(path) || /\.\w{2,8}$/.test(path)) return;
+    if (path === '/') return;
+
+    var lang = 'zh';
+    var cookie = document.cookie.match(/(?:^|;\s*)preferred-language=([^;]+)/);
+    if (cookie) {
+      lang = cookie[1] === 'en' ? 'en' : 'zh';
+    } else {
+      var preferred = navigator.languages && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language || ''];
+      for (var i = 0; i < preferred.length; i++) {
+        var tag = (preferred[i] || '').toLowerCase();
+        if (tag.indexOf('zh') === 0) { lang = 'zh'; break; }
+        if (tag.indexOf('en') === 0) { lang = 'en'; break; }
+      }
+    }
+
+    location.replace('/' + lang + path + location.search);
+  })();
+</script>

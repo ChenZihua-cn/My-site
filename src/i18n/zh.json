@@ -4,7 +4,8 @@
     "products": "产品",
     "blog": "博客",
     "about": "关于",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "toggleMenu": "打开菜单"
   },
   "home": {
     "hero": {
@@ -43,6 +44,10 @@
     "readTime": "分钟阅读",
     "backToBlog": "返回博客列表"
   },
+  "toc": {
+    "label": "目录",
+    "heading": "目录"
+  },
   "about": {
     "title": "关于我",
     "aboutSite": "关于本站",
@@ -50,12 +55,17 @@
   },
   "footer": {
     "rights": "保留所有权利",
-    "contact": "联系方式"
+    "contact": "联系方式",
+    "quickLinks": "快速链接",
+    "status": "系统运行正常"
   },
   "language": {
     "switch": "切换语言",
     "zh": "中文",
     "en": "English"
+  },
+  "theme": {
+    "toggle": "切换主题"
   },
   "catNiang": {
     "greeting": "欢迎来到人家的博客喵~ 🐱",

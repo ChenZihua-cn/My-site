@@ -1,11 +1,20 @@
 ---
+import zhTranslations from '../../i18n/zh.json';
+import enTranslations from '../../i18n/en.json';
+
+export interface Props {
+  lang?: 'zh' | 'en';
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = lang === 'zh' ? zhTranslations : enTranslations;
 ---
 
 <button
   type="button"
   id="theme-toggle"
   class="relative inline-flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-  aria-label="切换主题"
+  aria-label={t.theme.toggle}
 >
   <!-- Sun Icon (shown in dark mode) -->
   <svg

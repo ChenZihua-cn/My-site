@@ -32,8 +32,9 @@ function getPreferredLocale(context: Parameters<Parameters<typeof defineMiddlewa
 export const onRequest = defineMiddleware((context, next) => {
   const { pathname, search } = context.url;
 
-  // Skip paths that already have a locale prefix
-  if (pathname.startsWith('/zh') || pathname.startsWith('/en')) {
+  // Skip paths that already have a locale prefix. Must stay anchored: a bare
+  // startsWith('/zh') would also let unrelated paths like /zhao through.
+  if (/^\/(zh|en)(\/|$)/.test(pathname)) {
     return next();
   }
 
@@ -47,8 +48,15 @@ export const onRequest = defineMiddleware((context, next) => {
     return next();
   }
 
+  // /404 is the GitHub Pages fallback; it picks the locale client-side, so it
+  // must not be rewritten to /zh/404 (that would emit a redirect stub instead).
+  // Prerendering hits this route as "/404/", hence the optional trailing slash.
+  if (/^\/404\/?$/.test(pathname)) {
+    return next();
+  }
+
   // Other paths without locale prefix: redirect to zh version
-  const destination = `/zh${pathname}${search ?? ''}`;
+  const destination = `/zh${pathname}${search}`;
 
   return context.redirect(destination, 302);
 });

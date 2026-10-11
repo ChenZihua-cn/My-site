@@ -4,6 +4,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import PostCard from '../../../components/blog/PostCard.astro';
+import { SITE } from '../../../consts';
 import translations from '../../../i18n/zh.json';
 
 const posts = await getCollection('posts', ({ id }) => id.startsWith('zh/'));
@@ -17,7 +18,7 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))];
 const t = translations;
 ---
 
-<Layout title={`${t.blog.title} - My Site`}>
+<Layout title={`${t.blog.title} - ${SITE.nameZh}`}>
   <Navbar lang="zh" />
 
   <main class="min-h-screen">

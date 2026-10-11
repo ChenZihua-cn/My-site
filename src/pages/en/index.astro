@@ -64,7 +64,7 @@ const t = translations;
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {featuredProducts.map((product) => (
             <ProductCard
-              image={product.data.images[0] || '/images/placeholder.jpg'}
+              image={product.data.images[0]}
               title={product.data.name}
               description={product.data.description}
               href={`/en/products/${product.id.replace('en/', '')}`}

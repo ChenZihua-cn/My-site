@@ -5,10 +5,34 @@ import { SITE } from '../consts';
 export interface Props {
   title: string;
   description?: string;
-  lang?: string;
+  lang?: 'zh' | 'en';
+  /** 绝对或站点根相对路径；缺省则不输出 og:image */
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
-const { title, description = SITE.description, lang = 'zh' } = Astro.props;
+const {
+  title,
+  description = SITE.description,
+  lang = 'zh',
+  image,
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, site);
+const ogImageURL = image ? new URL(image, site) : null;
+
+// /zh/... 与 /en/... 互为镜像，用于 hreflang；无语言前缀的页面不输出
+const localeMatch = /^\/(zh|en)(\/.*)?$/.exec(Astro.url.pathname);
+const alternates = localeMatch
+  ? (['zh', 'en'] as const).map((locale) => ({
+      hreflang: locale === 'zh' ? 'zh-CN' : 'en',
+      href: new URL(`/${locale}${localeMatch[2] ?? ''}`, site).href,
+    }))
+  : [];
 ---
 
 <!doctype html>
@@ -19,7 +43,24 @@ const { title, description = SITE.description, lang = 'zh' } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
+
+    <link rel="canonical" href={canonicalURL.href} />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={lang === 'zh' ? SITE.nameZh : SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    {ogImageURL && <meta property="og:image" content={ogImageURL.href} />}
+    <meta name="twitter:card" content={ogImageURL ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageURL && <meta name="twitter:image" content={ogImageURL.href} />}
+    {alternates.map(({ hreflang, href }) => (
+      <link rel="alternate" {hreflang} {href} />
+    ))}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

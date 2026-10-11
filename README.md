@@ -1,24 +1,24 @@
 # 个人博客 / 独立站
 
-基于 Astro 6 + Tailwind CSS v4 构建的双语个人博客和产品展示站点。
+基于 Astro 7 + Tailwind CSS v4 构建的双语个人博客和产品展示站点。
 
 ## 特性
 
-- 中英文双语支持（文件路由 + 中间件自动跳转）
+- 中英文双语支持（文件路由 + 中间件 + 404 页语言兜底跳转）
 - 启动页动画（黑洞视界效果 + 8-bit 音乐 + 自动跳转）
 - 博客文章系统（MDX，标签筛选）
 - 产品展示系统（分类筛选、规格表）
 - 亮色 / 暗色主题切换
 - 文章目录（Table of Contents）
 - 响应式设计
-- SEO 优化
+- SEO 优化（canonical / Open Graph / Twitter Card / hreflang）
 - 静态生成，快速加载
 
 ## 技术栈
 
 | 类别 | 技术 |
 |------|------|
-| 框架 | Astro 6.x |
+| 框架 | Astro 7.x |
 | 样式 | Tailwind CSS v4 |
 | 图标 | 内联 SVG |
 | 国际化 | 文件路由 + 中间件 |
@@ -36,15 +36,16 @@ my-site/
 │       └── posts/              # 博客配图
 ├── src/
 │   ├── components/
-│   │   ├── ui/                 # Button, Card, ThemeToggle
+│   │   ├── ui/                 # Button, Card, ThemeToggle, ImagePlaceholder
 │   │   ├── layout/             # Navbar, Footer, LanguageSwitcher
-│   │   ├── home/               # Hero
+│   │   ├── home/               # Hero, BlackHole
 │   │   ├── products/           # ProductCard
 │   │   └── blog/               # PostCard, TableOfContents
 │   ├── layouts/
 │   │   └── Layout.astro        # 全局布局（HTML 壳）
 │   ├── pages/
 │   │   ├── index.astro         # 根路径启动页（黑洞动画 + 倒计时跳转）
+│   │   ├── 404.astro           # GitHub Pages 兜底页（按偏好语言跳转 zh/en）
 │   │   ├── zh/                 # 中文路由
 │   │   │   ├── index.astro
 │   │   │   ├── about.astro
@@ -94,7 +95,7 @@ my-site/
 
 ### 1. 环境要求
 
-- Node.js 18+
+- Node.js 22.12+（Astro 7 的 engines 要求；CI 使用 Node 22）
 - npm
 
 ### 2. 安装依赖

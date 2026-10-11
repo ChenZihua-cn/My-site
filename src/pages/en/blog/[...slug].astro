@@ -4,6 +4,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import TableOfContents from '../../../components/blog/TableOfContents.astro';
+import { SITE } from '../../../consts';
 import translations from '../../../i18n/en.json';
 
 export async function getStaticPaths() {
@@ -37,7 +38,7 @@ const calculateReadTime = (text: string) => {
 const readTime = calculateReadTime(post.body || '');
 ---
 
-<Layout title={`${post.data.title} - My Site`} description={post.data.description} lang="en">
+<Layout title={`${post.data.title} - ${SITE.name}`} description={post.data.description} image={post.data.coverImage} type="article" lang="en">
   <Navbar lang="en" />
 
   <main class="min-h-screen py-16">

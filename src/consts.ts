@@ -6,7 +6,7 @@ export const SITE = {
   url: 'https://luv2u.cn',
   email: 'cyan_0916@qq.com',
   github: 'https://github.com/ChenZihua-cn',
-  twitter: 'https://twitter.com/404.html',
+  twitter: 'https://twitter.com/Chen42036136',
 } as const;
 
 export const NAV_LINKS = {
