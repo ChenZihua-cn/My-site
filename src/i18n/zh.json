@@ -4,15 +4,12 @@
     "products": "产品",
     "blog": "博客",
     "about": "关于",
-    "contact": "联系我们",
     "toggleMenu": "打开菜单"
   },
   "home": {
     "hero": {
       "title": "欢迎来到我的博客",
-      "subtitle": "记录思考，分享技术，探索生活的可能性",
-      "cta": "阅读博客",
-      "secondaryCta": "关于我"
+      "subtitle": "记录思考，分享技术，探索生活的可能性"
     },
     "featuredProducts": {
       "label": "精选产品",
@@ -30,17 +27,13 @@
   "products": {
     "title": "产品展示",
     "subtitle": "浏览完整产品线",
-    "categories": "产品分类",
     "all": "全部",
     "inquiry": "立即询盘",
-    "specs": "产品规格",
-    "related": "相关产品"
+    "specs": "产品规格"
   },
   "blog": {
     "title": "博客",
     "subtitle": "技术文章、项目总结与生活随笔",
-    "tags": "标签",
-    "published": "发布于",
     "readTime": "分钟阅读",
     "backToBlog": "返回博客列表"
   },
@@ -58,11 +51,6 @@
     "contact": "联系方式",
     "quickLinks": "快速链接",
     "status": "系统运行正常"
-  },
-  "language": {
-    "switch": "切换语言",
-    "zh": "中文",
-    "en": "English"
   },
   "theme": {
     "toggle": "切换主题"

@@ -4,15 +4,12 @@
     "products": "Products",
     "blog": "Blog",
     "about": "About",
-    "contact": "Contact Us",
     "toggleMenu": "Toggle menu"
   },
   "home": {
     "hero": {
       "title": "Welcome to My Blog",
-      "subtitle": "A place for thoughts, tech, and exploration",
-      "cta": "Read Blog",
-      "secondaryCta": "About Me"
+      "subtitle": "A place for thoughts, tech, and exploration"
     },
     "featuredProducts": {
       "label": "Featured",
@@ -30,17 +27,13 @@
   "products": {
     "title": "Products",
     "subtitle": "Browse the complete product line",
-    "categories": "Categories",
     "all": "All",
     "inquiry": "Inquiry Now",
-    "specs": "Specifications",
-    "related": "Related Products"
+    "specs": "Specifications"
   },
   "blog": {
     "title": "Blog",
     "subtitle": "Tech articles, project logs, and life notes",
-    "tags": "Tags",
-    "published": "Published on",
     "readTime": "min read",
     "backToBlog": "Back to Blog"
   },
@@ -58,11 +51,6 @@
     "contact": "Contact",
     "quickLinks": "Quick Links",
     "status": "All systems operational"
-  },
-  "language": {
-    "switch": "Switch Language",
-    "zh": "中文",
-    "en": "English"
   },
   "theme": {
     "toggle": "Toggle theme"

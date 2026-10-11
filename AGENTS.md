@@ -34,7 +34,8 @@ Astro 7 + Tailwind CSS v4 构建的**纯静态**双语（zh / en）个人博客 
   import translations from '../../i18n/zh.json';
   const t = translations;   // 模板里写 {t.nav.home}
   ```
-  **两份 JSON 的 key 必须完全一致**（当前各 48 个，扁平后逐一对应）。新文案一律加进这两个文件，不要在三元表达式里就地写死——`Navbar` / `Footer` / `ThemeToggle` / `TableOfContents` 里曾经有 19 处硬编码，已全部收敛到该约定。
+  **两份 JSON 的 key 必须完全一致**（当前各 38 个，扁平后逐一对应）。新文案一律加进这两个文件，不要在三元表达式里就地写死——`Navbar` / `Footer` / `ThemeToggle` / `TableOfContents` 里曾经有 19 处硬编码，已全部收敛到该约定。
+- 导航标签只有一个真源：`src/consts.ts` 的 `NAV_LINKS` 只放 `{ key, path }`，`Navbar` 用 `t.nav[key]` 取文字。**不要把 label 写回 consts**，那会和 `nav.*` 形成双源漂移。`LanguageSwitcher` 里的 `'中文'/'EN'` 是语言自称（不翻译），属例外。
 - 组件里取文案的写法固定为（组件只有 `lang` prop，页面不会把 JSON 传进来）：
   ```ts
   import zhTranslations from '../../i18n/zh.json';

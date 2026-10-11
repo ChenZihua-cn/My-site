@@ -9,17 +9,11 @@ export const SITE = {
   twitter: 'https://twitter.com/Chen42036136',
 } as const;
 
-export const NAV_LINKS = {
-  zh: [
-    { href: '/zh', label: '首页' },
-    { href: '/zh/products', label: '产品' },
-    { href: '/zh/blog', label: '博客' },
-    { href: '/zh/about', label: '关于' },
-  ],
-  en: [
-    { href: '/en', label: 'Home' },
-    { href: '/en/products', label: 'Products' },
-    { href: '/en/blog', label: 'Blog' },
-    { href: '/en/about', label: 'About' },
-  ],
-} as const;
+// 导航标签的唯一真源是 src/i18n/{zh,en}.json 的 nav.*，这里只放路径，
+// href 前缀由 lang 决定（'' → /zh 或 /en）。
+export const NAV_LINKS = [
+  { key: 'home', path: '' },
+  { key: 'products', path: '/products' },
+  { key: 'blog', path: '/blog' },
+  { key: 'about', path: '/about' },
+] as const;
