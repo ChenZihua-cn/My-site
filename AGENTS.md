@@ -85,7 +85,8 @@ Astro 7 + Tailwind CSS v4 构建的**纯静态**双语（zh / en）个人博客 
 - 域名三处必须一致：`public/CNAME`、`astro.config.mjs` 的 `site`、`src/consts.ts` 的 `SITE.url`。换域名要三个一起改。
 - `dist/404.html` 由 `src/pages/404.astro` 产出，GitHub Pages 用它兜底所有未命中路径（详见上面「双语架构」的语言跳转逻辑）。`/zh/404` 与 `/en/404` 也各自构建，但线上几乎走不到——未命中路径统一由根 `404.html` 接管。
 - GitHub Pages 只对**根 `404.html`** 做自定义 404；`astro build` 若把 `/404` 输出成 `404/index.html` 或被中间件改写成跳转存根，自定义页就失效。改完 404 相关代码后用 `npm run build && head -c 200 dist/404.html` 确认它是页面而不是 `Redirecting to:` 存根。
-- `package.json` 有 `overrides: { esbuild: "0.27.2" }` 和 `allowScripts`（`esbuild`、`sharp`）。不要随手删或升；`sharp` 是图片处理链路依赖。
+- `package.json` 的 `overrides: { esbuild: "0.27.2" }` 要和 `allowScripts` 里的 `esbuild@0.27.2` 一起维护：白名单按 `包名@解析版本` 精确匹配，esbuild 的 `postinstall` 靠它放行，升版本时不同步改就会变成未审核项被跳过。不要随手删或升这两处。
+- `sharp` 不是直接依赖，由 astro 的 `optionalDependencies`（`^0.35.4`）拉入，是图片处理链路需要的，别当未使用依赖删掉。它 0.35 起已无安装期脚本，因此不需要 `allowScripts` 条目（原先钉的 `sharp@0.34.5` 从未命中实际版本，已删除）。
 
 ## Git / 协作约定
 
