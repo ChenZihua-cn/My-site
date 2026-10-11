@@ -28,7 +28,7 @@ Astro 7 + Tailwind CSS v4 构建的**纯静态**双语（zh / en）个人博客 
 - 每个页面在 `src/pages/zh/` 和 `src/pages/en/` 各有一份**镜像文件**（index / about / 404 / blog/index / blog/[...slug] / products/index / products/[...slug]）。**改一处必须同步另一处**，否则两种语言的行为会静默分叉。
 - `src/middleware.ts`：偏好语言解析顺序为 cookie `preferred-language` → `Accept-Language` → 默认 `zh`；给无语言前缀的路径 302 到 `/zh...`；`/` 不重定向（交给启动页）；`/404` 与 `/404/` 不重定向；按扩展名 `\.\w{2,8}$` 跳过静态资源。
 - ⚠️ middleware **只在构建期对每个路由生效**，线上 GitHub Pages 完全不执行它。构建期它会对无语言前缀的路由生成一个 meta-refresh 跳转存根（`Redirecting from /xxx/ to /zh/xxx/`）而不是真实页面——这就是 `/404` 必须加白名单的原因：`dist/404.html` 必须是自己的页面，否则语言兜底逻辑会被存根替换掉。新增任何无语言前缀的顶层路由时，先想清楚它会不会被改写成 `/zh...`。
-- 线上语言兜底靠 `src/pages/404.astro`（产出 `dist/404.html`）：GitHub Pages 对所有未命中路径返回它，页面内 `is:inline` 脚本按 cookie → `navigator.languages` 决定跳 `/zh...` 还是 `/en...`，并用 `location.replace` 且对已带前缀/带扩展名的路径直接 return 以避免自我循环。改这段逻辑必须保持"不重定向已带前缀的路径"，否则 404 页会死循环。
+- 线上语言兜底靠 `src/pages/404.astro`（产出 `dist/404.html`）：GitHub Pages 对所有未命中路径返回它，页面内 `is:inline` 脚本按 cookie → `navigator.languages` 决定跳 `/zh...` 还是 `/en...`，并用 `location.replace` 且对已带前缀/带扩展名的路径直接 return 以避免自我循环。改这段逻辑必须保持"不重定向已带前缀的路径"，否则 404 页会死循环。该页**故意不挂 Navbar/Footer**（两者 `lang` 默认 `zh`，会给 `/en` 下的错拼路径套上中文外壳），且重定向 `<script is:inline>` 必须写在 `<Layout>` **内部**，否则产出位置落到 `</html>` 之后。
 - i18n 文案：`src/i18n/zh.json` 与 `src/i18n/en.json`，页面用法固定为
   ```ts
   import translations from '../../i18n/zh.json';

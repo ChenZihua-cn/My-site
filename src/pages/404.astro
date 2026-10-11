@@ -1,14 +1,12 @@
 ---
 // 构建产物是 dist/404.html：GitHub Pages 用它兜底所有未命中的路径（含 /zh、/en 下的错拼路径）。
+// 这里是全站唯一无法预知访客语言的页面，因此不挂 Navbar/Footer（它们的 lang 默认为 zh，
+// 会让 /en 下的错拼路径永久停在中文外壳上），只保留双语正文 + 两个入口按钮。
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/layout/Navbar.astro';
-import Footer from '../components/layout/Footer.astro';
 import Button from '../components/ui/Button.astro';
 ---
 
 <Layout title="404 - 页面未找到 · Page Not Found" noindex>
-  <Navbar />
-
   <main class="flex min-h-[60vh] items-center justify-center py-16">
     <div class="max-w-md text-center">
       <h1 class="mb-4 text-6xl font-bold text-primary">404</h1>
@@ -25,10 +23,7 @@ import Button from '../components/ui/Button.astro';
     </div>
   </main>
 
-  <Footer />
-</Layout>
-
-<script is:inline>
+  <script is:inline>
   (function () {
     var path = location.pathname;
     // 已带语言前缀则不再跳转，避免 404.html 自我循环；静态资源也不参与
@@ -52,4 +47,5 @@ import Button from '../components/ui/Button.astro';
 
     location.replace('/' + lang + path + location.search);
   })();
-</script>
+  </script>
+</Layout>
