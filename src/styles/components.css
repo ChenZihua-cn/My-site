@@ -106,3 +106,12 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* 亮色那两档（50%/60%）压在暗色卡片上是 3.1:1，低于 4.5:1，故暗色单独提亮 */
+[data-theme="dark"] .text-gradient {
+  background: linear-gradient(
+    135deg,
+    oklch(75% 0.16 var(--hue)) 0%,
+    oklch(82% 0.14 calc(var(--hue) + 30)) 100%
+  );
+}
