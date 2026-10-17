@@ -59,10 +59,25 @@ import BlackHole from '../components/home/BlackHole.astro';
       font-size: 2.2rem;
       animation: float-cat 7s ease-in-out infinite;
       filter: drop-shadow(0 0 14px oklch(65% 0.18 var(--hue) / 0.55));
-      pointer-events: none;
       top: 12%;
       right: 9%;
       opacity: 0.85;
+      background: none;
+      border: 0;
+      padding: 0.25rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: opacity 0.25s, filter 0.25s;
+    }
+    /* hover 用 filter 而不是 transform：float-cat 动画会覆盖 transform */
+    .space-cat:hover {
+      opacity: 1;
+      filter: drop-shadow(0 0 22px oklch(72% 0.2 var(--hue) / 0.85));
+    }
+    .space-cat:focus-visible {
+      outline: 2px solid oklch(80% 0.12 var(--hue));
+      outline-offset: 4px;
+      border-radius: 8px;
     }
     @keyframes float-cat {
       0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -138,7 +153,7 @@ import BlackHole from '../components/home/BlackHole.astro';
   <!-- Schwarzschild raytraced black hole (WebGL2 fullscreen shader) -->
   <BlackHole />
 
-  <div class="space-cat" aria-hidden="true">🐱</div>
+  <button type="button" class="space-cat" id="enter-site">🐱</button>
 
   <div class="overlay">
     <div class="site-name">Cyan's Blog</div>
@@ -156,6 +171,15 @@ import BlackHole from '../components/home/BlackHole.astro';
       if (isZh) { if (zhEl) zhEl.style.display = ''; }
       else { if (enEl) enEl.style.display = ''; }
       const targetPath = '/' + (isZh ? 'zh' : 'en') + '/';
+
+      // ── Click the cat to skip the countdown ──
+      const cat = document.getElementById('enter-site');
+      if (cat) {
+        const label = isZh ? '立即进入站点' : 'Enter site now';
+        cat.setAttribute('aria-label', label);
+        cat.setAttribute('title', label);
+        cat.addEventListener('click', () => { window.location.href = targetPath; });
+      }
 
       // ── Countdown: 25s ≈ one full 8-bit music loop (32 beats @ 76 BPM = 25.26s) ──
       let sec = 25;
@@ -184,12 +208,15 @@ import BlackHole from '../components/home/BlackHole.astro';
         let playing = true;
 
         function initAudio() {
-          if (ctx) return;
-          ctx = new AudioContext();
-          masterGain = ctx.createGain();
-          masterGain.gain.value = 0.14;
-          masterGain.connect(ctx.destination);
-          playInterstellar();
+          if (!ctx) {
+            ctx = new AudioContext();
+            masterGain = ctx.createGain();
+            masterGain.gain.value = 0.14;
+            masterGain.connect(ctx.destination);
+            playInterstellar();
+          }
+          // 移动端自动播放策略下 ctx 创建即 suspended，只能借用户手势 resume
+          if (ctx.state === 'suspended') { void ctx.resume(); }
         }
 
         const note = (n: string): number => {
@@ -373,10 +400,18 @@ import BlackHole from '../components/home/BlackHole.astro';
           scheduleLoop(startTime);
         }
 
-        // Auto-start on first user interaction
-        document.addEventListener('click', initAudio, { once: true });
-        document.addEventListener('keydown', initAudio, { once: true });
-        // Also try immediately (some browsers allow it if page was navigated to)
+        // 手势到来才真正出声；resume 成功前不移除监听，避免首次手势失败就永久静音
+        const GESTURES = ['click', 'keydown', 'touchend', 'pointerdown'];
+        const startOnGesture = () => {
+          try {
+            initAudio();
+            if (ctx && ctx.state === 'running') {
+              for (const ev of GESTURES) document.removeEventListener(ev, startOnGesture);
+            }
+          } catch (_) {}
+        };
+        for (const ev of GESTURES) document.addEventListener(ev, startOnGesture);
+        // 桌面端若浏览器判定允许自动播放，加载即响
         try { initAudio(); } catch (_) {}
       })();
     })();
