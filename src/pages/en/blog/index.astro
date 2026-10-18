@@ -6,6 +6,7 @@ import Footer from '../../../components/layout/Footer.astro';
 import PostCard from '../../../components/blog/PostCard.astro';
 import { SITE } from '../../../consts';
 import translations from '../../../i18n/en.json';
+import { localePath } from '../../../utils/i18n';
 
 const posts = await getCollection('posts', ({ id }) => id.startsWith('en/'));
 
@@ -18,7 +19,7 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))];
 const t = translations;
 ---
 
-<Layout title={`${t.blog.title} - ${SITE.name}`} lang="en">
+<Layout title={`${t.blog.title} - ${SITE.name}`} description={t.blog.subtitle} lang="en">
   <Navbar lang="en" />
 
   <main class="min-h-screen">
@@ -51,7 +52,7 @@ const t = translations;
                 lang="en"
                 title={post.data.title}
                 description={post.data.description}
-                href={`/en/blog/${post.id.replace('en/', '')}`}
+                href={localePath('en', `/blog/${post.id.replace('en/', '')}`)}
                 date={post.data.pubDate}
                 tags={post.data.tags}
                 coverImage={post.data.coverImage}

@@ -6,6 +6,7 @@ import Footer from '../../../components/layout/Footer.astro';
 import ProductCard from '../../../components/products/ProductCard.astro';
 import { SITE } from '../../../consts';
 import translations from '../../../i18n/en.json';
+import { localePath } from '../../../utils/i18n';
 
 const products = await getCollection('products', ({ id }) => id.startsWith('en/'));
 
@@ -14,7 +15,7 @@ const categories = [...new Set(products.map(p => p.data.category))];
 const t = translations;
 ---
 
-<Layout title={`${t.products.title} - ${SITE.name}`} lang="en">
+<Layout title={`${t.products.title} - ${SITE.name}`} description={t.products.subtitle} lang="en">
   <Navbar lang="en" />
 
   <main class="min-h-screen">
@@ -45,7 +46,7 @@ const t = translations;
                 image={product.data.images[0]}
                 title={product.data.name}
                 description={product.data.description}
-                href={`/en/products/${product.id.replace('en/', '')}`}
+                href={localePath('en', `/products/${product.id.replace('en/', '')}`)}
                 price={product.data.price}
                 category={product.data.category}
               />

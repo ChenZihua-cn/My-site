@@ -1,6 +1,7 @@
 ---
-import '../styles/global.css';
 import BlackHole from '../components/home/BlackHole.astro';
+// 这一页是完全自包含的：样式全部内联，不引 global.css（省掉约 52KB 且一个
+// Tailwind 工具类都没用到的阻塞 CSS）。新增样式请直接写在本文件的 <style> 里。
 ---
 
 <!doctype html>
@@ -11,6 +12,9 @@ import BlackHole from '../components/home/BlackHole.astro';
   <meta name="description" content="Cyan's Blog — a personal space for tech, thoughts, and exploration" />
   <meta name="robots" content="noindex" />
   <title>Cyan's Blog</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -128,6 +132,41 @@ import BlackHole from '../components/home/BlackHole.astro';
       animation: pulse-urgent 0.6s ease-in-out;
     }
 
+    /* 真实 <a> 链接：给爬虫一条从 / 进入站内的路径，同时方便用户手动选语言 */
+    .enter-links {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1.1rem;
+      pointer-events: auto;
+      opacity: 0;
+      animation: fade-in 0.6s 1.3s ease-out forwards;
+    }
+    .enter-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 6.5rem;
+      padding: 0.5rem 1.1rem;
+      border: 1px solid oklch(80% 0.05 var(--hue) / 0.3);
+      border-radius: 999px;
+      color: oklch(88% 0.04 var(--hue));
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .enter-link:hover,
+    .enter-link:focus-visible {
+      color: oklch(96% 0.06 var(--hue));
+      border-color: oklch(86% 0.1 var(--hue) / 0.7);
+      background: oklch(86% 0.1 var(--hue) / 0.12);
+    }
+    .enter-link:focus-visible {
+      outline: 2px solid oklch(80% 0.12 var(--hue));
+      outline-offset: 3px;
+    }
+
     @keyframes fade-in-up {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -159,6 +198,10 @@ import BlackHole from '../components/home/BlackHole.astro';
     <div class="site-name">Cyan's Blog</div>
     <p class="redirect-line" id="redirect-zh">正在进入站点… <span class="countdown-num" id="cd-zh">25</span> 秒</p>
     <p class="redirect-line" id="redirect-en" style="display:none;">Entering in <span class="countdown-num" id="cd-en">25</span>s…</p>
+    <div class="enter-links">
+      <a class="enter-link" href="/zh/" hreflang="zh-CN" lang="zh">中文站</a>
+      <a class="enter-link" href="/en/" hreflang="en" lang="en">English</a>
+    </div>
   </div>
 
   <script>
@@ -168,8 +211,8 @@ import BlackHole from '../components/home/BlackHole.astro';
       const isZh = lang.startsWith('zh');
       const zhEl = document.getElementById('redirect-zh');
       const enEl = document.getElementById('redirect-en');
-      if (isZh) { if (zhEl) zhEl.style.display = ''; }
-      else { if (enEl) enEl.style.display = ''; }
+      if (zhEl) zhEl.style.display = isZh ? '' : 'none';
+      if (enEl) enEl.style.display = isZh ? 'none' : '';
       const targetPath = '/' + (isZh ? 'zh' : 'en') + '/';
 
       // ── Click the cat to skip the countdown ──

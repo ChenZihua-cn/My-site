@@ -8,7 +8,7 @@ import translations from '../../i18n/zh.json';
 const t = translations;
 ---
 
-<Layout title={`${t.about.title} - ${SITE.nameZh}`}>
+<Layout title={`${t.about.title} - ${SITE.nameZh}`} description={t.about.description}>
   <Navbar lang="zh" />
 
   <main class="min-h-screen py-16">
@@ -23,7 +23,7 @@ const t = translations;
 
           <h2 class="text-2xl font-semibold mt-8 mb-4">{t.about.aboutSite}</h2>
           <p class="text-muted-foreground">
-            这个博客使用 Astro 6 + Tailwind CSS 构建，支持中英文双语切换和亮暗主题。
+            这个博客使用 Astro 7 + Tailwind CSS 构建，支持中英文双语切换和亮暗主题。
             在这里我会分享技术文章、项目总结和生活随笔。
           </p>
 

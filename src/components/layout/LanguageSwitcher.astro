@@ -1,13 +1,20 @@
 ---
+import { localePath } from '../../utils/i18n';
+
 export interface Props {
   currentLang: 'zh' | 'en';
+  /** 当前页面实际存在的语言版本；没有对侧译本时退回该语言首页，避免指向 404 */
+  availableLocales?: Array<'zh' | 'en'>;
 }
 
-const { currentLang } = Astro.props;
+const { currentLang, availableLocales = ['zh', 'en'] } = Astro.props;
 const otherLang = currentLang === 'zh' ? 'en' : 'zh';
-const otherPath = currentLang === 'zh'
-  ? Astro.url.pathname.replace(/^\/zh/, '/en')
-  : Astro.url.pathname.replace(/^\/en/, '/zh');
+const isTranslated = availableLocales.includes(otherLang);
+const otherPath = isTranslated
+  ? (currentLang === 'zh'
+      ? Astro.url.pathname.replace(/^\/zh/, '/en')
+      : Astro.url.pathname.replace(/^\/en/, '/zh'))
+  : localePath(otherLang);
 ---
 
 <a

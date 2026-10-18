@@ -1,7 +1,8 @@
 ---
-import { SITE } from '../../consts';
+import { NAV_LINKS, SITE } from '../../consts';
 import zhTranslations from '../../i18n/zh.json';
 import enTranslations from '../../i18n/en.json';
+import { localePath } from '../../utils/i18n';
 
 export interface Props {
   lang?: 'zh' | 'en';
@@ -17,7 +18,7 @@ const t = isZh ? zhTranslations : enTranslations;
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
       <!-- Brand -->
       <div>
-        <a href={isZh ? '/zh' : '/en'} class="inline-block text-xl font-bold text-foreground hover:text-primary transition-colors mb-4">
+        <a href={localePath(lang)} class="inline-block text-xl font-bold text-foreground hover:text-primary transition-colors mb-4">
           {isZh ? SITE.nameZh : SITE.name}
         </a>
         <p class="text-sm text-muted-foreground leading-relaxed">
@@ -58,26 +59,13 @@ const t = isZh ? zhTranslations : enTranslations;
           {t.footer.quickLinks}
         </h3>
         <ul class="space-y-3">
-          <li>
-            <a href={isZh ? '/zh' : '/en'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {t.nav.home}
-            </a>
-          </li>
-          <li>
-            <a href={isZh ? '/zh/products' : '/en/products'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {t.nav.products}
-            </a>
-          </li>
-          <li>
-            <a href={isZh ? '/zh/blog' : '/en/blog'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {t.nav.blog}
-            </a>
-          </li>
-          <li>
-            <a href={isZh ? '/zh/about' : '/en/about'} class="text-sm text-muted-foreground hover:text-primary transition-colors">
-              {t.nav.about}
-            </a>
-          </li>
+          {NAV_LINKS.map(({ key, path }) => (
+            <li>
+              <a href={localePath(lang, path)} class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                {t.nav[key]}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 

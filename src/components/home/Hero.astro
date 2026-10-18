@@ -1,4 +1,6 @@
 ---
+import { localePath } from '../../utils/i18n';
+
 export interface Props {
   lang: 'zh' | 'en';
   title: string;
@@ -39,7 +41,7 @@ const { lang, title, subtitle, catNiang } = Astro.props;
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay: 0.3s;">
         <a
-          href={lang === 'zh' ? '/zh/blog' : '/en/blog'}
+          href={localePath(lang, '/blog')}
           class="inline-flex items-center justify-center gap-2 rounded-full btn-primary-gradient px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25"
         >
           <span aria-hidden="true">🐱</span>
@@ -50,7 +52,7 @@ const { lang, title, subtitle, catNiang } = Astro.props;
           </svg>
         </a>
         <a
-          href={lang === 'zh' ? '/zh/about' : '/en/about'}
+          href={localePath(lang, '/about')}
           class="inline-flex items-center justify-center gap-2 rounded-full border bg-background/50 backdrop-blur px-8 py-4 text-base font-semibold text-foreground transition-colors hover:bg-muted"
         >
           <span aria-hidden="true">🐱</span>

@@ -2,18 +2,21 @@
 import { NAV_LINKS, SITE } from '../../consts';
 import zhTranslations from '../../i18n/zh.json';
 import enTranslations from '../../i18n/en.json';
+import { localePath } from '../../utils/i18n';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import ThemeToggle from '../ui/ThemeToggle.astro';
 
 export interface Props {
   lang?: 'zh' | 'en';
+  /** 当前页面实际存在的语言版本；缺译本时语言切换器会退回对方语言首页 */
+  alternateLocales?: Array<'zh' | 'en'>;
 }
 
-const { lang = 'zh' } = Astro.props;
+const { lang = 'zh', alternateLocales = ['zh', 'en'] } = Astro.props;
 const isZh = lang === 'zh';
 const t = isZh ? zhTranslations : enTranslations;
 const navLinks = NAV_LINKS.map(({ key, path }) => ({
-  href: `/${lang}${path}`,
+  href: localePath(lang, path),
   label: t.nav[key],
 }));
 ---
@@ -27,7 +30,7 @@ const navLinks = NAV_LINKS.map(({ key, path }) => ({
       <!-- Logo -->
       <div class="flex items-center">
         <a
-          href={isZh ? '/zh' : '/en'}
+          href={localePath(lang)}
           class="text-xl font-bold text-foreground transition-colors hover:text-primary"
         >
           {isZh ? SITE.nameZh : SITE.name}
@@ -49,7 +52,7 @@ const navLinks = NAV_LINKS.map(({ key, path }) => ({
       <!-- Right Actions -->
       <div class="flex items-center gap-2">
         <ThemeToggle lang={lang} />
-        <LanguageSwitcher currentLang={lang} />
+        <LanguageSwitcher currentLang={lang} availableLocales={alternateLocales} />
 
         <!-- Mobile Menu Button -->
         <button
