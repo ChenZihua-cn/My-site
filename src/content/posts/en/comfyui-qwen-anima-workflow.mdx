@@ -3,8 +3,16 @@ title: "Batch image generation in ComfyUI: the Qwen-Image-2.1 and Anima workflow
 description: "Turning ComfyUI node graphs into scripts that run in batches — how the Qwen-Image-2.1 and Anima chains differ, the cfg and sampler trade-offs, quantisation choices on 8GB of VRAM, and the unglamorous engineering behind 250 posters with zero failures."
 pubDate: 2026-10-17
 tags: ["ComfyUI", "AI image generation", "Qwen-Image", "Anima", "workflow"]
-coverImage: /images/posts/ai-workflow-cover.jpg
+coverImage: ../../../assets/images/posts/ai-workflow-anima-samplers.jpg
 ---
+import { Picture } from 'astro:assets';
+import { imageWidths } from '../../../utils/images';
+import neonPoster from '../../../assets/images/posts/ai-workflow-neon-poster.jpg';
+import contact from '../../../assets/images/posts/ai-workflow-contact.jpg';
+import ref2img from '../../../assets/images/posts/ai-workflow-ref2img.jpg';
+import animaCatgirl from '../../../assets/images/posts/ai-workflow-anima-catgirl.jpg';
+import animaFantasy from '../../../assets/images/posts/ai-workflow-anima-fantasy.jpg';
+import animaSamplers from '../../../assets/images/posts/ai-workflow-anima-samplers.jpg';
 
 ## 1. Why the workflow belongs in a script
 
@@ -36,19 +44,43 @@ This model reacts strongly to spatial description. What works is narrating the f
 
 Any text you want rendered **must** appear in quotes with its position, weight and colour, or the model invents its own — it really wants to write something. Conversely, when you want none of that, say it flat out: end with `no text, no logo, no watermark`.
 
-![NEON HORIZON poster: headline, subhead and the bottom credit block all land where the prompt put them](/images/posts/ai-workflow-neon-poster.jpg)
+<Picture
+  src={neonPoster}
+  alt="NEON HORIZON poster: headline, subhead and the bottom credit block all land where the prompt put them"
+  formats={['avif', 'webp']}
+  widths={imageWidths(neonPoster, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 ### 2. cfg=1 or cfg=4
 
 At cfg=1 the negative branch is skipped entirely, which is roughly half the compute, and it is also the officially recommended starting point. Move up to cfg=4 when you need a stronger constraint (editing, locking a layout) and pay double. Speaking from my own runs, seed diversity at cfg=1 is already wide enough to fill a whole batch:
 
-![One prompt, 50 seeds: the compositional skeleton holds while lighting and detail wander off](/images/posts/ai-workflow-contact.jpg)
+<Picture
+  src={contact}
+  alt="One prompt, 50 seeds: the compositional skeleton holds while lighting and detail wander off"
+  formats={['avif', 'webp']}
+  widths={imageWidths(contact, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 ## 3. The reference workflow: keep the layout, swap the content
 
 Wire `vae` and `images.image_1` through `images.image_16` (the slots grow automatically) into `TextEncodeQwenImage21` and the reference goes in. `resolution` sets the resize target for references — 1024 is about 1MP, 0 leaves the original alone. A switch then decides the canvas: follow the reference (for edits, since a mismatched size shifts the result) or use `EmptyLatentImage` (for recomposing from scratch).
 
-![Reference on the left, cfg=1 output on the right: title spacing, footer placement and the overall grid survive while the product and palette are replaced](/images/posts/ai-workflow-ref2img.jpg)
+<Picture
+  src={ref2img}
+  alt="Reference on the left, cfg=1 output on the right: title spacing, footer placement and the overall grid survive while the product and palette are replaced"
+  formats={['avif', 'webp']}
+  widths={imageWidths(ref2img, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 "Same skeleton, different content" is where a node graph genuinely leaves web toolboxes behind — you can run one layout through dozens of clients instead of re-explaining "move the title down a bit" every single time.
 
@@ -69,15 +101,39 @@ Three differences worth memorising:
 2. **Prompts are Danbooru tags** —— every positive gets the prefix `masterpiece, best quality, score_7, safe, `, which is nothing like writing long sentences for Qwen
 3. **Sampler names do not match** —— the `euler_a` in the model README is `euler_ancestral` in ComfyUI
 
-![Anima character work: interior light and costume detail are its strong suit](/images/posts/ai-workflow-anima-catgirl.jpg)
+<Picture
+  src={animaCatgirl}
+  alt="Anima character work: interior light and costume detail are its strong suit"
+  formats={['avif', 'webp']}
+  widths={imageWidths(animaCatgirl, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
-![Anima landscape work: with no people to model, composition is steadier — warm cloud layers and floating islands come out clean](/images/posts/ai-workflow-anima-fantasy.jpg)
+<Picture
+  src={animaFantasy}
+  alt="Anima landscape work: with no people to model, composition is steadier — warm cloud layers and floating islands come out clean"
+  formats={['avif', 'webp']}
+  widths={imageWidths(animaFantasy, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 ### 1. Samplers are only comparable with the seed locked
 
 Comparing samplers means something only when the seed stays put (that is what `--fixed-seed` does). The three below share prompt, seed and cfg:
 
-![er_sde / euler_ancestral / dpmpp_2m_sde_gpu on the same seed](/images/posts/ai-workflow-anima-samplers.jpg)
+<Picture
+  src={animaSamplers}
+  alt="er_sde / euler_ancestral / dpmpp_2m_sde_gpu on the same seed"
+  formats={['avif', 'webp']}
+  widths={imageWidths(animaSamplers, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 30 steps is the safe setting from the official example. Add the turbo LoRA and you can drop to cfg=1 with 10 steps: same seed, 44 seconds down to 12 — more than three times faster, and leaving that on the table would be silly.
 

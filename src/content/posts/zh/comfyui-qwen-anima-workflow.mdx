@@ -3,8 +3,16 @@ title: "ComfyUI 批量出图：Qwen-Image-2.1 与 Anima 的两条工作流"
 description: "把 ComfyUI 的节点图写成脚本批量跑图。记录 Qwen-Image-2.1 与 Anima 两条链路的差异、cfg 与采样器的取舍、8GB 显存下的量化选择，以及 250 张海报零失败背后那些不那么性感但决定成败的工程细节。"
 pubDate: 2026-10-17
 tags: ["ComfyUI", "AI 绘图", "Qwen-Image", "Anima", "工作流"]
-coverImage: /images/posts/ai-workflow-cover.jpg
+coverImage: ../../../assets/images/posts/ai-workflow-anima-samplers.jpg
 ---
+import { Picture } from 'astro:assets';
+import { imageWidths } from '../../../utils/images';
+import neonPoster from '../../../assets/images/posts/ai-workflow-neon-poster.jpg';
+import contact from '../../../assets/images/posts/ai-workflow-contact.jpg';
+import ref2img from '../../../assets/images/posts/ai-workflow-ref2img.jpg';
+import animaCatgirl from '../../../assets/images/posts/ai-workflow-anima-catgirl.jpg';
+import animaFantasy from '../../../assets/images/posts/ai-workflow-anima-fantasy.jpg';
+import animaSamplers from '../../../assets/images/posts/ai-workflow-anima-samplers.jpg';
 
 ## 一、为什么把工作流写成脚本
 
@@ -36,19 +44,43 @@ EmptyLatentImage（自定义画布）或上面那个 latent（跟随参考图）
 
 要渲染的文字**必须**用引号给出原文，并交代位置、字重和颜色，否则它会自己编——它真的很想给你写点什么。反过来，不想要文字的时候要把话说死：结尾加 `no text, no logo, no watermark`。
 
-![NEON HORIZON 海报：标题、副标题、底部演职员区块都落在提示词指定的位置](/images/posts/ai-workflow-neon-poster.jpg)
+<Picture
+  src={neonPoster}
+  alt="NEON HORIZON 海报：标题、副标题、底部演职员区块都落在提示词指定的位置"
+  formats={['avif', 'webp']}
+  widths={imageWidths(neonPoster, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 ### 2. cfg=1 还是 cfg=4
 
 cfg=1 时负向分支被整个跳过，等于省掉一半计算，官方也推荐从这个值起步。要更强约束（改图、锁版式）再上 cfg=4，代价是慢一倍。就我个人体感，cfg=1 的换种子多样性已经够铺满一整批：
 
-![同一条提示词、50 个种子：构图骨架稳住了，光影和细节各自跑偏](/images/posts/ai-workflow-contact.jpg)
+<Picture
+  src={contact}
+  alt="同一条提示词、50 个种子：构图骨架稳住了，光影和细节各自跑偏"
+  formats={['avif', 'webp']}
+  widths={imageWidths(contact, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 ## 三、参考图工作流：保住版式，只换内容
 
 给 `TextEncodeQwenImage21` 接上 `vae` 和 `images.image_1` 到 `images.image_16`（插槽会自动增长），参考图就进去了。`resolution` 管参考图的缩放目标，1024 约等于 1MP，填 0 表示原尺寸不动。画布由一个开关决定：跟随参考图（改图用，尺寸不匹配会让编辑偏移）还是走 `EmptyLatentImage`（重新构图用）。
 
-![左边是参考图，右边是 cfg=1 的输出：标题字距、脚注位置和整体版式都被保住了，产品和配色换成了另一套](/images/posts/ai-workflow-ref2img.jpg)
+<Picture
+  src={ref2img}
+  alt="左边是参考图，右边是 cfg=1 的输出：标题字距、脚注位置和整体版式都被保住了，产品和配色换成了另一套"
+  formats={['avif', 'webp']}
+  widths={imageWidths(ref2img, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 这种"保版式换内容"是节点式流程真正甩开网页工具箱的地方——同一套骨架可以连着套几十个客户，而不用每次重新解释什么叫"标题再往下一点"。
 
@@ -69,15 +101,39 @@ KSampler     er_sde / simple / 30 步 / cfg 4
 2. **提示词是 Danbooru 标签风格** —— 正向统一加前缀 `masterpiece, best quality, score_7, safe, `，跟 Qwen 那种写长句的路子完全不是一回事
 3. **采样器名字对不上** —— 模型 README 里写的 `euler_a`，在 ComfyUI 里叫 `euler_ancestral`
 
-![Anima 的角色向：室内光和服饰细节是它的强项](/images/posts/ai-workflow-anima-catgirl.jpg)
+<Picture
+  src={animaCatgirl}
+  alt="Anima 的角色向：室内光和服饰细节是它的强项"
+  formats={['avif', 'webp']}
+  widths={imageWidths(animaCatgirl, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
-![Anima 的场景向：没有人要画的时候构图更稳，暖色云层和浮岛的层次很干净](/images/posts/ai-workflow-anima-fantasy.jpg)
+<Picture
+  src={animaFantasy}
+  alt="Anima 的场景向：没有人要画的时候构图更稳，暖色云层和浮岛的层次很干净"
+  formats={['avif', 'webp']}
+  widths={imageWidths(animaFantasy, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 ### 1. 采样器要锁种子才可比
 
 同一种子只换采样器，比较才有意义（脚本里靠 `--fixed-seed` 干这件事）。下面三张是同一提示词、同一种子、同一 cfg：
 
-![er_sde / euler_ancestral / dpmpp_2m_sde_gpu 三种采样器的差异](/images/posts/ai-workflow-anima-samplers.jpg)
+<Picture
+  src={animaSamplers}
+  alt="er_sde / euler_ancestral / dpmpp_2m_sde_gpu 三种采样器的差异"
+  formats={['avif', 'webp']}
+  widths={imageWidths(animaSamplers, [480, 768, 1024])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
 
 30 步是官方例子给的稳态值。挂上 turbo LoRA 之后可以降到 cfg=1、10 步，同种子实测从 44 秒掉到 12 秒——差三倍多，这个便宜不占说不过去。
 

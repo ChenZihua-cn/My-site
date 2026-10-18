@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
@@ -7,31 +8,52 @@ import Button from '../../../components/ui/Button.astro';
 import ImagePlaceholder from '../../../components/ui/ImagePlaceholder.astro';
 import { SITE } from '../../../consts';
 import translations from '../../../i18n/zh.json';
+import { localePath } from '../../../utils/i18n';
+import { imageWidths } from '../../../utils/images';
+import { breadcrumbNode, graph, productNode } from '../../../utils/structured-data';
 
 export async function getStaticPaths() {
-  const products = await getCollection('products', ({ id }) => id.startsWith('zh/'));
-  return products.map((product) => ({
-    params: { slug: product.id.replace('zh/', '') },
-    props: { product },
-  }));
+  const products = await getCollection('products');
+  const translatedSlugs = new Set(
+    products.filter(({ id }) => id.startsWith('en/')).map(({ id }) => id.replace('en/', ''))
+  );
+
+  return products
+    .filter(({ id }) => id.startsWith('zh/'))
+    .map((product) => {
+      const slug = product.id.replace('zh/', '');
+      const alternateLocales: Array<'zh' | 'en'> = translatedSlugs.has(slug)
+        ? ['zh', 'en']
+        : ['zh'];
+      return { params: { slug }, props: { product, alternateLocales } };
+    });
 }
 
-const { product } = Astro.props;
+const { product, alternateLocales } = Astro.props;
 const { Content } = await render(product);
 
 const t = translations;
+
+const jsonLd = graph(
+  productNode({ product, path: Astro.url.pathname }),
+  breadcrumbNode([
+    { name: t.nav.home, path: localePath('zh') },
+    { name: t.nav.products, path: localePath('zh', '/products') },
+    { name: product.data.name, path: Astro.url.pathname },
+  ]),
+);
 ---
 
-<Layout title={`${product.data.name} - ${SITE.nameZh}`} description={product.data.description} image={product.data.images[0]}>
-  <Navbar lang="zh" />
+<Layout title={`${product.data.name} - ${SITE.nameZh}`} description={product.data.description} image={product.data.images[0]?.src} alternateLocales={alternateLocales} jsonLd={jsonLd}>
+  <Navbar lang="zh" alternateLocales={alternateLocales} />
 
   <main class="min-h-screen py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
       <nav class="mb-8 text-sm text-muted-foreground">
-        <a href="/zh" class="hover:text-foreground">{t.nav.home}</a>
+        <a href={localePath('zh')} class="hover:text-foreground">{t.nav.home}</a>
         <span class="mx-2">/</span>
-        <a href="/zh/products" class="hover:text-foreground">{t.nav.products}</a>
+        <a href={localePath('zh', '/products')} class="hover:text-foreground">{t.nav.products}</a>
         <span class="mx-2">/</span>
         <span class="text-foreground">{product.data.name}</span>
       </nav>
@@ -41,9 +63,14 @@ const t = translations;
         <div class="space-y-4">
           <div class="aspect-square overflow-hidden rounded-lg bg-muted">
             {product.data.images[0] ? (
-              <img
+              <Picture
                 src={product.data.images[0]}
                 alt={product.data.name}
+                formats={['avif', 'webp']}
+                widths={imageWidths(product.data.images[0], [480, 768, 1024])}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                priority
+                pictureAttributes={{ class: 'block h-full w-full' }}
                 class="h-full w-full object-cover"
               />
             ) : (
@@ -54,7 +81,17 @@ const t = translations;
             <div class="grid grid-cols-4 gap-2">
               {product.data.images.slice(1).map((image) => (
                 <div class="aspect-square overflow-hidden rounded-lg bg-muted">
-                  <img src={image} alt={product.data.name} class="h-full w-full object-cover" />
+                  <Picture
+                    src={image}
+                    alt={product.data.name}
+                    formats={['avif', 'webp']}
+                    widths={imageWidths(image, [160, 320])}
+                    sizes="(min-width: 1024px) 120px, 25vw"
+                    loading="lazy"
+                    decoding="async"
+                    pictureAttributes={{ class: 'block h-full w-full' }}
+                    class="h-full w-full object-cover"
+                  />
                 </div>
               ))}
             </div>

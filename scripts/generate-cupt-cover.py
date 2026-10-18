@@ -1,7 +1,7 @@
 """Generate the cover image for the CUPT strategy post (water crown splash).
 
 Run with:  uv run --with matplotlib --with numpy scripts/generate-cupt-cover.py
-Output:    public/images/posts/cupt-strategy.jpg  (1200x675, 16:9)
+Output:    src/assets/images/posts/cupt-strategy.jpg  (1200x675, 16:9)
 """
 
 import numpy as np
@@ -105,6 +105,6 @@ glow_dot(CX, SURF + 4.55, r=0.15)
 glow_dot(CX + 0.42, SURF + 3.5, r=0.08)
 glow_dot(CX - 0.30, SURF + 2.9, r=0.05)
 
-out = "public/images/posts/cupt-strategy.jpg"
+out = "src/assets/images/posts/cupt-strategy.jpg"
 fig.savefig(out, dpi=100, facecolor="#03060f")
 print(f"saved {out}")

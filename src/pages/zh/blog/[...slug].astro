@@ -1,21 +1,34 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/layout/Navbar.astro';
 import Footer from '../../../components/layout/Footer.astro';
 import TableOfContents from '../../../components/blog/TableOfContents.astro';
 import { SITE } from '../../../consts';
 import translations from '../../../i18n/zh.json';
+import { localePath } from '../../../utils/i18n';
+import { imageWidths } from '../../../utils/images';
+import { articleNode, breadcrumbNode, graph } from '../../../utils/structured-data';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ id }) => id.startsWith('zh/'));
-  return posts.map((post) => ({
-    params: { slug: post.id.replace('zh/', '') },
-    props: { post },
-  }));
+  const posts = await getCollection('posts');
+  const translatedSlugs = new Set(
+    posts.filter(({ id }) => id.startsWith('en/')).map(({ id }) => id.replace('en/', ''))
+  );
+
+  return posts
+    .filter(({ id }) => id.startsWith('zh/'))
+    .map((post) => {
+      const slug = post.id.replace('zh/', '');
+      const alternateLocales: Array<'zh' | 'en'> = translatedSlugs.has(slug)
+        ? ['zh', 'en']
+        : ['zh'];
+      return { params: { slug }, props: { post, alternateLocales } };
+    });
 }
 
-const { post } = Astro.props;
+const { post, alternateLocales } = Astro.props;
 const { Content, headings } = await render(post);
 
 const t = translations;
@@ -36,10 +49,19 @@ const calculateReadTime = (text: string) => {
 };
 
 const readTime = calculateReadTime(post.body || '');
+
+const jsonLd = graph(
+  articleNode({ post, lang: 'zh', path: Astro.url.pathname }),
+  breadcrumbNode([
+    { name: t.nav.home, path: localePath('zh') },
+    { name: t.nav.blog, path: localePath('zh', '/blog') },
+    { name: post.data.title, path: Astro.url.pathname },
+  ]),
+);
 ---
 
-<Layout title={`${post.data.title} - ${SITE.nameZh}`} description={post.data.description} image={post.data.coverImage} type="article">
-  <Navbar lang="zh" />
+<Layout title={`${post.data.title} - ${SITE.nameZh}`} description={post.data.description} image={post.data.coverImage?.src} type="article" alternateLocales={alternateLocales} jsonLd={jsonLd}>
+  <Navbar lang="zh" alternateLocales={alternateLocales} />
 
   <main class="min-h-screen py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,9 +73,9 @@ const readTime = calculateReadTime(post.body || '');
         <article class="min-w-0 flex-1 max-w-3xl">
           <!-- Breadcrumb -->
           <nav class="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-            <a href="/zh" class="hover:text-foreground transition-colors">{t.nav.home}</a>
+            <a href={localePath('zh')} class="hover:text-foreground transition-colors">{t.nav.home}</a>
             <span>/</span>
-            <a href="/zh/blog" class="hover:text-foreground transition-colors">{t.nav.blog}</a>
+            <a href={localePath('zh', '/blog')} class="hover:text-foreground transition-colors">{t.nav.blog}</a>
             <span>/</span>
             <span class="text-foreground truncate max-w-[200px]">{post.data.title}</span>
           </nav>
@@ -90,9 +112,14 @@ const readTime = calculateReadTime(post.body || '');
           <!-- Cover Image -->
           {post.data.coverImage && (
             <div class="mb-10 aspect-video overflow-hidden rounded-xl shadow-lg">
-              <img
+              <Picture
                 src={post.data.coverImage}
                 alt={post.data.title}
+                formats={['avif', 'webp']}
+                widths={imageWidths(post.data.coverImage, [640, 960, 1280])}
+                sizes="(min-width: 1024px) 768px, 100vw"
+                priority
+                pictureAttributes={{ class: 'block h-full w-full' }}
                 class="h-full w-full object-cover"
               />
             </div>
@@ -106,7 +133,7 @@ const readTime = calculateReadTime(post.body || '');
           <!-- Footer -->
           <div class="mt-16 pt-8 border-t border-border">
             <a
-              href="/zh/blog"
+              href={localePath('zh', '/blog')}
               class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
