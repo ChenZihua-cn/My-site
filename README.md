@@ -186,7 +186,7 @@ featured: false
 
 PR 到 `main` 也会触发构建检查，但不会部署。
 
-自定义域名通过 `public/CNAME` 绑定（`luv2u.cn`），域名 DNS 需配置 CNAME 记录指向 `<username>.github.io`。
+自定义域名通过 `public/CNAME` 绑定（`www.luv2u.cn`），域名 DNS 需配置 CNAME 记录指向 `<username>.github.io`。裸域 `luv2u.cn` 由 GitHub Pages 自动 301 到 www，因此 canonical 一律用 www。
 
 详见 [.github/workflows/ci.yml](.github/workflows/ci.yml)。
 
