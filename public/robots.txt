@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# 404 页带 noindex，这里再挡一层，避免被当作普通页面抓取
+Disallow: /404
+Disallow: /zh/404
+Disallow: /en/404
+
+Sitemap: https://www.luv2u.cn/sitemap-index.xml

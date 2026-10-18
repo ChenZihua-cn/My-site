@@ -38,6 +38,12 @@ export const onRequest = defineMiddleware((context, next) => {
     return next();
   }
 
+  // Astro 内置路径（dev 的图片优化端点 /_image/、/_server-islands 等）不是页面，
+  // 加语言前缀只会变成 /zh/_image/ 这种不存在的地址（dev 下图片会全挂）。
+  if (pathname.startsWith('/_')) {
+    return next();
+  }
+
   // Skip static assets by file extension
   if (/\.\w{2,8}$/.test(pathname)) {
     return next();
@@ -56,7 +62,8 @@ export const onRequest = defineMiddleware((context, next) => {
   }
 
   // Other paths without locale prefix: redirect to zh version
-  const destination = `/zh${pathname}${search}`;
+  // 带上尾斜杠，与目录格式的最终地址一致（少一次 301）
+  const destination = `/zh${pathname.replace(/\/+$/, '')}/${search}`;
 
   return context.redirect(destination, 302);
 });

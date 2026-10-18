@@ -43,6 +43,7 @@
   },
   "about": {
     "title": "关于我",
+    "description": "关于 Cyan：技术学习、项目实践与生活思考的记录。",
     "aboutSite": "关于本站",
     "contact": "联系方式"
   },

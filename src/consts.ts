@@ -1,9 +1,10 @@
 export const SITE = {
   name: "Cyan's Blog",
   nameZh: 'Cyan的个人博客',
+  author: 'Cyan',
   description: "Cyan's personal blog",
   descriptionZh: 'Cyan的个人博客',
-  url: 'https://luv2u.cn',
+  url: 'https://www.luv2u.cn',
   email: 'cyan_0916@qq.com',
   github: 'https://github.com/ChenZihua-cn',
   twitter: 'https://twitter.com/Chen42036136',

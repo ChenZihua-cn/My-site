@@ -43,6 +43,7 @@
   },
   "about": {
     "title": "About Me",
+    "description": "About Cyan: notes on tech learning, project practice and everyday life.",
     "aboutSite": "About This Site",
     "contact": "Contact"
   },
