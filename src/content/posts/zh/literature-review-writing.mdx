@@ -1,0 +1,282 @@
+---
+title: "文献综述与论文写作：一份 77 页讲义的整理"
+description: "把曼彻斯特大学 Moataz Attallah 的七十七页写作讲义整理成一篇连续的文章：论文的四种类型、文献综述的定义与筛选标准、三种常见的写法问题、从结论倒推的论文结构、十二条句子层面的规则，以及图表、单位与引文的格式细节。"
+pubDate: 2026-11-10
+tags: ["学术写作", "文献综述", "论文结构", "材料学"]
+coverImage: ../../../assets/images/posts/lit-review-structure.jpg
+---
+import { Picture } from 'astro:assets';
+import { imageWidths } from '../../../utils/images';
+import definitionImg from '../../../assets/images/posts/lit-review-definition.jpg';
+import referencesCartoon from '../../../assets/images/posts/lit-review-references-cartoon.jpg';
+import reviewCard from '../../../assets/images/posts/lit-review-review-card.jpg';
+import criticalExample from '../../../assets/images/posts/lit-review-critical-example.jpg';
+import summaryTable from '../../../assets/images/posts/lit-review-summary-table.jpg';
+import stepsImg from '../../../assets/images/posts/lit-review-steps.jpg';
+import calvin from '../../../assets/images/posts/lit-review-calvin.jpg';
+import structureImg from '../../../assets/images/posts/lit-review-structure.jpg';
+import onlyImg from '../../../assets/images/posts/lit-review-only.jpg';
+import wordCaption from '../../../assets/images/posts/lit-review-word-caption.jpg';
+import checklist from '../../../assets/images/posts/lit-review-checklist.jpg';
+
+这是一份给材料学研究生讲的写作课，主讲是曼彻斯特大学材料学院的 Moataz Attallah，课程属于 "ES Series on Scientific Research" 系列，做成幻灯片共 78 页，第一页是阿拉伯语的研讨会海报，去掉封面之后正文 77 页。讲义里引了不少外部材料，美国化学会的 ACS Style Guide、曼彻斯特大学自己的论文写作课，还有一些 Jorge Cham 的漫画，用来在密集的信息中间给人喘口气的机会。
+
+开场的目录只有三行：文献综述、论文结构、写作技巧。这三块是递进的，因为这门课默认听众手里已经有实验数据，接下来要解决的是一件事——这些数据怎么跟领域里已有的知识接上话，又怎么写成别人读得下去、也愿意相信的文字。顺着这个前提，整堂课其实在走一条线：先认清自己写的是哪一类论文，再弄明白综述到底承担什么功能，然后处理读多少、怎么读、读完放在哪里，接着是结构与倒推的写法，最后落到句子、图表、单位和引用这些具体的层面。下面按这条线写，例子和数字都保留原讲义的样子。
+
+## 确认论文类型
+
+动笔之前，讲义先花了三页篇幅讲论文有哪几种。这一步看着像铺垫，其实决定了后面所有取舍：理论型的文章，综述要服务于方法定位；实验型的文章，综述要服务于测量条件能不能对上；临床型的文章，综述要交代统计口径。类型没认清，综述就会写错方向。
+
+| 类型 | 内容 | 写作要求 |
+|---|---|---|
+| A 理论型 | 新计算方法的开发，或新数学理论的建立与证明 | 先定义问题、给出扎实的解析推导，再摆结果；必须写明理论成立的条件，也要写明不成立的条件。下分计算型（算法、应用算例、收敛性证明）与解析型（公式更多，可以只给抽象结果而不谈应用） |
+| B 实验型 | 以测量结果为核心 | 不需要太多解析表达式，清晰可靠的测量结果是录用的关键；测量装置与测量条件要交代清楚 |
+| C 制造型 | 器件或结构系统的制造、装配与施工步骤 | 可以带案例研究；实验型论文里也可能有制造方法一节，但那不等于制造型论文 |
+| D 临床型 | 仅出现在医学领域，多是一段时间内一组患者的病史研究 | 涉及多种统计方法，统计工具与模型要写充分，假设检验及其意义也要讨论 |
+
+分类讲完，讲义拿出一张平时用的读文献卡片，说明怎么用。卡片上先是编号，然后是题录，接着按目标、方法、关键发现、意义四栏写成摘要，最后一栏叫 Check，专门记要核实的地方。示例是一篇 1998 年发在 Journal of Materials Processing and Manufacture Science 上的搅拌摩擦焊论文，作者是 Tang、Gui、McClure 和 Murr。参数记得很细：AA6061-T6 焊件，304×101×6.4 mm，轴肩和搅拌针直径 19 和 6.5 mm，转速 300–1000 rpm，进给只有 2 mm/s；热电偶布置在距起焊点 101 mm、离焊缝中心线 4、8、12、16 mm、深 1.59、3.18、4.76 mm 的位置。结论那一栏写的是材料没有熔化，峰值温度 450 °C，低于 582 °C 的固相线；母材是致密位错胞，焊缝区发生动态再结晶，位错活动降低，析出物分布均匀；热影响区出现 GP 区和魏氏组织片状析出；板厚方向温差不大；压力越大减薄越多，温度也越高。Check 一栏只有一句话：年代虽早，仍是当时最好的温度测量，但没有测载荷和力。这张卡片的用意是把读文献变成可积累的动作，而不是读完就忘。
+
+<Picture
+  src={reviewCard}
+  alt="论文评审卡示例：编号、题录、目标与方法摘要、关键发现、以及 Check 一栏"
+  formats={['avif', 'webp']}
+  widths={imageWidths(reviewCard, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+## 文献综述的定义与功能
+
+在讲定义之前，先把论文的骨架摆出来：摘要、引言与文献综述、实验方法或数学模型、结果、讨论、结论、参考文献。这个顺序里藏着一个容易忽略的定位——综述不是独立成章的，它在引言内部，是引言的一部分。位置决定了它的篇幅，也决定了它只承担一项任务：把领域推到你还缺的那一步。
+
+接着是四条定义，讲义在几条定义里画了下划线，凡是画线的地方都是要求。综述是对某一具体课题上若干研究的简明、有效、批判性评估；是对前人研究和当前知识现状的批判，用途是澄清该领域还没解决的科学问题，也就是空白；是对科学论证的客观分析，要辨明异同、一致与不一致，以及争议在哪里；也是按时间线梳理某项技术、方法、工艺的发展，或者某个现象在理论上被认识的过程。四条定义分别对应四种写法，实际写作时往往以第二条为主线，其余三条按需要取用。
+
+<Picture
+  src={definitionImg}
+  alt="文献综述的四条定义：批判性评估、澄清空白、辨明异同与争议、时间线梳理"
+  formats={['avif', 'webp']}
+  widths={imageWidths(definitionImg, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+功能这一层，讲义引的是 C. Hart 1998 年那本《Doing a literature review》，一共十一条：找出用过的方法与技术，发现与课题相关的重要变量，综合文献得到新视角，辨明观点与实践之间的关系，确立课题背景，论证问题的重要性，扩充学科词汇，理解学科结构，把想法与理论联系到应用，把研究放进历史脉络以显示对前沿的熟悉。第十一条加了粗：区分已经做了什么与还需要做什么。前面十条都在搭建认识，只有这一条落到了写作的出口上。
+
+再往下是六条通则，基本可以当红线看。读者层次定在与作者同级及以上的博士研究者；来源限定为同行评审、有质量控制、高影响力的期刊论文、专利和编著；语体走科学写作常见的第三人称被动语态；文献用 EndNote 一类工具管理；抄袭那条写得毫不含糊，引用、引述、改写都可以，就是不能照抄；规划那条要求动笔前先列提纲，对文献排序、定优先级、评估、取舍。起步的动作拆成六步：检索高影响力、同行评审、高被引作者的工作，排序并做优先、分析、总结，按关注点归类，比较不同研究的发现，写出内容提纲，最后成文。
+
+## 检索、评估与整理
+
+先给一个数量级，因为很多人对综述的工作量没有概念。博士论文正文实际引用大约 150 到 300 篇，通读并评估过的来源大约 500 到 1000 篇，只是检索核对、没有精读的大约 2000 篇。三层数量摆在一起，综述的筛选性质就清楚了：正文里出现的那一两百条，只是最后漏下来的一小撮。
+
+讲义中间放了两张漫画，专门调侃读文献时的两种通病。一张叫 REFERENCES，副标题是确保没有人已经抢先写完你的论文，画面把文献画成一棵谱系树，底下五个图例数字分别是打印或复印 248 篇、真正读过 107 篇、真正读懂 5 篇、真正相关 2 篇、进入参考文献表 246 篇。另一张叫 How to review a paper (Not!)，四格依次是读摘要、看图、回去刷网页，最后对旁人说我真的读过你给的那篇，一定会加进参考文献表。两张放在正文里，比讲十分钟道理管用。
+
+<Picture
+  src={referencesCartoon}
+  alt="漫画 REFERENCES：打印 248 篇、真正读过 107 篇、真正读懂 5 篇、真正相关 2 篇、进入参考文献表 246 篇"
+  formats={['avif', 'webp']}
+  widths={imageWidths(referencesCartoon, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+有了数量概念，接下来是筛。讲义给了一组六问，首字母拼成 R. E. V. I. E. W.，出处标的是悉尼大学的 Masters 等人 2010 年的材料。这六问问的是同一件事：这篇文献能不能当论据用。
+
+| 首字母 | 检查项 | 具体问题 |
+|---|---|---|
+| R | Relevance | 全相关还是部分相关，具体还是笼统 |
+| E | Expertise | 作者背景、研究方向、是否高被引 |
+| V | Viewpoint | 有无利益冲突，比如工业资助；出版目的是营销、科学还是科普 |
+| I | Intended audience | 读者是学术同行、公众还是产业界 |
+| E | Evidence | 观点有无科学证据支持，比如验证过的模型、确认的观测；是否经过同行评审；自引比例是否过高 |
+| W | When published | 文献是否近期，发表之后领域里有没有重大进展 |
+
+筛完要存。讲义列的工具很朴素：EndNote、写摘要、卡片笔记、图表、蜘蛛网图、表格。配的两张蜘蛛图值得说一下，左边那张以 Main Topic 为中心分出 Related Topic I 到 IV，再往下细分到 I A、I B、III A 这一层；右边那张以 My PhD 为中心，分出软件工程（设计模式、产品线、验证、测试、性能）、可视化、自主系统（控制论、人工智能）、网络（自组网、普适计算）、人机交互、多模态界面。这两张图的作用不在好看，在于逼你先把领域画出来，再决定综述按什么顺序展开——画不出结构，说明还没读懂。
+
+## 常见问题与正面示范
+
+真正开始写之前，先有几条纪律：一句话讲一个意思，长度控制在 1 到 3 行；一段围绕一个主题；标点用得准确；语法前后一致；段落之间用过渡词接住。文献的编排有两种走法，按时序推进，或者按相近观点归拢、让对立的结论正面对话。每一节都要能自然地过渡到下一节。这几条听着琐碎，但后面所有的修改几乎都从这里出发。
+
+写得差的综述有七个特征：逐篇评述而不是按概念组织，描述性而不是批判性，停留在公认的基础概念上显得浅，文献不新，没有结构也没有规划，篇幅冗长，最后没能导出聚焦的研究问题。列完之后，讲义用三个具体例子把其中三条摊开，比抽象说教清楚得多。
+
+第一个例子是每段只写一篇文献。那段文字转述 Karadge 等人对 Ti-64（Ti-6Al-4V）搅拌摩擦焊的研究：实验室尺度与实物尺度的试样、焊态与焊后热处理状态都做了对比；实验室试样在熔合线处呈强横向织构，对应 HCP 钛合金的主滑移系；实物试样还出现弱基面织构和某种轧制织构；热机影响区更宽、晶粒更大；焊缝区发现马氏体 α′，说明冷却速率高。信息本身没有问题，问题在于整段只是把一篇论文的摘要摊开，读者看完仍然不知道概念层面已经确认了什么。
+
+第二个例子是追溯太远。讲义用自行车材料的演化来说明：图上左边是 1795 年的英国 hobby-horse，右边是 2004 年的现代自行车，正文从 1490 年代达·芬奇学生的草图写起，再讲到 1950 年以后木材、铁、低碳钢被低合金钢、填充聚合物、铝、镁、钛和先进复合材料替代。这类通史式开头跟当前的研究空白没什么关系，篇幅花掉了，重点反而被稀释。这里还补了一句：铝如今已经是自行车业的标准材料——这种细节有用，但放在综述里必须有服务对象。
+
+第三个例子是引用堆砌。页面上放的是一段真实出现过的综述文字：搅拌摩擦加工为了在航空和汽车业更具成本效益，许多研究者研究了铝合金焊缝与热影响区的晶粒细化 [7-19]，接着列出 1100、2024、5083、6061、7075、7475 等牌号，又说拉伸强度、微织构、疲劳、硬度等性能也正在被研究 [20-34]。两个区间号一带而过几十篇文献，不点名，不给方法，不给数据，读者无法判断谁做了什么。
+
+反面讲完，正面也就好说了。讲义拿了一段钛合金线性摩擦焊的引言当范本。段首先说多数研究集中在 Ti-6Al-4V，这是 α+β 双相合金，β 体积分数约 5 到 10 wt.%，通常被称作钛合金的主力材料；然后一个 Nonetheless 把话锋转到不足：First，工艺参数对残余应力和组织演变的影响，除了 Wanjar 与 Jahazi 的工作之外很少被研究；Second，马氏体 α′ 与魏氏组织是否存在，文献报道不一致；Third，焊缝区的晶体学织构演变研究有限；Finally，此前用中子与同步辐射衍射研究残余应力时，没有考虑焊缝区无应变晶格参数的变化，而这会影响应变测量与残余应力计算的精度。最后用 Thus 落到该文的写作目的。这段的骨架可以整段抽出来复用，六个连接词各司其职。
+
+<Picture
+  src={criticalExample}
+  alt="一段带有批注的引言：Nonetheless 转折之后用 First、Second、Third、Finally 列出四类不足"
+  formats={['avif', 'webp']}
+  widths={imageWidths(criticalExample, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+正面示范的第二种能力是汇总。讲义里有一张表，把 DSC 测到的形变储存能数据压成六列十三行，列头依次是合金、处理工艺、峰温区间、解释、释放能量、来源。第一行是纯 Al 的扭转，−196 °C，应变 6.75，峰温 −40 到 0 °C，解释为再结晶，69.6 J/mol，来源标号是 [24]；往下依次是纯 Cu 的轧制、Cu/Cu-Al 的冲击变形、Ni 的 ECAP 与扭转、纯 Ni 与纯 Fe 的轧制、AA1145 与 AA8011 的轧制、1xxx 的压缩、AA5052 的 ECAP、Al-2.5Mg、Al-7.6Mg，最后是 AA1xxx 的 H19 硬态，峰温落在 300–350 °C 和 398 °C，解释是回复与再结晶。缺数据的格子写两个短横，脚注还交代了 J/g 与 J/mol 的换算方式。这张表的价值在于它把几十篇文献里同一个物理量压到同一把尺子上，读者可以横向比较，而不是听你逐篇复述。
+
+<Picture
+  src={summaryTable}
+  alt="汇总表：不同合金与处理工艺的 DSC 储存能，逐行标注峰温、释放能量与文献来源"
+  formats={['avif', 'webp']}
+  widths={imageWidths(summaryTable, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+## 动笔前的规划
+
+前面所有内容到这里可以收成五步。第一步规划，画出必须覆盖的文献范围；第二步批判性阅读，做分类、总结、找空白；第三步判断什么时候停止阅读，给的范围是覆盖近 10 到 20 年，重点放在综述论文上；第四步是写，建议每 6 到 8 个月停下实验，写掉综述的一部分；第五步保持更新，在数据库上设关键词提醒。这五步里最容易被忽略的是第四步，很多人把综述当成实验做完之后的一次性任务，实际的节奏是跟实验交替推进。
+
+<Picture
+  src={stepsImg}
+  alt="起步的五步：规划、批判性阅读、判断何时停止阅读、动笔、保持更新"
+  formats={['avif', 'webp']}
+  widths={imageWidths(stepsImg, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+这里又插了一张博士漫画，把填论文大纲拆成四步：先把 Introduction、Lit Review、Methodology、Conclusions 这些送分章填上，再给中间几章编名字，第一年做的、现在该做的，实在没有就先编一个，然后被人问论文写得怎么样了。笑完之后回到正题，动笔前要回答的是五个问题：你的结论是什么，结论的证据是什么，发现为什么重要，别人能不能复现，能不能讲成一个好故事。第五个问题不是修辞，它指的是论证有没有主线，读者能不能跟着走。
+
+## 论文结构的证据链
+
+这一节是全篇的方法核心。讲义没有直接列提纲，而是画了一张示意图，然后反复重画了九次，每往图里添一块内容就重画一次，直到最后五块齐全、箭头闭合。这样讲很笨，但效果是让人看见结构是长出来的，不是背下来的。
+
+| 部分 | 内容 |
+|---|---|
+| Conclusions | 编号列出 1、2、3 |
+| Discussion | Evidence for Conclusion 1，由 my results 与 previous findings 组成 |
+| Results | figures 与 description |
+| Experimental Method | could my results be repeated? |
+| Introduction | context、aims of this experiment、previous findings |
+
+图上的箭头是重点：结论 1 指向讨论里的证据，my results 指向结果那一块，结果指向方法那一块，引言的 aims 指向结论，引言和讨论各自的 previous findings 互相呼应。把这几个箭头读成一句话，就是论文的写作顺序：结论先定，证据倒推，结果和方法负责兑现，引言负责铺路。
+
+<Picture
+  src={structureImg}
+  alt="论文结构图：结论、讨论中的证据、结果、实验方法与引言之间的箭头关系"
+  formats={['avif', 'webp']}
+  widths={imageWidths(structureImg, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+先说结论。结论是一串简单的陈述，概括你的发现；即使被单独摘引出去，也必须准确；这也是你希望读者唯一记住的东西。硬性的一条是不能把正文里没有充分讨论过的内容写进结论。结论定了，讨论就有骨架：每条结论在讨论里单列一个小节，先把证据写下来。证据只有两类，你自己的结果，以及前人已经发表的工作，两者要合起来用，缺一类都撑不住。讨论本身还有五件事要做：把结果放回领域现有知识里，回扣立项初衷说明问题是否解决，点明工作的特点与局限，交代你的贡献，简述意义并在必要时提出后续研究或应用。
+
+结果和方法这两块的关系，一句话就能说明白：方法部分的唯一标准，是有经验的研究者照你写的能做出可比的结果。所以用标准方法就引文献、只给必要细节；装置只在非标准或非市售时才描述；流程若不是成熟标准则必须描述；另外必须标明并强调任何危险。结果那边对应的是你在讨论里要引用的那部分证据，它才是结果部分最重要的内容，图要尽可能清楚地展示它，图注文字也要主动把证据点出来，而不是复述图里有什么。
+
+引言做的事情正好相反。引言里最重要的部分，是你在讨论中要引用的那些别人的证据，要尽可能清楚地介绍；文献只在直接相关处展开细节，其余部分不必细述，否则又会退回文献清单。同时，问题本身和做它的理由要放在最初几句话里，背景涵括问题、意义、范围和边界，目的是让读者准备好往下读。摘要在最后收口，它的任务只有一个，让人愿意读你的论文，所以内容要交代背景、目的、结论、证据、方法，注意结论排在方法之前。讲到这里，可以停下来用三个问题把自己从实验台拉回书桌：你的目的是什么，你成功了吗，看看你的结论。
+
+这一大段中间插了三张 Calvin and Hobbes，算是呼吸口。第一张里两人发现一堆谱图，打算粘起来重建分子结构，然后写论文、发期刊、拿诺奖、上脱口秀，最后一句问的是那姑娘呢。第二张把写作说成吹大弱想法、掩盖烂论证、妨碍清晰的技艺，还举了一个《Dick and Jane 中互存动力学与独白祈使：超关系性别模式的精神研究》的标题。第三张最直接：我们只有一条你编的事实，够了，加上引言、几张插图和结论，看起来就像一篇研究生论文了。三张都放在结构最密的段落之间，因为作者知道读者读到这儿已经累了。
+
+<Picture
+  src={calvin}
+  alt="Calvin and Hobbes 四格漫画：把写作说成吹大弱想法、掩盖推理、妨碍清晰的技艺"
+  formats={['avif', 'webp']}
+  widths={imageWidths(calvin, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+## 句子层面的规则
+
+风格这一单元开头，先是指路：牛津大学出版社网站上有 ACS Style Guide 第一章 Writing a Scientific Paper 的免费样章，那章开宗明义地说，写作没有菜谱式的固定规则。这一单元的地图分五块：写作风格（逻辑、选词、句式、声音、时态）、图、表、单位、引文。
+
+规则本身都带反例。第一条是简短，一句 I regret to say that at this point in time I do not have access to the specific information that you require，意思就是 I don't know。第二条是把名词化的外壳拆掉，讲义给了一张对照表。
+
+| 原表述 | 改写成 |
+|---|---|
+| on account of the fact that | as |
+| if it is assumed that | if |
+| a sufficient number | enough |
+| a greater length of time | longer |
+| it may well be that | perhaps |
+| make an examination of | examine |
+| take into consideration | consider |
+| it is apparent, therefore, that | hence |
+| come to the conclusion | conclude |
+| in view of the foregoing | so |
+| in all other cases | otherwise |
+
+第三条是先给结论，还是那个红外控制器的例子。前一种写法是经过因工厂翻新而漫长艰难的一段开发周期，红外控制器将可投产；后一种写法是红外控制器将于 3 月 4 日投产，其开发周期因工厂翻新而延长。差别的实质是读者能多快拿到可用信息。
+
+第四条是精确，两个例句分别是 John told Robert's son that he should help him 和 If the baby does not thrive on raw milk, boil it，都可以有不止一种理解。第五条是标点决定归属，同一句首相说反对党领袖是傻瓜，引号位置不同，被骂的人就换了。第六条是词的位置，only 挪四次，四句话的词完全一样，限定的对象各不相同。
+
+| 句子 | 限定的对象 |
+|---|---|
+| Only the largest group was injected with the test compound. | 只有最大的一组被注射 |
+| The largest group was only injected with the test compound. | 最大的一组只是被注射，没有做别的处理 |
+| The largest group was injected with only the test compound. | 只注射了这一种化合物 |
+| The largest group was injected with the only test compound. | 唯一的受试化合物 |
+
+<Picture
+  src={onlyImg}
+  alt="同一个句子中 only 的四种位置，红色标出移动后的限定对象"
+  formats={['avif', 'webp']}
+  widths={imageWidths(onlyImg, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+第七条是直接，This reaction is not uncommon 可以改成 This reaction is common，或者 not rare，最准确的写法是 about 40% of the time。第八条是时态：做过的事、别人做过的事用一般过去时，比如 The alloy was heat treated at 400 °C、Jones reviewed the literature and found；陈述事实用现在时，比如 Incorrect heat treatment leads to premature failure；结果、讨论、结论两可，取决于想强调操作还是结论，The TEM images show the formation of precipitates 和 The presence of precipitates was confirmed by TEM 都成立，只是落脚点不同。
+
+第九条是语态。被动是科研惯例，an experiment was performed 比 we performed an experiment 更常见，但当主动语态更直接、更少啰嗦时就用主动，The fact that heat treatment controls precipitation was demonstrated by our work in this area 可以压成 We found that heat treatment controls precipitation。第十条是第一人称的边界，有助于澄清含义、表达目的或决定时可以用，Jones reported xyz, but we found 这样的句子是合适的，但不要用它抒情，we believe、we feel、we see 都属于要避免的写法。
+
+第十一条讲句子，短陈述句最好写也最好读，连着太多会显得突兀单调，通常的做法是先写短句，再把其中一部分合并。第十二条讲段落，一段一个要点；人脑按组块接收信息，一组大约 5 到 7 项，信息太密就拆段；段内要连贯，段间留空行；另外不要把一串新句子逐行拆开写，那已经变成列表，不再是段落。
+
+## 图表、单位与引用
+
+最后一块回到综述的立场。你是这份文档的作者，你在表达对前人工作及其与你研究关系的判断；综述不是文献目录，要把相互竞争的观点综合起来，在恰当处标注文献；不要一篇一篇地介绍；用结构良好的段落写；不要把句子逐行罗列。这几句话在前面出现过，放在结尾再说一遍，是因为后面所有的排版规则都建立在这个立场上。
+
+表格要自足，表题放在表上方，信息量要足以脱离正文解释这张表。图也要自足，图注放在图下方，显微照片必须带比例尺，曲线图要有正确标注的坐标轴与图例。制图流程讲得很具体：不要在 Word 里画图，标注容易和图形脱离；在 PowerPoint 里拼图，再拷进 Photoshop 或 Irfanview 之类的图像软件；按需存 jpg、png 或 tiff，草稿用低分辨率；插入 Word 时选嵌入型。题注与交叉引用接着讲：图、表题注自动编号，正文用交叉引用指向编号，这样以后再加一张图，所有编号会自动更新。
+
+<Picture
+  src={wordCaption}
+  alt="Word 的插入题注对话框：在一张钛元素面分布等值线图上添加 Figure 1 的题注"
+  formats={['avif', 'webp']}
+  widths={imageWidths(wordCaption, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+单位这一节，要求一开始就写死：一律用 SI 单位。后面配了 NIST 的 SI 单位关系图，实线表示相乘，虚线表示相除。细节规则有三条：数字与单位之间留空格，比如 200 mV、9 V s⁻¹、2.6 × 10⁴ J；百分号和角度符号不留空格，写成 50% 和 90°；摄氏度则要留空格，写成 90 °C。再往后是不换行空格与不换行连字符：数值与单位之间、负号与数值之间如果用了普通空格，Word 会在行末把它们拆开，出现 −243 在一行、mV 在下一行的情况，解决方式是 Ctrl+Shift+空格插入不换行空格，Ctrl+- 插入不换行连字符。
+
+引用这一节讲的是正文里的写法。用 EndNote 一类软件管理文献，正文可以用上标、[1] 这样的数字，或者 (Jones, 2005) 这样的作者年份制，全篇选一种并保持统一。提到作者时按人数分档。
+
+| 情形 | 写法 |
+|---|---|
+| 一位作者 | Jones [1] |
+| 两位作者 | Jones and Smith [2] |
+| 两位以上 | Jones et al. [3] |
+| 同一课题组的系列论文 | Jones and coworkers [4-9] |
+
+页面边上用红字补了一句：et al. 来自拉丁语 et alii，点号是用来补省略掉的 ii 的，所以不能省。参考文献表里也不要出现 et al.，作者要列全。后面一页是参考文献表的排版示例，编号 26 到 38，混排了期刊论文、手册、专著和学位论文，期刊名斜体、卷号加粗、页码与年份统一。这批条目里也能看到直接粘贴留下的痕迹，比如第 30 条没有年份，第 31 条的 Buttersworth 拼写有误，作者名下面还留着拼写检查的波浪线——这页顺带说明了格式检查的必要性。最后一页是 EndNote 的界面，左侧 All References 819 条、Unfiled 510 条，可按 Al、AJD、Fuel Cells、Ni、Mo、Mg 等主题建组，右侧是 Author、Year、Title、Journal、URL 这些字段，下方 Preview 直接显示格式化后的引文。
+
+收尾的清单很短：简明、精确、清晰、直接；用合适的语态和时态；认真构造句子与段落；使用 SI 单位；图表清晰，图注与表题自足；引文正确且前后一致。
+
+<Picture
+  src={checklist}
+  alt="总结页：简明精确清晰直接、语态时态、句子与段落、SI 单位、图表、引文"
+  formats={['avif', 'webp']}
+  widths={imageWidths(checklist, [480, 768, 1080])}
+  sizes="(min-width: 768px) 768px, 100vw"
+  loading="lazy"
+  decoding="async"
+/>
+
+## 结语
+
+把这 77 页收拢起来，实际可执行的是一组检查动作。综述按概念和争论组织，不按论文逐篇组织，这一条决定了读者能不能看出你的判断。写作从结论倒推，结论对应讨论里的证据，证据由自有结果与前人工作组成，结果回到图表与描述，方法回到可重复性，引言回到背景与空白，这条链路走通，论文结构就是自洽的。批判性的写法有固定骨架，Nonetheless、First、Second、Third、Finally、Thus 六个词可以直接套用。风格层面多数问题出在删减，冗词、双重否定、位置不当的 only、过长的句子，都是靠删和拆解决的。格式细节则直接影响可信度，自足的图注、SI 单位与空格、et al. 的点号、交叉引用而不是手打编号，这些在审稿人和编辑眼里是判断作者是否严谨的第一批信号。
